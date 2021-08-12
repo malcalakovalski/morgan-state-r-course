@@ -1,0 +1,756 @@
+---
+title: "STATS 220"
+subtitle: "Working with text`r emo::ji('abcd')`"
+type: "lecture"
+date: ""
+output:
+  xaringan::moon_reader:
+    css: ["assets/remark.css", "assets/code-wrap.css"]
+    lib_dir: libs
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+class: inverse middle
+
+```{r initial, echo = FALSE, cache = FALSE, results = 'hide'}
+library(knitr)
+options(htmltools.dir.version = FALSE, htmltools.preserve.raw = FALSE, 
+  tibble.width = 60, tibble.print_min = 6)
+opts_chunk$set(
+  echo = TRUE, warning = FALSE, message = FALSE, comment = "#>",
+  fig.path = 'figure/', cache.path = 'cache/', cache = FALSE, fig.retina = 3,
+  fig.align = 'center', fig.width = 4.5, fig.height = 4, fig.show = 'hold',
+  dpi = 120
+)
+```
+
+```{r xaringan-panelset, echo = FALSE}
+xaringanExtra::use_panelset()
+```
+
+```{r external, include = FALSE, cache = FALSE}
+read_chunk('R/10-str-text.R')
+```
+
+## String manipulation
+
+---
+
+.left-column[
+.center[[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%">](http://stringr.tidyverse.org)]
+### - create
+]
+.right-column[
+## Fixed pattern
+Create strings with `'` or `"`
+```{r str-eg}
+```
+]
+
+---
+
+.left-column[
+.center[[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%">](http://stringr.tidyverse.org)]
+### - create
+### - join
+]
+.right-column[
+## Fixed pattern
+Join strings
+```{r str-c}
+```
+]
+
+---
+
+.left-column[
+.center[[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%">](http://stringr.tidyverse.org)]
+### - create
+### - join
+### - detect
+]
+.right-column[
+## Fixed pattern
+Determine which strings match a pattern
+```{r str-detect}
+```
+]
+
+---
+
+.left-column[
+.center[[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%">](http://stringr.tidyverse.org)]
+### - create
+### - join
+### - detect
+### - locate
+]
+.right-column[
+## Fixed pattern
+Find the positions of matches
+```{r str-locate}
+```
+]
+
+---
+
+.left-column[
+.center[[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%">](http://stringr.tidyverse.org)]
+### - create
+### - join
+### - detect
+### - locate
+### - extract
+]
+.right-column[
+## Fixed pattern
+Extract the content of matches
+```{r str-extract}
+```
+]
+
+---
+
+.left-column[
+.center[[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%">](http://stringr.tidyverse.org)]
+### - create
+### - join
+### - detect
+### - locate
+### - extract
+### - replace
+]
+.right-column[
+## Fixed pattern
+Replace matches with new values
+```{r str-replace}
+```
+]
+
+---
+
+class: inverse middle
+
+## Regular expressions .blue[.small[.small[(aka regex/regexp)]]]
+### an extremely concise language for describing patterns
+
+???
+
+Frequently your string tasks cannot be expressed in terms of a fixed string, but can be described in terms of a pattern. Regular expressions, aka "regexes", are the standard way to specify these patterns.
+
+---
+
+.left-column[
+.center[[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%">](http://stringr.tidyverse.org)]
+### - period
+]
+.right-column[
+## Regex
+`.` matches any character (except a newline)
+```{r str-dot}
+```
+]
+
+---
+
+.left-column[
+.center[[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%">](http://stringr.tidyverse.org)]
+### - period
+### - qualifier
+]
+.right-column[
+## Regex
+repetition
+```{r str-q}
+```
+]
+
+???
+
+`*` always looks for the longest string it can find.
+* to make it select the shortest string instead, add `?` after the `*`.
+
+---
+
+.left-column[
+.center[[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%">](http://stringr.tidyverse.org)]
+### - period
+### - qualifier
+]
+.right-column[
+## Regex
+repetition
++ `?`: 0 or 1
++ `+`: 1 or more
++ `*`: 0 or more
++ `{n}`: exactly n
++ `{n,}`: n or more
++ `{,m}`: at most m
++ `{n,m}`: between n and m
+]
+
+---
+
+.left-column[
+.center[[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%">](http://stringr.tidyverse.org)]
+### - period
+### - qualifier
+### - escape
+]
+.right-column[
+## Regex
+if `.` matches any character, how to match a literal `"."`?
+* use the backslash `\` to escape special behaviour `\.`
+* `\` is also used as an escape symbol in strings
+* end up using .brown[`"\\\\."`] to create the regular expression `\.`
+```{r escape}
+```
+]
+
+---
+
+.left-column[
+.center[[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%">](http://stringr.tidyverse.org)]
+### - period
+### - qualifier
+### - escape
+### - meta
+]
+.right-column[
+## Regex
+* `\d`: matches any digit. *(metacharacter)*
+* `\s`: matches any whitespace (e.g. space, tab `\t`, newline `\n`).
+* `[abc]`: matches a, b, or c. *(make character classes by hand)*
+```{r meta}
+```
+]
+
+???
+
+* Character classes are usually given inside square brackets, `[]` but a few come up so often that we have a metacharacter for them, such as `\d` for a single digit.
+* a lowercase letter will select any of the things it stands for (so `\d` selects any digit, while `\s` will select any blank space)
+
+---
+
+.left-column[
+.center[[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%">](http://stringr.tidyverse.org)]
+### - period
+### - qualifier
+### - escape
+### - meta
+]
+.right-column[
+## Regex
+* `\D`: matches anything except digits.
+* `\S`: matches anything except whitespaces.
+* `[^abc]`: matches anything except a, b, or c.
+```{r meta-upper}
+```
+]
+
+???
+
+* an uppercase letter will select everything BUT that thing (so `\D` doesn’t select digits, `\S` will erase blank spaces, and so on)
+
+---
+
+.left-column[
+.center[[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%">](http://stringr.tidyverse.org)]
+### - period
+### - qualifier
+### - escape
+### - meta
+### - POSIX
+]
+.right-column[
+## Regex
+* `[:digit:]`: matches any digit.
+* `[:space:]`: matches any whitespace.
+* `[:alpha:]`: matches any alphabetic character.
+* more on [?base::regex](https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html)
+```{r posix}
+```
+]
+
+---
+
+.left-column[
+.center[[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%">](http://stringr.tidyverse.org)]
+### - period
+### - qualifier
+### - escape
+### - meta
+### - POSIX
+### - anchor
+]
+.right-column[
+## Regex
+* `^` matches the start of the string.
+* `$` matches the end of the string.
+```{r anchor}
+```
+.pull-left[
+```{r anchor-end}
+```
+]
+.pull-right[
+```{r anchor-start}
+```
+]
+]
+
+---
+
+class: inverse middle
+
+## Working with strings in a tibble
+
+---
+
+.left-column[
+## Gapminder
+]
+.right-column[
+```{r gapminder}
+```
+]
+
+---
+
+.left-column[
+## Gapminder
+]
+.right-column[
+* .brown[`"i.a"`] matches “ina”, “ica”, “ita”, and more.
+
+```{r gapminder-dot}
+```
+]
+
+---
+
+.left-column[
+## Gapminder
+]
+.right-column[
+* .brown[`"i.a$"`] matches **the end** of “ina”, “ica”, “ita”, and more.
+
+```{r gapminder-anchor}
+```
+]
+
+---
+
+.left-column[
+## Gapminder
+]
+.right-column[
+* .brown[`"[nls]ia$"`] matches `ia` at the end of the country name, preceded by one of the characters in the class given inside `[]`.
+
+```{r gapminder-handcls}
+```
+]
+
+---
+
+.left-column[
+## Gapminder
+]
+.right-column[
+* .brown[`"[^nls]ia$"`] matches `ia` at the end of the country name, preceded by anything but one of the characters in the class given inside `[]`.
+
+```{r gapminder-negate}
+```
+]
+
+---
+
+.left-column[
+## Gapminder
+]
+.right-column[
+* .brown[`"[:punct:]"`] matches country names that contain punctuation.
+
+```{r gapminder-punct}
+```
+]
+
+---
+
+class: inverse middle
+
+## Text mining
+
+---
+
+## `r emo::ji("musical_score")` Waiting for the Sun `r emo::ji("sun")`
+
+```{r text}
+```
+
+---
+
+.left-column[
+.center[<img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png">]
+### - tokenise
+]
+.right-column[
+## unigram
+```{r unnest-words}
+```
+]
+
+---
+
+.left-column[
+.center[<img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png">]
+### - tokenise
+]
+.right-column[
+## unigram
+```{r unnest-words-count}
+```
+.brown[how often we see each word in this corpus]
+]
+
+---
+
+.left-column[
+.center[<img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png">]
+### - tokenise
+]
+.right-column[
+## letters
+```{r unnest-chrs}
+```
+]
+
+---
+
+.left-column[
+.center[<img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png">]
+### - tokenise
+]
+.right-column[
+## n-gram
+```{r unnest-ngrams}
+```
+]
+
+---
+
+background-image: url(img/acnh-rstats.jpg)
+background-size: contain
+
+---
+
+.left-column[
+.center[<img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png">]
+]
+.right-column[
+## sentiment analysis
+<br>
+<br>
+<img src="https://www.tidytextmining.com/images/tmwr_0201.png" width="100%">
+.footnote[image credit: [Text Mining with R](https://www.tidytextmining.com/sentiment.html)]
+]
+
+---
+
+.left-column[
+.center[<img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png">]
+### - import
+]
+.right-column[
+## sentiment analysis
+```{r acnh}
+```
+]
+
+---
+
+.left-column[
+.center[<img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png">]
+### - import
+### - glimpse
+]
+.right-column[
+## grade distribution
+```{r acnh-grade, fig.height = 3.5}
+```
+]
+
+---
+
+.left-column[
+.center[<img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png">]
+### - import
+### - glimpse
+]
+.right-column[
+## positive vs negative reviews
+.pull-left[
+```{r acnh-max}
+```
+]
+.pull-right[
+```{r acnh-min}
+```
+]
+]
+
+---
+
+.left-column[
+.center[<img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png">]
+### - import
+### - glimpse
+### - tokenise
+]
+.right-column[
+## clean a bit from web scraping ...
+```{r acnh-token}
+```
+]
+
+---
+
+.left-column[
+.center[<img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png">]
+### - import
+### - glimpse
+### - tokenise
+### - vis
+]
+.right-column[
+## distribution of words per review
+```{r acnh-hist, fig.height = 3.5}
+```
+]
+
+---
+
+.left-column[
+.center[<img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png">]
+### - import
+### - glimpse
+### - tokenise
+### - vis
+### - stop words
+]
+.right-column[
+## the most common words
+```{r acnh-count}
+```
+]
+
+---
+
+.left-column[
+.center[<img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png">]
+### - import
+### - glimpse
+### - tokenise
+### - vis
+### - stop words
+]
+.right-column[
+## lexicon
+.pull-left[
+```{r stop-words}
+```
+]
+.pull-right[
+1. In computing, stop words are words which are filtered out before or after processing of natural language data (text).
+2. They usually refer to the most common words in a language, but there is not a single list of stop words used by all natural language processing tools.
+]
+]
+
+???
+
+A lexicon is a bag of words that has been tagged with characteristics by some groups
+
+---
+
+.left-column[
+.center[<img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png">]
+### - import
+### - glimpse
+### - tokenise
+### - vis
+### - stop words
+]
+.right-column[
+## remove stop words
+```{r stop-words-rm}
+```
+]
+
+---
+
+.left-column[
+.center[<img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png">]
+### - import
+### - glimpse
+### - tokenise
+### - vis
+### - stop words
+### - count
+]
+.right-column[
+## the most common words
+.panelset[
+
+.panel[.panel-name[Plot]
+
+```{r stop-words-smart, echo = FALSE, fig.width = 6}
+```
+
+.panel[.panel-name[Code]
+
+```{r ref.label = "stop-words-smart", eval = FALSE}
+```
+]
+]
+]
+]
+
+---
+
+.left-column[
+.center[<img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png">]
+### - import
+### - glimpse
+### - tokenise
+### - vis
+### - stop words
+### - count
+### - sentiments
+]
+.right-column[
+## sentiment lexicons
+.pull-left[
+* AFINN lexicon measures sentiment with a numeric score b/t -5 & 5.
+```{r sentiments-l}
+```
+]
+.pull-right[
+* Other lexicons categorise words in a binary fashion, either positive or negative.
+```{r sentiments-r}
+```
+]
+]
+
+???
+
+One way to analyze the sentiment of a text is to consider the text as a combination of its individual words and the sentiment content of the whole text as the sum of the sentiment content of the individual words
+
+---
+
+.left-column[
+.center[<img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png">]
+### - import
+### - glimpse
+### - tokenise
+### - vis
+### - stop words
+### - count
+### - sentiments
+]
+.right-column[
+## sentiment lexicons
+```{r sentiments}
+```
+]
+
+---
+
+.left-column[
+.center[<img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png">]
+### - import
+### - glimpse
+### - tokenise
+### - vis
+### - stop words
+### - count
+### - sentiments
+]
+.right-column[
+## join sentiments
+```{r join-sentiments}
+```
+]
+
+???
+
+why I use `inner_join()` here
+
+---
+
+.left-column[
+.center[<img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png">]
+### - import
+### - glimpse
+### - tokenise
+### - vis
+### - stop words
+### - count
+### - sentiments
+### - vis
+]
+.right-column[
+## visualise sentiments
+
+.panelset[
+
+.panel[.panel-name[Plot]
+
+```{r plot-sentiments, echo = FALSE, fig.width = 6}
+```
+
+.panel[.panel-name[Code]
+
+```{r ref.label = "plot-sentiments", eval = FALSE}
+```
+]
+]
+]
+]
+
+---
+
+.left-column[
+.center[<img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png">]
+### - import
+### - glimpse
+### - tokenise
+### - vis
+### - stop words
+### - count
+### - sentiments
+### - vis
+]
+.right-column[
+Would Animal Crossing be considered to be a delightful game?
+
+```{r count-sentiments}
+```
+]
+
+---
+
+## Reading
+
+.pull-left[
+.center[[<img src="https://d33wubrfki0l68.cloudfront.net/b88ef926a004b0fce72b2526b0b5c4413666a4cb/24a30/cover.png" height="380px">](https://r4ds.had.co.nz)]
+* [Strings](https://r4ds.had.co.nz/strings.html)
+* [{stringr} cheatsheet](https://github.com/rstudio/cheatsheets/blob/master/strings.pdf)
+]
+.pull-right[
+.center[[<img src="https://www.tidytextmining.com/images/cover.png" height="380px">](https://www.tidytextmining.com/index.html)]
+* [Sentiment analysis with tidy data](https://www.tidytextmining.com/sentiment.html)
+]

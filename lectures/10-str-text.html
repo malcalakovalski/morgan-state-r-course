@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>STATS 220</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <link href="libs/str_view/str_view.css" rel="stylesheet" />
+    <script src="libs/str_view-binding/str_view.js"></script>
+    <link rel="stylesheet" href="assets/remark.css" type="text/css" />
+    <link rel="stylesheet" href="assets/code-wrap.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# STATS 220
+## Working with text🔡
+
+---
+
+
+class: inverse middle
+
+
+
+
+
+
+
+## String manipulation
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%"&gt;](http://stringr.tidyverse.org)]
+### - create
+]
+.right-column[
+## Fixed pattern
+Create strings with `'` or `"`
+
+```r
+library(tidyverse) # library(stringr)
+string &lt;- "lzDHk3orange2o5ghte"
+string
+```
+
+```
+#&gt; [1] "lzDHk3orange2o5ghte"
+```
+
+```r
+fruit &lt;- c("cherry", "banana")
+fruit
+```
+
+```
+#&gt; [1] "cherry" "banana"
+```
+]
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%"&gt;](http://stringr.tidyverse.org)]
+### - create
+### - join
+]
+.right-column[
+## Fixed pattern
+Join strings
+
+```r
+c(string, fruit)
+```
+
+```
+#&gt; [1] "lzDHk3orange2o5ghte" "cherry"              "banana"
+```
+
+```r
+str_c(string, fruit, sep = ", ")
+```
+
+```
+#&gt; [1] "lzDHk3orange2o5ghte, cherry" "lzDHk3orange2o5ghte, banana"
+```
+
+```r
+str_c(string, fruit, collapse = ", ")
+```
+
+```
+#&gt; [1] "lzDHk3orange2o5ghtecherry, lzDHk3orange2o5ghtebanana"
+```
+]
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%"&gt;](http://stringr.tidyverse.org)]
+### - create
+### - join
+### - detect
+]
+.right-column[
+## Fixed pattern
+Determine which strings match a pattern
+
+```r
+str_detect(string, "orange")
+```
+
+```
+#&gt; [1] TRUE
+```
+
+```r
+str_detect(fruit, "orange")
+```
+
+```
+#&gt; [1] FALSE FALSE
+```
+]
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%"&gt;](http://stringr.tidyverse.org)]
+### - create
+### - join
+### - detect
+### - locate
+]
+.right-column[
+## Fixed pattern
+Find the positions of matches
+
+```r
+str_locate(string, "orange")
+```
+
+```
+#&gt;      start end
+#&gt; [1,]     7  12
+```
+
+```r
+str_locate(fruit, "orange")
+```
+
+```
+#&gt;      start end
+#&gt; [1,]    NA  NA
+#&gt; [2,]    NA  NA
+```
+]
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%"&gt;](http://stringr.tidyverse.org)]
+### - create
+### - join
+### - detect
+### - locate
+### - extract
+]
+.right-column[
+## Fixed pattern
+Extract the content of matches
+
+```r
+str_sub(string, 7, 12)
+```
+
+```
+#&gt; [1] "orange"
+```
+
+```r
+str_extract(string, "orange")
+```
+
+```
+#&gt; [1] "orange"
+```
+
+```r
+str_extract(fruit, "orange")
+```
+
+```
+#&gt; [1] NA NA
+```
+]
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%"&gt;](http://stringr.tidyverse.org)]
+### - create
+### - join
+### - detect
+### - locate
+### - extract
+### - replace
+]
+.right-column[
+## Fixed pattern
+Replace matches with new values
+
+```r
+str_replace(string, "orange", "apple")
+```
+
+```
+#&gt; [1] "lzDHk3apple2o5ghte"
+```
+
+```r
+str_replace(fruit, "orange", "apple")
+```
+
+```
+#&gt; [1] "cherry" "banana"
+```
+]
+
+---
+
+class: inverse middle
+
+## Regular expressions .blue[.small[.small[(aka regex/regexp)]]]
+### an extremely concise language for describing patterns
+
+???
+
+Frequently your string tasks cannot be expressed in terms of a fixed string, but can be described in terms of a pattern. Regular expressions, aka "regexes", are the standard way to specify these patterns.
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%"&gt;](http://stringr.tidyverse.org)]
+### - period
+]
+.right-column[
+## Regex
+`.` matches any character (except a newline)
+
+```r
+str_extract(string, "o....e")
+```
+
+```
+#&gt; [1] "orange"
+```
+
+```r
+str_extract_all(string, "o....e")
+```
+
+```
+#&gt; [[1]]
+#&gt; [1] "orange" "o5ghte"
+```
+]
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%"&gt;](http://stringr.tidyverse.org)]
+### - period
+### - qualifier
+]
+.right-column[
+## Regex
+repetition
+
+```r
+str_extract_all(string, "o.{4}e")
+```
+
+```
+#&gt; [[1]]
+#&gt; [1] "orange" "o5ghte"
+```
+
+```r
+str_extract_all(string, "o.*e")
+```
+
+```
+#&gt; [[1]]
+#&gt; [1] "orange2o5ghte"
+```
+
+```r
+str_extract_all(string, "o.*?e")
+```
+
+```
+#&gt; [[1]]
+#&gt; [1] "orange" "o5ghte"
+```
+]
+
+???
+
+`*` always looks for the longest string it can find.
+* to make it select the shortest string instead, add `?` after the `*`.
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%"&gt;](http://stringr.tidyverse.org)]
+### - period
+### - qualifier
+]
+.right-column[
+## Regex
+repetition
++ `?`: 0 or 1
++ `+`: 1 or more
++ `*`: 0 or more
++ `{n}`: exactly n
++ `{n,}`: n or more
++ `{,m}`: at most m
++ `{n,m}`: between n and m
+]
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%"&gt;](http://stringr.tidyverse.org)]
+### - period
+### - qualifier
+### - escape
+]
+.right-column[
+## Regex
+if `.` matches any character, how to match a literal `"."`?
+* use the backslash `\` to escape special behaviour `\.`
+* `\` is also used as an escape symbol in strings
+* end up using .brown[`"\\\\."`] to create the regular expression `\.`
+
+```r
+str_view_all(string, "o\\.{4}e")
+```
+
+<div id="htmlwidget-5dc2381787d405b8e096" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5dc2381787d405b8e096">{"x":{"html":"<ul>\n  <li>lzDHk3orange2o5ghte<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+```r
+str_view_all("a.b.c", "\\.")
+```
+
+<div id="htmlwidget-6673f5c2ba0572d1b940" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6673f5c2ba0572d1b940">{"x":{"html":"<ul>\n  <li>a<span class='match'>.<\/span>b<span class='match'>.<\/span>c<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%"&gt;](http://stringr.tidyverse.org)]
+### - period
+### - qualifier
+### - escape
+### - meta
+]
+.right-column[
+## Regex
+* `\d`: matches any digit. *(metacharacter)*
+* `\s`: matches any whitespace (e.g. space, tab `\t`, newline `\n`).
+* `[abc]`: matches a, b, or c. *(make character classes by hand)*
+
+```r
+str_view_all(string, "\\d")
+```
+
+<div id="htmlwidget-e8b84dd24c4725f1c313" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e8b84dd24c4725f1c313">{"x":{"html":"<ul>\n  <li>lzDHk<span class='match'>3<\/span>orange<span class='match'>2<\/span>o<span class='match'>5<\/span>ghte<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+```r
+str_view_all(string, "[0-9]")
+```
+
+<div id="htmlwidget-5fd4aa31bda2b2b474e6" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5fd4aa31bda2b2b474e6">{"x":{"html":"<ul>\n  <li>lzDHk<span class='match'>3<\/span>orange<span class='match'>2<\/span>o<span class='match'>5<\/span>ghte<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+]
+
+???
+
+* Character classes are usually given inside square brackets, `[]` but a few come up so often that we have a metacharacter for them, such as `\d` for a single digit.
+* a lowercase letter will select any of the things it stands for (so `\d` selects any digit, while `\s` will select any blank space)
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%"&gt;](http://stringr.tidyverse.org)]
+### - period
+### - qualifier
+### - escape
+### - meta
+]
+.right-column[
+## Regex
+* `\D`: matches anything except digits.
+* `\S`: matches anything except whitespaces.
+* `[^abc]`: matches anything except a, b, or c.
+
+```r
+str_view_all(string, "\\D")
+```
+
+<div id="htmlwidget-c4f3bf6e5c096aaf2fca" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c4f3bf6e5c096aaf2fca">{"x":{"html":"<ul>\n  <li><span class='match'>l<\/span><span class='match'>z<\/span><span class='match'>D<\/span><span class='match'>H<\/span><span class='match'>k<\/span>3<span class='match'>o<\/span><span class='match'>r<\/span><span class='match'>a<\/span><span class='match'>n<\/span><span class='match'>g<\/span><span class='match'>e<\/span>2<span class='match'>o<\/span>5<span class='match'>g<\/span><span class='match'>h<\/span><span class='match'>t<\/span><span class='match'>e<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+```r
+str_view_all(string, "[^0-9]")
+```
+
+<div id="htmlwidget-b83ad4261f7547f71bc2" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b83ad4261f7547f71bc2">{"x":{"html":"<ul>\n  <li><span class='match'>l<\/span><span class='match'>z<\/span><span class='match'>D<\/span><span class='match'>H<\/span><span class='match'>k<\/span>3<span class='match'>o<\/span><span class='match'>r<\/span><span class='match'>a<\/span><span class='match'>n<\/span><span class='match'>g<\/span><span class='match'>e<\/span>2<span class='match'>o<\/span>5<span class='match'>g<\/span><span class='match'>h<\/span><span class='match'>t<\/span><span class='match'>e<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+]
+
+???
+
+* an uppercase letter will select everything BUT that thing (so `\D` doesn’t select digits, `\S` will erase blank spaces, and so on)
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%"&gt;](http://stringr.tidyverse.org)]
+### - period
+### - qualifier
+### - escape
+### - meta
+### - POSIX
+]
+.right-column[
+## Regex
+* `[:digit:]`: matches any digit.
+* `[:space:]`: matches any whitespace.
+* `[:alpha:]`: matches any alphabetic character.
+* more on [?base::regex](https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html)
+
+```r
+str_view_all(string, "[:digit:]")
+```
+
+<div id="htmlwidget-27d94973b7790a919ebe" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-27d94973b7790a919ebe">{"x":{"html":"<ul>\n  <li>lzDHk<span class='match'>3<\/span>orange<span class='match'>2<\/span>o<span class='match'>5<\/span>ghte<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+```r
+str_view_all(string, "[:alpha:]")
+```
+
+<div id="htmlwidget-6fbd5f952c11bc8bc7bd" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6fbd5f952c11bc8bc7bd">{"x":{"html":"<ul>\n  <li><span class='match'>l<\/span><span class='match'>z<\/span><span class='match'>D<\/span><span class='match'>H<\/span><span class='match'>k<\/span>3<span class='match'>o<\/span><span class='match'>r<\/span><span class='match'>a<\/span><span class='match'>n<\/span><span class='match'>g<\/span><span class='match'>e<\/span>2<span class='match'>o<\/span>5<span class='match'>g<\/span><span class='match'>h<\/span><span class='match'>t<\/span><span class='match'>e<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/stringr.png" width="60%"&gt;](http://stringr.tidyverse.org)]
+### - period
+### - qualifier
+### - escape
+### - meta
+### - POSIX
+### - anchor
+]
+.right-column[
+## Regex
+* `^` matches the start of the string.
+* `$` matches the end of the string.
+
+```r
+str_view_all(fruit, "a")
+```
+
+<div id="htmlwidget-98586ff0f86f407fb166" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-98586ff0f86f407fb166">{"x":{"html":"<ul>\n  <li>cherry<\/li>\n  <li>b<span class='match'>a<\/span>n<span class='match'>a<\/span>n<span class='match'>a<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+.pull-left[
+
+```r
+str_view_all(fruit, "a$")
+```
+
+<div id="htmlwidget-2705bd3271639183fe1c" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2705bd3271639183fe1c">{"x":{"html":"<ul>\n  <li>cherry<\/li>\n  <li>banan<span class='match'>a<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+]
+.pull-right[
+
+```r
+str_view_all(fruit, "^a")
+```
+
+<div id="htmlwidget-7f892e313b88e6910e86" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7f892e313b88e6910e86">{"x":{"html":"<ul>\n  <li>cherry<\/li>\n  <li>banana<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+]
+]
+
+---
+
+class: inverse middle
+
+## Working with strings in a tibble
+
+---
+
+.left-column[
+## Gapminder
+]
+.right-column[
+
+```r
+gapminder &lt;- read_rds("data/gapminder.rds") %&gt;% 
+  group_by(country) %&gt;% 
+  slice_tail() %&gt;% 
+  ungroup()
+gapminder
+```
+
+```
+#&gt; # A tibble: 142 x 6
+#&gt;   country     continent  year lifeExp      pop gdpPercap
+#&gt;   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+#&gt; 1 Afghanistan Asia       2007    43.8 31889923      975.
+#&gt; 2 Albania     Europe     2007    76.4  3600523     5937.
+#&gt; 3 Algeria     Africa     2007    72.3 33333216     6223.
+#&gt; 4 Angola      Africa     2007    42.7 12420476     4797.
+#&gt; 5 Argentina   Americas   2007    75.3 40301927    12779.
+#&gt; 6 Australia   Oceania    2007    81.2 20434176    34435.
+#&gt; # … with 136 more rows
+```
+]
+
+---
+
+.left-column[
+## Gapminder
+]
+.right-column[
+* .brown[`"i.a"`] matches “ina”, “ica”, “ita”, and more.
+
+
+```r
+gapminder %&gt;% 
+  filter(str_detect(country, "i.a"))
+```
+
+```
+#&gt; # A tibble: 16 x 6
+#&gt;    country         continent  year lifeExp     pop gdpPercap
+#&gt;    &lt;fct&gt;           &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;     &lt;dbl&gt;
+#&gt;  1 Argentina       Americas   2007    75.3  4.03e7    12779.
+#&gt;  2 Bosnia and Her… Europe     2007    74.9  4.55e6     7446.
+#&gt;  3 Burkina Faso    Africa     2007    52.3  1.43e7     1217.
+#&gt;  4 Central Africa… Africa     2007    44.7  4.37e6      706.
+#&gt;  5 China           Asia       2007    73.0  1.32e9     4959.
+#&gt;  6 Costa Rica      Americas   2007    78.8  4.13e6     9645.
+#&gt;  7 Dominican Repu… Americas   2007    72.2  9.32e6     6025.
+#&gt;  8 Hong Kong, Chi… Asia       2007    82.2  6.98e6    39725.
+#&gt;  9 Jamaica         Americas   2007    72.6  2.78e6     7321.
+#&gt; 10 Mauritania      Africa     2007    64.2  3.27e6     1803.
+#&gt; 11 Nicaragua       Americas   2007    72.9  5.68e6     2749.
+#&gt; 12 South Africa    Africa     2007    49.3  4.40e7     9270.
+#&gt; 13 Swaziland       Africa     2007    39.6  1.13e6     4513.
+#&gt; 14 Taiwan          Asia       2007    78.4  2.32e7    28718.
+#&gt; 15 Thailand        Asia       2007    70.6  6.51e7     7458.
+#&gt; 16 Trinidad and T… Americas   2007    69.8  1.06e6    18009.
+```
+]
+
+---
+
+.left-column[
+## Gapminder
+]
+.right-column[
+* .brown[`"i.a$"`] matches **the end** of “ina”, “ica”, “ita”, and more.
+
+
+```r
+gapminder %&gt;% 
+  filter(str_detect(country, "i.a$"))
+```
+
+```
+#&gt; # A tibble: 7 x 6
+#&gt;   country         continent  year lifeExp      pop gdpPercap
+#&gt;   &lt;fct&gt;           &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+#&gt; 1 Argentina       Americas   2007    75.3   4.03e7    12779.
+#&gt; 2 Bosnia and Her… Europe     2007    74.9   4.55e6     7446.
+#&gt; 3 China           Asia       2007    73.0   1.32e9     4959.
+#&gt; 4 Costa Rica      Americas   2007    78.8   4.13e6     9645.
+#&gt; 5 Hong Kong, Chi… Asia       2007    82.2   6.98e6    39725.
+#&gt; 6 Jamaica         Americas   2007    72.6   2.78e6     7321.
+#&gt; 7 South Africa    Africa     2007    49.3   4.40e7     9270.
+```
+]
+
+---
+
+.left-column[
+## Gapminder
+]
+.right-column[
+* .brown[`"[nls]ia$"`] matches `ia` at the end of the country name, preceded by one of the characters in the class given inside `[]`.
+
+
+```r
+gapminder %&gt;% 
+  filter(str_detect(country, "[nls]ia$"))
+```
+
+```
+#&gt; # A tibble: 11 x 6
+#&gt;    country    continent  year lifeExp       pop gdpPercap
+#&gt;    &lt;fct&gt;      &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+#&gt;  1 Albania    Europe     2007    76.4   3600523     5937.
+#&gt;  2 Australia  Oceania    2007    81.2  20434176    34435.
+#&gt;  3 Indonesia  Asia       2007    70.6 223547000     3541.
+#&gt;  4 Malaysia   Asia       2007    74.2  24821286    12452.
+#&gt;  5 Mauritania Africa     2007    64.2   3270065     1803.
+#&gt;  6 Mongolia   Asia       2007    66.8   2874127     3096.
+#&gt;  7 Romania    Europe     2007    72.5  22276056    10808.
+#&gt;  8 Slovenia   Europe     2007    77.9   2009245    25768.
+#&gt;  9 Somalia    Africa     2007    48.2   9118773      926.
+#&gt; 10 Tanzania   Africa     2007    52.5  38139640     1107.
+#&gt; 11 Tunisia    Africa     2007    73.9  10276158     7093.
+```
+]
+
+---
+
+.left-column[
+## Gapminder
+]
+.right-column[
+* .brown[`"[^nls]ia$"`] matches `ia` at the end of the country name, preceded by anything but one of the characters in the class given inside `[]`.
+
+
+```r
+gapminder %&gt;% 
+  filter(str_detect(country, "[^nls]ia$"))
+```
+
+```
+#&gt; # A tibble: 17 x 6
+#&gt;    country      continent  year lifeExp        pop gdpPercap
+#&gt;    &lt;fct&gt;        &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;      &lt;int&gt;     &lt;dbl&gt;
+#&gt;  1 Algeria      Africa     2007    72.3   33333216     6223.
+#&gt;  2 Austria      Europe     2007    79.8    8199783    36126.
+#&gt;  3 Bolivia      Americas   2007    65.6    9119152     3822.
+#&gt;  4 Bulgaria     Europe     2007    73.0    7322858    10681.
+#&gt;  5 Cambodia     Asia       2007    59.7   14131858     1714.
+#&gt;  6 Colombia     Americas   2007    72.9   44227550     7007.
+#&gt;  7 Croatia      Europe     2007    75.7    4493312    14619.
+#&gt;  8 Ethiopia     Africa     2007    52.9   76511887      691.
+#&gt;  9 Gambia       Africa     2007    59.4    1688359      753.
+#&gt; 10 India        Asia       2007    64.7 1110396331     2452.
+#&gt; 11 Liberia      Africa     2007    45.7    3193942      415.
+#&gt; 12 Namibia      Africa     2007    52.9    2055080     4811.
+#&gt; 13 Nigeria      Africa     2007    46.9  135031164     2014.
+#&gt; 14 Saudi Arabia Asia       2007    72.8   27601038    21655.
+#&gt; 15 Serbia       Europe     2007    74.0   10150265     9787.
+#&gt; 16 Syria        Asia       2007    74.1   19314747     4185.
+#&gt; 17 Zambia       Africa     2007    42.4   11746035     1271.
+```
+]
+
+---
+
+.left-column[
+## Gapminder
+]
+.right-column[
+* .brown[`"[:punct:]"`] matches country names that contain punctuation.
+
+
+```r
+gapminder %&gt;% 
+  filter(str_detect(country, "[:punct:]"))
+```
+
+```
+#&gt; # A tibble: 8 x 6
+#&gt;   country          continent  year lifeExp     pop gdpPercap
+#&gt;   &lt;fct&gt;            &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;     &lt;dbl&gt;
+#&gt; 1 Congo, Dem. Rep. Africa     2007    46.5  6.46e7      278.
+#&gt; 2 Congo, Rep.      Africa     2007    55.3  3.80e6     3633.
+#&gt; 3 Cote d'Ivoire    Africa     2007    48.3  1.80e7     1545.
+#&gt; 4 Guinea-Bissau    Africa     2007    46.4  1.47e6      579.
+#&gt; 5 Hong Kong, China Asia       2007    82.2  6.98e6    39725.
+#&gt; 6 Korea, Dem. Rep. Asia       2007    67.3  2.33e7     1593.
+#&gt; 7 Korea, Rep.      Asia       2007    78.6  4.90e7    23348.
+#&gt; 8 Yemen, Rep.      Asia       2007    62.7  2.22e7     2281.
+```
+]
+
+---
+
+class: inverse middle
+
+## Text mining
+
+---
+
+## 🎼 Waiting for the Sun ☀️
+
+
+```r
+lyrics &lt;- c("This will be an uncertain time for us my love",
+            "I can hear the echo of your voice in my head",
+            "Singing my love",
+            "I can see your face there in my hands my love",
+            "I have been blessed by your grace and care my love",
+            "Singing my love")
+text_tbl &lt;- tibble(line = seq_along(lyrics), text = lyrics)
+text_tbl
+```
+
+```
+#&gt; # A tibble: 6 x 2
+#&gt;    line text                                              
+#&gt;   &lt;int&gt; &lt;chr&gt;                                             
+#&gt; 1     1 This will be an uncertain time for us my love     
+#&gt; 2     2 I can hear the echo of your voice in my head      
+#&gt; 3     3 Singing my love                                   
+#&gt; 4     4 I can see your face there in my hands my love     
+#&gt; 5     5 I have been blessed by your grace and care my love
+#&gt; 6     6 Singing my love
+```
+
+---
+
+.left-column[
+.center[&lt;img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png"&gt;]
+### - tokenise
+]
+.right-column[
+## unigram
+
+```r
+library(tidytext)
+text_tbl %&gt;%
+  unnest_tokens(output = word, input = text)
+```
+
+```
+#&gt; # A tibble: 49 x 2
+#&gt;    line word     
+#&gt;   &lt;int&gt; &lt;chr&gt;    
+#&gt; 1     1 this     
+#&gt; 2     1 will     
+#&gt; 3     1 be       
+#&gt; 4     1 an       
+#&gt; 5     1 uncertain
+#&gt; 6     1 time     
+#&gt; # … with 43 more rows
+```
+]
+
+---
+
+.left-column[
+.center[&lt;img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png"&gt;]
+### - tokenise
+]
+.right-column[
+## unigram
+
+```r
+text_tbl %&gt;%
+  unnest_tokens(output = word, input = text) %&gt;% 
+  count(word, sort = TRUE)
+```
+
+```
+#&gt; # A tibble: 32 x 2
+#&gt;   word      n
+#&gt;   &lt;chr&gt; &lt;int&gt;
+#&gt; 1 my        7
+#&gt; 2 love      5
+#&gt; 3 i         3
+#&gt; 4 your      3
+#&gt; 5 can       2
+#&gt; 6 in        2
+#&gt; # … with 26 more rows
+```
+.brown[how often we see each word in this corpus]
+]
+
+---
+
+.left-column[
+.center[&lt;img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png"&gt;]
+### - tokenise
+]
+.right-column[
+## letters
+
+```r
+text_tbl %&gt;%
+  unnest_characters(output = word, input = text)
+```
+
+```
+#&gt; # A tibble: 171 x 2
+#&gt;    line word 
+#&gt;   &lt;int&gt; &lt;chr&gt;
+#&gt; 1     1 t    
+#&gt; 2     1 h    
+#&gt; 3     1 i    
+#&gt; 4     1 s    
+#&gt; 5     1 w    
+#&gt; 6     1 i    
+#&gt; # … with 165 more rows
+```
+]
+
+---
+
+.left-column[
+.center[&lt;img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png"&gt;]
+### - tokenise
+]
+.right-column[
+## n-gram
+
+```r
+text_tbl %&gt;%
+  unnest_ngrams(output = word, input = text, n = 2)
+```
+
+```
+#&gt; # A tibble: 43 x 2
+#&gt;    line word          
+#&gt;   &lt;int&gt; &lt;chr&gt;         
+#&gt; 1     1 this will     
+#&gt; 2     1 will be       
+#&gt; 3     1 be an         
+#&gt; 4     1 an uncertain  
+#&gt; 5     1 uncertain time
+#&gt; 6     1 time for      
+#&gt; # … with 37 more rows
+```
+]
+
+---
+
+background-image: url(img/acnh-rstats.jpg)
+background-size: contain
+
+---
+
+.left-column[
+.center[&lt;img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png"&gt;]
+]
+.right-column[
+## sentiment analysis
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="https://www.tidytextmining.com/images/tmwr_0201.png" width="100%"&gt;
+.footnote[image credit: [Text Mining with R](https://www.tidytextmining.com/sentiment.html)]
+]
+
+---
+
+.left-column[
+.center[&lt;img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png"&gt;]
+### - import
+]
+.right-column[
+## sentiment analysis
+
+```r
+user_reviews &lt;- read_tsv(
+  "data/animal-crossing/user_reviews.tsv")
+user_reviews
+```
+
+```
+#&gt; # A tibble: 2,999 x 4
+#&gt;   grade user_name   text                          date      
+#&gt;   &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;                         &lt;date&gt;    
+#&gt; 1     4 mds27272    My gf started playing before… 2020-03-20
+#&gt; 2     5 lolo2178    While the game itself is gre… 2020-03-20
+#&gt; 3     0 Roachant    My wife and I were looking f… 2020-03-20
+#&gt; 4     0 Houndf      We need equal values and opp… 2020-03-20
+#&gt; 5     0 ProfessorF… BEWARE!  If you have multipl… 2020-03-20
+#&gt; 6     0 tb726       The limitation of one island… 2020-03-20
+#&gt; # … with 2,993 more rows
+```
+]
+
+---
+
+.left-column[
+.center[&lt;img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png"&gt;]
+### - import
+### - glimpse
+]
+.right-column[
+## grade distribution
+
+```r
+user_reviews %&gt;% 
+  ggplot(aes(grade)) +
+  geom_bar()
+```
+
+&lt;img src="figure/acnh-grade-1.png" width="540" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+.left-column[
+.center[&lt;img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png"&gt;]
+### - import
+### - glimpse
+]
+.right-column[
+## positive vs negative reviews
+.pull-left[
+
+```r
+user_reviews %&gt;% 
+  slice_max(grade, 
+    with_ties = FALSE) %&gt;% 
+  pull(text)
+```
+
+```
+#&gt; [1] "Cant stop playing!"
+```
+]
+.pull-right[
+
+```r
+user_reviews %&gt;% 
+  slice_min(grade,
+    with_ties = FALSE) %&gt;% 
+  pull(text)
+```
+
+```
+#&gt; [1] "My wife and I were looking forward to playing this game when it released. I bought it, I let her play first she made an island and played for a bit. Then I decided to play only to discover that Nintendo only allows one island per switch! Not only that, the second player cannot build anything on the island and tool building is considerably harder to do. So, if you have more than one personMy wife and I were looking forward to playing this game when it released. I bought it, I let her play first she made an island and played for a bit. Then I decided to play only to discover that Nintendo only allows one island per switch! Not only that, the second player cannot build anything on the island and tool building is considerably harder to do. So, if you have more than one person in your home that wants to play the game, you need two switches. Worst decision I have ever seen, this even beats EA.Congratulations Nintendo, you have officially become the worst video game company this year!… Expand"
+```
+]
+]
+
+---
+
+.left-column[
+.center[&lt;img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png"&gt;]
+### - import
+### - glimpse
+### - tokenise
+]
+.right-column[
+## clean a bit from web scraping ...
+
+```r
+user_reviews_words &lt;- user_reviews %&gt;% 
+  mutate(text = str_remove(text, "Expand$")) %&gt;% 
+  unnest_tokens(output = word, input = text)
+user_reviews_words
+```
+
+```
+#&gt; # A tibble: 362,729 x 4
+#&gt;   grade user_name date       word   
+#&gt;   &lt;dbl&gt; &lt;chr&gt;     &lt;date&gt;     &lt;chr&gt;  
+#&gt; 1     4 mds27272  2020-03-20 my     
+#&gt; 2     4 mds27272  2020-03-20 gf     
+#&gt; 3     4 mds27272  2020-03-20 started
+#&gt; 4     4 mds27272  2020-03-20 playing
+#&gt; 5     4 mds27272  2020-03-20 before 
+#&gt; 6     4 mds27272  2020-03-20 me     
+#&gt; # … with 362,723 more rows
+```
+]
+
+---
+
+.left-column[
+.center[&lt;img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png"&gt;]
+### - import
+### - glimpse
+### - tokenise
+### - vis
+]
+.right-column[
+## distribution of words per review
+
+```r
+user_reviews_words %&gt;% 
+  count(user_name) %&gt;% 
+  ggplot(aes(x = n)) +
+  geom_histogram()
+```
+
+&lt;img src="figure/acnh-hist-1.png" width="540" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+.left-column[
+.center[&lt;img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png"&gt;]
+### - import
+### - glimpse
+### - tokenise
+### - vis
+### - stop words
+]
+.right-column[
+## the most common words
+
+```r
+user_reviews_words %&gt;%
+  count(word, sort = TRUE)
+```
+
+```
+#&gt; # A tibble: 13,454 x 2
+#&gt;   word      n
+#&gt;   &lt;chr&gt; &lt;int&gt;
+#&gt; 1 the   17739
+#&gt; 2 to    11857
+#&gt; 3 game   8769
+#&gt; 4 and    8740
+#&gt; 5 a      8330
+#&gt; 6 i      7211
+#&gt; # … with 13,448 more rows
+```
+]
+
+---
+
+.left-column[
+.center[&lt;img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png"&gt;]
+### - import
+### - glimpse
+### - tokenise
+### - vis
+### - stop words
+]
+.right-column[
+## lexicon
+.pull-left[
+
+```r
+get_stopwords()
+```
+
+```
+#&gt; # A tibble: 175 x 2
+#&gt;   word   lexicon 
+#&gt;   &lt;chr&gt;  &lt;chr&gt;   
+#&gt; 1 i      snowball
+#&gt; 2 me     snowball
+#&gt; 3 my     snowball
+#&gt; 4 myself snowball
+#&gt; 5 we     snowball
+#&gt; 6 our    snowball
+#&gt; # … with 169 more rows
+```
+]
+.pull-right[
+1. In computing, stop words are words which are filtered out before or after processing of natural language data (text).
+2. They usually refer to the most common words in a language, but there is not a single list of stop words used by all natural language processing tools.
+]
+]
+
+???
+
+A lexicon is a bag of words that has been tagged with characteristics by some groups
+
+---
+
+.left-column[
+.center[&lt;img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png"&gt;]
+### - import
+### - glimpse
+### - tokenise
+### - vis
+### - stop words
+]
+.right-column[
+## remove stop words
+
+```r
+stopwords_smart &lt;- get_stopwords(source = "smart")
+user_reviews_smart &lt;- user_reviews_words %&gt;%
+  anti_join(stopwords_smart)
+user_reviews_smart
+```
+
+```
+#&gt; # A tibble: 145,444 x 4
+#&gt;   grade user_name date       word   
+#&gt;   &lt;dbl&gt; &lt;chr&gt;     &lt;date&gt;     &lt;chr&gt;  
+#&gt; 1     4 mds27272  2020-03-20 gf     
+#&gt; 2     4 mds27272  2020-03-20 started
+#&gt; 3     4 mds27272  2020-03-20 playing
+#&gt; 4     4 mds27272  2020-03-20 option 
+#&gt; 5     4 mds27272  2020-03-20 create 
+#&gt; 6     4 mds27272  2020-03-20 island 
+#&gt; # … with 145,438 more rows
+```
+]
+
+---
+
+.left-column[
+.center[&lt;img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png"&gt;]
+### - import
+### - glimpse
+### - tokenise
+### - vis
+### - stop words
+### - count
+]
+.right-column[
+## the most common words
+.panelset[
+
+.panel[.panel-name[Plot]
+
+&lt;img src="figure/stop-words-smart-1.png" width="720" style="display: block; margin: auto;" /&gt;
+
+.panel[.panel-name[Code]
+
+
+```r
+user_reviews_smart %&gt;%
+  count(word) %&gt;%
+  slice_max(n, n = 20) %&gt;% 
+  ggplot(aes(x = n, y = fct_reorder(word, n))) +
+  geom_col() +
+  labs(x = "", y = "",
+    title = "Frequency of words in user reviews")
+```
+]
+]
+]
+]
+
+---
+
+.left-column[
+.center[&lt;img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png"&gt;]
+### - import
+### - glimpse
+### - tokenise
+### - vis
+### - stop words
+### - count
+### - sentiments
+]
+.right-column[
+## sentiment lexicons
+.pull-left[
+* AFINN lexicon measures sentiment with a numeric score b/t -5 &amp; 5.
+
+```r
+get_sentiments("afinn")
+```
+
+```
+#&gt; # A tibble: 2,477 x 2
+#&gt;   word       value
+#&gt;   &lt;chr&gt;      &lt;dbl&gt;
+#&gt; 1 abandon       -2
+#&gt; 2 abandoned     -2
+#&gt; 3 abandons      -2
+#&gt; 4 abducted      -2
+#&gt; 5 abduction     -2
+#&gt; 6 abductions    -2
+#&gt; # … with 2,471 more rows
+```
+]
+.pull-right[
+* Other lexicons categorise words in a binary fashion, either positive or negative.
+
+```r
+get_sentiments("loughran")
+```
+
+```
+#&gt; # A tibble: 4,150 x 2
+#&gt;   word         sentiment
+#&gt;   &lt;chr&gt;        &lt;chr&gt;    
+#&gt; 1 abandon      negative 
+#&gt; 2 abandoned    negative 
+#&gt; 3 abandoning   negative 
+#&gt; 4 abandonment  negative 
+#&gt; 5 abandonments negative 
+#&gt; 6 abandons     negative 
+#&gt; # … with 4,144 more rows
+```
+]
+]
+
+???
+
+One way to analyze the sentiment of a text is to consider the text as a combination of its individual words and the sentiment content of the whole text as the sum of the sentiment content of the individual words
+
+---
+
+.left-column[
+.center[&lt;img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png"&gt;]
+### - import
+### - glimpse
+### - tokenise
+### - vis
+### - stop words
+### - count
+### - sentiments
+]
+.right-column[
+## sentiment lexicons
+
+```r
+sentiments_bing &lt;- get_sentiments("bing")
+sentiments_bing
+```
+
+```
+#&gt; # A tibble: 6,786 x 2
+#&gt;   word       sentiment
+#&gt;   &lt;chr&gt;      &lt;chr&gt;    
+#&gt; 1 2-faces    negative 
+#&gt; 2 abnormal   negative 
+#&gt; 3 abolish    negative 
+#&gt; 4 abominable negative 
+#&gt; 5 abominably negative 
+#&gt; 6 abominate  negative 
+#&gt; # … with 6,780 more rows
+```
+]
+
+---
+
+.left-column[
+.center[&lt;img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png"&gt;]
+### - import
+### - glimpse
+### - tokenise
+### - vis
+### - stop words
+### - count
+### - sentiments
+]
+.right-column[
+## join sentiments
+
+```r
+user_reviews_sentiments &lt;- user_reviews_words %&gt;%
+  inner_join(sentiments_bing) %&gt;%
+  count(sentiment, word, sort = TRUE)
+user_reviews_sentiments
+```
+
+```
+#&gt; # A tibble: 1,622 x 3
+#&gt;   sentiment word         n
+#&gt;   &lt;chr&gt;     &lt;chr&gt;    &lt;int&gt;
+#&gt; 1 positive  like      1357
+#&gt; 2 positive  fun        760
+#&gt; 3 positive  great      661
+#&gt; 4 positive  progress   556
+#&gt; 5 positive  good       486
+#&gt; 6 positive  enjoy      405
+#&gt; # … with 1,616 more rows
+```
+]
+
+???
+
+why I use `inner_join()` here
+
+---
+
+.left-column[
+.center[&lt;img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png"&gt;]
+### - import
+### - glimpse
+### - tokenise
+### - vis
+### - stop words
+### - count
+### - sentiments
+### - vis
+]
+.right-column[
+## visualise sentiments
+
+.panelset[
+
+.panel[.panel-name[Plot]
+
+&lt;img src="figure/plot-sentiments-1.png" width="720" style="display: block; margin: auto;" /&gt;
+
+.panel[.panel-name[Code]
+
+
+```r
+user_reviews_sentiments %&gt;%
+  group_by(sentiment) %&gt;%
+  slice_max(n, n = 10) %&gt;%
+  ungroup() %&gt;%
+  ggplot(aes(x = n, y = fct_reorder(word, n), 
+    fill = sentiment)) +
+  geom_col() +
+  facet_wrap(~ sentiment, scales = "free") +
+  labs(x = "", y = "",
+    title = "Sentiments in user reviews")
+```
+]
+]
+]
+]
+
+---
+
+.left-column[
+.center[&lt;img src="https://github.com/juliasilge/tidytext/raw/master/man/figures/tidytext.png"&gt;]
+### - import
+### - glimpse
+### - tokenise
+### - vis
+### - stop words
+### - count
+### - sentiments
+### - vis
+]
+.right-column[
+Would Animal Crossing be considered to be a delightful game?
+
+
+```r
+user_reviews_sentiments %&gt;% 
+  group_by(sentiment) %&gt;% 
+  summarise(n = sum(n)) %&gt;% 
+  mutate(p = n / sum(n))
+```
+
+```
+#&gt; # A tibble: 2 x 3
+#&gt;   sentiment     n     p
+#&gt;   &lt;chr&gt;     &lt;int&gt; &lt;dbl&gt;
+#&gt; 1 negative  11097 0.464
+#&gt; 2 positive  12825 0.536
+```
+]
+
+---
+
+## Reading
+
+.pull-left[
+.center[[&lt;img src="https://d33wubrfki0l68.cloudfront.net/b88ef926a004b0fce72b2526b0b5c4413666a4cb/24a30/cover.png" height="380px"&gt;](https://r4ds.had.co.nz)]
+* [Strings](https://r4ds.had.co.nz/strings.html)
+* [{stringr} cheatsheet](https://github.com/rstudio/cheatsheets/blob/master/strings.pdf)
+]
+.pull-right[
+.center[[&lt;img src="https://www.tidytextmining.com/images/cover.png" height="380px"&gt;](https://www.tidytextmining.com/index.html)]
+* [Sentiment analysis with tidy data](https://www.tidytextmining.com/sentiment.html)
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

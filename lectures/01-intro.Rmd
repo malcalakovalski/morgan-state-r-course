@@ -1,0 +1,735 @@
+---
+title: "Introduction to R for Data Science"
+subtitle: "Data technology"
+type: "lecture"
+date: ""
+output:
+  xaringan::moon_reader:
+    css: [rladies]
+    lib_dir: libs
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+class: middle
+
+```{r initial, echo = FALSE, cache = FALSE, results = 'hide'}
+library(knitr)
+options(htmltools.dir.version = FALSE, htmltools.preserve.raw = FALSE, 
+  tibble.width = 60, tibble.print_min = 6)
+opts_chunk$set(
+  echo = TRUE, warning = FALSE, message = FALSE, comment = "#>",
+  fig.path = 'figure/', cache.path = 'cache/', cache = TRUE,
+  fig.align = 'center', fig.width = 12, fig.height = 8.5, fig.show = 'hold',
+  dpi = 120
+)
+```
+
+```{r external, include = FALSE, cache = FALSE}
+read_chunk('R/01-intro.R')
+```
+
+
+
+
+## Who am I?
+
+.large[
+* `r emo::ji("mortar_board")` I earned my B.A. (Mathematical Economics) @ University of Pennsylvania, 2019.
+* `r emo::ji('book')` I've been a research assistant at the Hutchins Center for Fiscal and Monetary Policy since July 2019!
+* `r emo::ji("heart")` My research interests lie in exploratory data analysis, data visualization, software design, international macroeconomics, and economic sociology ...
+
+]
+
+???
+
+
+---
+
+class: middle
+
+.pull-left[
+]
+.pull-right[
+## Contact
+* `r emo::ji("email")` <malcalakovalski@brookings.edu>
+* `r emo::ji("clock12")` You can reach out to me at anytime
+]
+
+???
+
+* Any r-related questions post on piazza, so others can benefit
+* I'll run my office hours every thursday from this week onwards, same zoom link.
+* If you've got any downloading and installing issues, please drop by my office hours.
+
+
+
+## What I mean by "data"
+
+<!--
+.center[<img src="../img/canned-fruit-vs-fresh-fruit.jpg" width="50%">]
+-->
+
+.pull-left[
+<br>
+## .center[.large[.large[.large[`r emo::ji("canned_food")`]]]]
+.x[
+* Stale, uninteresting, convenient 
+* Highly processed and archived
+* Example: `student tests`, `titanic`, `wages`
+]
+]
+.pull-right[
+<br>
+## .center[.large[.large[.large[`r emo::ji("tomato")`]]]]
+.checked[
+* Fresh, interesting, challenging 
+* Locally collected and impactful
+* Example: [Modelling the travel time of transit vehicles in real‐time](https://tomelliott.co.nz/publications/anzjs2020/)
+]
+]
+
+???
+
+* If you studied 20X, you def know and work with `student test` dataset?
+* smallish with a couple of data obs, highly processed for modelling purpose, like a veggie can
+* real datasets are much interesting to work with, rel to our lifes, we can make useful & meaningful decision from the data
+* predicting arrival time for akl bus in real-time
+
+---
+
+## How I learn new technology
+
+.center[
+<iframe src="https://giphy.com/embed/xonOzxf2M8hNu" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/xonOzxf2M8hNu"></a></p>
+]
+* `r emo::ji("speaking_head")` **Get hands dirty**`r emo::ji("bangbang")`
+* `r emo::ji("open_book")` Documentation! Documentation! Documentation!
+* `r emo::ji("search")` (Not surprisingly) Learn to google: what that error message means (I google a lot `r emo::ji("hand_over_mouth")`)
+
+???
+
+* run the code and see what's happening, and tweak yourself for a small project
+* read documentation!
+* learn to google
+* Search or ask questions on [Stack Overflow](http://stackoverflow.com) and [RStudio Community](http://community.rstudio.com)
+
+---
+
+class: inverse middle center
+
+# You can't do data science in a GUI
+
+<img src="img/excel-gui.png" height="420px">
+
+.footnote[reference: [You can't do data science in a GUI](https://speakerdeck.com/hadley/you-cant-do-data-science-in-a-gui)]
+
+???
+
+* The first software you worked with data is probably excel. It's a GUI application. GUI stands for ...
+* If I wanna sort a column in excel, a window pops out to ask if sort a dataset or that column only.
+* What's wrong with this kind of point and click application.
+* You don't work on ur own on a ds proj. If your fellow students or future colleagues, or even the future of you wanna know how you process with your data, do you repeat your steps and share them with some recordings. It's not feasible to share and replicate your process.
+
+---
+
+## Why programming for data science?
+
+* Programming languages are **languages**.
+```{r eval = FALSE}
+library(dplyr)
+starwars %>%
+  group_by(species) %>%
+  summarise(
+    n = n(),
+    mass = mean(mass, na.rm = TRUE)
+  ) %>%
+  filter(n > 1, mass > 50)
+```
+* It's just .red[**text**]!
+  + reproducible, readable, sharable
+  + expressive
+
+???
+
+* If cann't, can we do ds by programming
+* This is an R snippet. Even you don't know R now, we can still read the scripts and probably have a vague sense of what this code block is doing here.
+* Plain text, we can copy and paste.
+
+---
+
+class: inverse middle
+
+## .center[Why <i class='fab fa-r-project'></i>]
+
+* A general-purpose programming language
+* Originated by statisticians, a language for statistical analysis
+* `r length(available.packages())` + packages on [CRAN](https://cran.r-project.org/web/packages/) (Comprehensive R Archive Network, the official repository), Github, etc.
+* The [tidyverse](http://tidyverse.org), a domain specific language in R for data scientists
+
+???
+
+* we learnt R for statistical modelling, but it's general-purpose.
+* on the other hand, specific-purpose language, e.g. SQL for manipulating database.
+* R was first originated from UoA in 1993, with a goal of doing statistical analysis
+* Why R has been thriving in past decades, bc a growing community with so many third-party packages/add-ons
+* CRAN
+* Hadley W is an Auckland Uni alumnus.
+
+---
+
+.left-column[
+## What R can do?
+### - for fun
+]
+.right-column[
+### `r emo::ji("package")` {cowsay} for generating ASCII picture
+```{r cowsay}
+```
+]
+
+---
+
+.left-column[
+## What R can do?
+### - for fun
+### - for data
+]
+.right-column[
+### The data science workflow
+
+.center[
+<img src="https://rstudio-education.github.io/tidyverse-cookbook/images/data-science-workflow.png" width="100%">
+[<img src="https://github.com/rstudio/hex-stickers/raw/master/SVG/tidyverse.svg" width="12%">](https://tidyverse.org)
+<i class="fas fa-equals"></i>
+[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/readr.png" width="12%">](https://readr.tidyverse.org)
+[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyr.png" width="12%">](https://tidyr.tidyverse.org)
+[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/dplyr.png" width="12%">](https://dplyr.tidyverse.org)
+[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/ggplot2.png" width="12%">](https://ggplot2.tidyverse.org)
+[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/purrr.png" width="12%">](https://purrr.tidyverse.org)
+]
+
+]
+
+???
+
+We'll learn each of these modules through the semester.
+
+---
+
+.left-column[
+## What R can do?
+### - for fun
+### - for data
+### - for communication
+]
+.right-column[
+### R Markdown
+
+.center[
+[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/rmarkdown.png" width="15%">](https://rmarkdown.rstudio.com)
+[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/blogdown.png" width="15%">](https://bookdown.org/yihui/blogdown/)
+[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/bookdown.png" width="15%">](http://bookdown.org)
+[<img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/xaringan.png" width="15%">](http://slides.yihui.org/xaringan/)
+]
+
+* [{rmarkdown}](https://rmarkdown.rstudio.com) for assignments/reports/papers in `.html` and `.pdf`
+* [{blogdown}](https://bookdown.org/yihui/blogdown/) for blogs
+* [{bookdown}](http://bookdown.org) for books
+* [{xaringan}](http://slides.yihui.org/xaringan/) for slides (220 slides!)
+
+<hr>
+
+**R Markdown documents are fully reproducible: weaving narrative text and code together.**
+]
+
+???
+
+* Rmd ecosystem
+* will boost your productivity
+
+---
+
+.left-column[
+## What R can do?
+### - for fun
+### - for data
+### - for communication
+]
+.right-column[
+### R shiny dashboard
+
+* [Shiny](https://shiny.rstudio.com) is an R package that makes it easy to build interactive web apps straight from R.
+
+.center[
+[<img src="img/shiny-demo.png" width="70%">](https://gallery.shinyapps.io/nz-trade-dash/?_ga=2.23065394.843607630.1613358581-1567280293.1613186793)
+]
+.small[`r emo::ji("point_up_2")` click the image above will take you to the web app, and try to interact with the app.]
+]
+
+???
+
+* A shiny dashboard dev by ministry of business, innovation & employment
+
+---
+
+## Textbook `r emo::ji("books")`
+
+.pull-left[
+.center[[<img src="https://d33wubrfki0l68.cloudfront.net/b88ef926a004b0fce72b2526b0b5c4413666a4cb/24a30/cover.png" height="520px">](https://r4ds.had.co.nz)]
+]
+.pull-right[
+.center[[<img src="https://d33wubrfki0l68.cloudfront.net/565916198b0be51bf88b36f94b80c7ea67cafe7c/7f70b/cover.png" height="520px">](https://adv-r.hadley.nz)]
+]
+
+???
+
+* Available online
+* One reason I like the R community, they like sharing, make works open.
+* open education
+* clicking images will take you to the book
+
+---
+
+class: middle
+
+.pull-left[
+## At first, you may be like this...
+
+![](https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/stormyr.gif)
+]
+
+--
+
+.pull-right[
+## But you can do it!
+![](https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/heartyr.gif)
+]
+
+???
+
+* From my own experience, or other beginners, frustrating, like cloud over head
+* I can teach you bits and pieces, but it's you to compose these bits and pieces to solve real-world probs.
+* like lego
+* in the first two week, may look easy, I teach basics.
+
+
+---
+
+class: inverse center middle
+
+# Project-oriented workflow
+
+---
+
+class: middle
+
+<img src="https://rstudio.com/wp-content/uploads/2018/10/RStudio-Logo-flat.svg" width="20%">
+
+> If R were an airplane, RStudio would be the airport, providing many, many supporting services that make it easier for you, the pilot, to take off and go to awesome places. Sure, you can fly an airplane without an airport, but having those runways and supporting infrastructure is a game-changer. <br> -- [Julie Lowndes](http://jules32.github.io/resources/RStudio_intro/)
+
+???
+
+Hope you've downloaded r and rstudio
+
+---
+
+## RStudio interface
+
+.center[<img src="img/rstudio-interface.png" width="80%">]
+
+.footnote[image credit: Stuart Lee]
+
+???
+
+live
+
+---
+
+## Setting up RStudio (do this once)
+
+.pull-left[
+Go to **Tools** > **Global Options**:
+.center[<img src="img/rstudio-setup.png" width="100%">]
+]
+.pull-right[
+<br>
+<br>
+<br>
+<br>
+Uncheck `Workspace` and `History`, which helps to keep R working environment fresh and clean every time you switch between projects.
+]
+
+---
+
+## Your turn
+
+Change the RStudio appearance up to your taste
+
+.center[<img src="img/rstudio-appearance.png" width = "80%">]
+
+`r countdown::countdown(minutes = 1, font_size = "48px", top = 0)`
+
+???
+
+1 minutes to choose your favourite theme
+
+---
+
+## What is a project?
+
+* Each university course is a project, and get your work organised.
+* A self-contained project is a folder that contains all relevant files, for example my `r_crash_course/` `r emo::ji("folder")` includes:
+   + `r_crash_course.Rproj`
+   + `data/`
+     + `*.csv`, `*.xlsx`
+   + `lectures/`
+     + `01-intro.Rmd`, `02-import-export.Rmd`
+   + `labs/`
+     + `lab01.R`, `lab02.R`
+* All working files are .red[relative] to the **project root** (i.e. `r_crash_course/`).
+* The project should just work on a different computer.
+
+---
+
+## `r emo::ji("stop_sign")` STOP DOING THIS!
+
+[Jenny Bryan](https://jennybryan.org) will [set your computer on fire `r emo::ji("fire")`](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/)
+1. if the first line of your R script is
+  ```r
+    setwd("C:\Users\some\path\that\only\I\have")
+  ```
+2. if the first line of your R script is
+  ```r
+    rm(list = ls())
+  ```
+
+---
+
+background-image: url(https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/cracked_setwd.png) 
+background-size: cover
+
+---
+
+## Create an RStudio project `.Rproj`
+
+.pull-left[
+1. Click the **Project** icon on the top right corner 
+<br>
+<br>
+<br>
+<br>
+2. **New Directory**/**Existing Directory** > **New Project** > **Create Project**
+<br>
+<br>
+<br>
+3. Open the project
+]
+.pull-right[
+.center[<img src="img/rstudio-proj.png" width = "45%">]
+.center[<img src="img/rstudio-proj2.png" width = "45%">]
+.center[<img src="img/rstudio-proj3.png" width = "45%">]
+]
+
+---
+
+class: inverse middle
+
+## <i class='fab fa-r-project'></i> 101: syntax and semantics
+
+---
+
+.left-column[
+## Get started
+### - assignment
+]
+.right-column[
+```{r store-values}
+```
+`r emo::ji("arrow_up")` read as "assign the value of `174.76` to an object called `akl_lon`".
+
+An .red[assignment] consists of:
+* left-hand side: .red[variable names] or .red[symbols] (`akl_lon`)
+* assignment operator: .red[`<-`] (RStudio shortcut: `Alt` + `-`)
+* right-hand side: .red[values] (``r akl_lon``)
+]
+
+---
+
+.left-column[
+## Get started
+### - assignment
+### - retrieval
+]
+.right-column[
+```{r retrieve-values}
+```
+
+* Names are case sensitive.
+```{r retrieve-error, error = TRUE}
+```
+]
+
+---
+
+.left-column[
+## Get started
+### - assignment
+### - retrieval
+### - operation
+]
+.right-column[
+### Perform calculations and comparisons
+
+* Infix operators:
+  * `+`, `-`, `*`, `/`, `^`, `%%` (modulo), `%/%` (integer division)
+  * `==`, `!=`, `>`, `<`, `>=`, `<=`, `%in%`
+
+```{r arithmetic}
+```
+]
+
+---
+
+## Coding style
+
+> Good coding style is like correct punctuation: you can manage without it, butitsuremakesthingseasiertoread.
+> <br> -- [The tidyverse style guide](https://style.tidyverse.org)
+
+### R style guide
+
+.pull-left[
+.checked[
+* `snake_case`
+]
+]
+.pull-right[
+.x[
+* `camelCase` (Javascript)
+* `PascalCase` (Python)
+]
+]
+
+---
+
+class: inverse middle
+
+## <i class='fab fa-r-project'></i> 101: data structures
+
+---
+
+## Atomic vectors
+
+.pull-left[
+.center[<img src="https://d33wubrfki0l68.cloudfront.net/eb6730b841e32292d9ff36b33a590e24b6221f43/57192/diagrams/vectors/summary-tree-atomic.png" width="95%">]
+
+.footnote[image credit: [Hadley Wickham's **Advanced R**](https://adv-r.hadley.nz/vectors-chap.html#atomic-vectors)]
+]
+.pull-right[
+### Scalars: .small[*length of 1*]
+
+* Logicals: `TRUE` or `FALSE`
+* Doubles: `174.76`, `1.7476e2`, `Inf`, `-Inf`, `NaN` (Not a Number)
+* Integers: `174L`
+* Strings: `"hello"`, `'world'`
+
+### Vectors: .small[*values must all be the same type*]
+
+```{r vectors}
+```
+
+]
+
+---
+
+## Special values
+
+.pull-left[
+### Missing values
+
+```{r na}
+```
+
+]
+.pull-right[
+### The `NULL` object
+
+```{r null}
+```
+]
+
+---
+
+## Atomic vectors
+
+.center[<img src="https://d33wubrfki0l68.cloudfront.net/baa19d0ebf9b97949a7ad259b29a1c4ae031c8e2/8e9b8/diagrams/vectors/summary-tree-s3-1.png" width="45%">]
+
+---
+
+## Subsetting vectors with `[]`
+```{r subsetting}
+```
+
+.pull-left[
+### Positive indices
+```{r positive-indices}
+```
+]
+.pull-right[
+### Negative indices
+```{r negative-indices}
+```
+]
+
+---
+
+## Subsetting vectors with `[]`
+
+.pull-left[
+### Logical indices
+```{r logical-indices}
+```
+]
+.pull-right[
+### Special subsetting
+```{r special-subsetting}
+```
+]
+
+---
+
+## Modifying vectors with `[]` on the LHS
+
+```{r modify}
+```
+
+* RHS `[]` subsets vector `y`
+* LHS `[]` modifies vector `y`
+
+---
+
+class: inverse middle
+
+## <i class='fab fa-r-project'></i> 101: functions
+
+---
+
+## Function
+
+A function call consists of the .red[function name] followed by one or more .red[argument] within parentheses.
+
+```{r function-mean}
+```
+
+
+* function name: `mean()`, a built-in R function to compute mean of a vector
+* argument: the first argument (LHS `x`) to specify the data (RHS `x`)
+
+???
+
+* A function is a tool to do what you ask for. `+`
+* a pipe that takes some input and send back some output
+
+---
+
+## Function help page
+
+Check the function's help page with `?mean`
+
+```r
+mean(x, trim = 0, na.rm = FALSE, ...)
+```
+
+* Read **Usage** section
+  + What arguments have default values?
+* Read **Arguments** section
+  + What does `trim` do?
+* Run **Example** code
+
+`r countdown::countdown(minutes = 1, font_size = "48px", top = 0)`
+
+---
+
+## Function arguments
+
+.pull-left[
+<br>
+<br>
+<br>
+.center[Match by **positions**]
+```{r function-args-pos}
+```
+]
+.pull-right[
+<br>
+<br>
+<br>
+.center[Match by **names**]
+```{r function-args-names}
+```
+]
+
+???
+
+* body implements the algorithm
+
+---
+
+## Use functions from packages
+
+.pull-left[
+```{r cummean}
+```
+]
+.pull-right[
+<br>
+<br>
+<br>
+.center[
+<img src="img/install-library.JPG" height="250px">
+]
+]
+
+---
+
+## Write your own functions
+
+```{r custom-mean}
+```
+
+---
+
+## Follow the `#rstats` community
+
+.center[<img src="https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-blanks/rtwitter_blank.png" width="50%">]
+
+???
+
+* keep up to date on twitter
+* rladies 
+* follow hadley and jenny
+
+---
+
+## Reading
+
+.pull-left[
+.center[[<img src="https://d33wubrfki0l68.cloudfront.net/b88ef926a004b0fce72b2526b0b5c4413666a4cb/24a30/cover.png" height="320px">](https://r4ds.had.co.nz)]
+* [Workflow: basics](https://r4ds.had.co.nz/workflow-basics.html)
+* [Workflow: scripts](https://r4ds.had.co.nz/workflow-scripts.html)
+* [Workflow: project](https://r4ds.had.co.nz/workflow-projects.html)
+]
+.pull-right[
+.center[[<img src="https://d33wubrfki0l68.cloudfront.net/565916198b0be51bf88b36f94b80c7ea67cafe7c/7f70b/cover.png" height="320px">](https://adv-r.hadley.nz)]
+* [Names and values](https://adv-r.hadley.nz/names-values.html)
+* [Vectors](https://adv-r.hadley.nz/vectors-chap.html)
+* [Subsetting](https://adv-r.hadley.nz/subsetting.html)
+]
+
+???
+
+* resources: r4ds
+* r evolves rapidly in the past 5 yrs, out-of-date resources

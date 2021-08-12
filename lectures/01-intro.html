@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction to R for Data Science</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/rladies.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introduction to R for Data Science
+## Data technology
+
+---
+
+
+class: middle
+
+
+
+
+
+
+
+
+## Who am I?
+
+.large[
+* 🎓 I earned my B.A. (Mathematical Economics) @ University of Pennsylvania, 2019.
+* 📖 I've been a research assistant at the Hutchins Center for Fiscal and Monetary Policy since July 2019!
+* ❤️ My research interests lie in exploratory data analysis, data visualization, software design, international macroeconomics, and economic sociology ...
+
+]
+
+???
+
+
+---
+
+class: middle
+
+.pull-left[
+]
+.pull-right[
+## Contact
+* ✉️ &lt;malcalakovalski@brookings.edu&gt;
+* 🕛 You can reach out to me at anytime
+]
+
+???
+
+* Any r-related questions post on piazza, so others can benefit
+* I'll run my office hours every thursday from this week onwards, same zoom link.
+* If you've got any downloading and installing issues, please drop by my office hours.
+
+
+
+## What I mean by "data"
+
+&lt;!--
+.center[&lt;img src="../img/canned-fruit-vs-fresh-fruit.jpg" width="50%"&gt;]
+--&gt;
+
+.pull-left[
+&lt;br&gt;
+## .center[.large[.large[.large[🥫]]]]
+.x[
+* Stale, uninteresting, convenient 
+* Highly processed and archived
+* Example: `student tests`, `titanic`, `wages`
+]
+]
+.pull-right[
+&lt;br&gt;
+## .center[.large[.large[.large[🍅]]]]
+.checked[
+* Fresh, interesting, challenging 
+* Locally collected and impactful
+* Example: [Modelling the travel time of transit vehicles in real‐time](https://tomelliott.co.nz/publications/anzjs2020/)
+]
+]
+
+???
+
+* If you studied 20X, you def know and work with `student test` dataset?
+* smallish with a couple of data obs, highly processed for modelling purpose, like a veggie can
+* real datasets are much interesting to work with, rel to our lifes, we can make useful &amp; meaningful decision from the data
+* predicting arrival time for akl bus in real-time
+
+---
+
+## How I learn new technology
+
+.center[
+&lt;iframe src="https://giphy.com/embed/xonOzxf2M8hNu" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen&gt;&lt;/iframe&gt;&lt;p&gt;&lt;a href="https://giphy.com/gifs/xonOzxf2M8hNu"&gt;&lt;/a&gt;&lt;/p&gt;
+]
+* 🗣 **Get hands dirty**‼️
+* 📖 Documentation! Documentation! Documentation!
+* 🔍 (Not surprisingly) Learn to google: what that error message means (I google a lot 🤭)
+
+???
+
+* run the code and see what's happening, and tweak yourself for a small project
+* read documentation!
+* learn to google
+* Search or ask questions on [Stack Overflow](http://stackoverflow.com) and [RStudio Community](http://community.rstudio.com)
+
+---
+
+class: inverse middle center
+
+# You can't do data science in a GUI
+
+&lt;img src="img/excel-gui.png" height="420px"&gt;
+
+.footnote[reference: [You can't do data science in a GUI](https://speakerdeck.com/hadley/you-cant-do-data-science-in-a-gui)]
+
+???
+
+* The first software you worked with data is probably excel. It's a GUI application. GUI stands for ...
+* If I wanna sort a column in excel, a window pops out to ask if sort a dataset or that column only.
+* What's wrong with this kind of point and click application.
+* You don't work on ur own on a ds proj. If your fellow students or future colleagues, or even the future of you wanna know how you process with your data, do you repeat your steps and share them with some recordings. It's not feasible to share and replicate your process.
+
+---
+
+## Why programming for data science?
+
+* Programming languages are **languages**.
+
+```r
+library(dplyr)
+starwars %&gt;%
+  group_by(species) %&gt;%
+  summarise(
+    n = n(),
+    mass = mean(mass, na.rm = TRUE)
+  ) %&gt;%
+  filter(n &gt; 1, mass &gt; 50)
+```
+* It's just .red[**text**]!
+  + reproducible, readable, sharable
+  + expressive
+
+???
+
+* If cann't, can we do ds by programming
+* This is an R snippet. Even you don't know R now, we can still read the scripts and probably have a vague sense of what this code block is doing here.
+* Plain text, we can copy and paste.
+
+---
+
+class: inverse middle
+
+## .center[Why &lt;i class='fab fa-r-project'&gt;&lt;/i&gt;]
+
+* A general-purpose programming language
+* Originated by statisticians, a language for statistical analysis
+* 305354 + packages on [CRAN](https://cran.r-project.org/web/packages/) (Comprehensive R Archive Network, the official repository), Github, etc.
+* The [tidyverse](http://tidyverse.org), a domain specific language in R for data scientists
+
+???
+
+* we learnt R for statistical modelling, but it's general-purpose.
+* on the other hand, specific-purpose language, e.g. SQL for manipulating database.
+* R was first originated from UoA in 1993, with a goal of doing statistical analysis
+* Why R has been thriving in past decades, bc a growing community with so many third-party packages/add-ons
+* CRAN
+* Hadley W is an Auckland Uni alumnus.
+
+---
+
+.left-column[
+## What R can do?
+### - for fun
+]
+.right-column[
+### 📦 {cowsay} for generating ASCII picture
+
+```r
+library(cowsay)
+say("Miau!")
+```
+
+```
+#&gt; 
+#&gt;  -------------- 
+#&gt; Miau! 
+#&gt;  --------------
+#&gt;     \
+#&gt;       \
+#&gt;         \
+#&gt;             |\___/|
+#&gt;           ==) ^Y^ (==
+#&gt;             \  ^  /
+#&gt;              )=*=(
+#&gt;             /     \
+#&gt;             |     |
+#&gt;            /| | | |\
+#&gt;            \| | |_|/\
+#&gt;       jgs  //_// ___/
+#&gt;                \_)
+#&gt; 
+```
+]
+
+---
+
+.left-column[
+## What R can do?
+### - for fun
+### - for data
+]
+.right-column[
+### The data science workflow
+
+.center[
+&lt;img src="https://rstudio-education.github.io/tidyverse-cookbook/images/data-science-workflow.png" width="100%"&gt;
+[&lt;img src="https://github.com/rstudio/hex-stickers/raw/master/SVG/tidyverse.svg" width="12%"&gt;](https://tidyverse.org)
+&lt;i class="fas fa-equals"&gt;&lt;/i&gt;
+[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/readr.png" width="12%"&gt;](https://readr.tidyverse.org)
+[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyr.png" width="12%"&gt;](https://tidyr.tidyverse.org)
+[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/dplyr.png" width="12%"&gt;](https://dplyr.tidyverse.org)
+[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/ggplot2.png" width="12%"&gt;](https://ggplot2.tidyverse.org)
+[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/purrr.png" width="12%"&gt;](https://purrr.tidyverse.org)
+]
+
+]
+
+???
+
+We'll learn each of these modules through the semester.
+
+---
+
+.left-column[
+## What R can do?
+### - for fun
+### - for data
+### - for communication
+]
+.right-column[
+### R Markdown
+
+.center[
+[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/rmarkdown.png" width="15%"&gt;](https://rmarkdown.rstudio.com)
+[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/blogdown.png" width="15%"&gt;](https://bookdown.org/yihui/blogdown/)
+[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/bookdown.png" width="15%"&gt;](http://bookdown.org)
+[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/xaringan.png" width="15%"&gt;](http://slides.yihui.org/xaringan/)
+]
+
+* [{rmarkdown}](https://rmarkdown.rstudio.com) for assignments/reports/papers in `.html` and `.pdf`
+* [{blogdown}](https://bookdown.org/yihui/blogdown/) for blogs
+* [{bookdown}](http://bookdown.org) for books
+* [{xaringan}](http://slides.yihui.org/xaringan/) for slides (220 slides!)
+
+&lt;hr&gt;
+
+**R Markdown documents are fully reproducible: weaving narrative text and code together.**
+]
+
+???
+
+* Rmd ecosystem
+* will boost your productivity
+
+---
+
+.left-column[
+## What R can do?
+### - for fun
+### - for data
+### - for communication
+]
+.right-column[
+### R shiny dashboard
+
+* [Shiny](https://shiny.rstudio.com) is an R package that makes it easy to build interactive web apps straight from R.
+
+.center[
+[&lt;img src="img/shiny-demo.png" width="70%"&gt;](https://gallery.shinyapps.io/nz-trade-dash/?_ga=2.23065394.843607630.1613358581-1567280293.1613186793)
+]
+.small[👆 click the image above will take you to the web app, and try to interact with the app.]
+]
+
+???
+
+* A shiny dashboard dev by ministry of business, innovation &amp; employment
+
+---
+
+## Textbook 📚
+
+.pull-left[
+.center[[&lt;img src="https://d33wubrfki0l68.cloudfront.net/b88ef926a004b0fce72b2526b0b5c4413666a4cb/24a30/cover.png" height="520px"&gt;](https://r4ds.had.co.nz)]
+]
+.pull-right[
+.center[[&lt;img src="https://d33wubrfki0l68.cloudfront.net/565916198b0be51bf88b36f94b80c7ea67cafe7c/7f70b/cover.png" height="520px"&gt;](https://adv-r.hadley.nz)]
+]
+
+???
+
+* Available online
+* One reason I like the R community, they like sharing, make works open.
+* open education
+* clicking images will take you to the book
+
+---
+
+class: middle
+
+.pull-left[
+## At first, you may be like this...
+
+![](https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/stormyr.gif)
+]
+
+--
+
+.pull-right[
+## But you can do it!
+![](https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/heartyr.gif)
+]
+
+???
+
+* From my own experience, or other beginners, frustrating, like cloud over head
+* I can teach you bits and pieces, but it's you to compose these bits and pieces to solve real-world probs.
+* like lego
+* in the first two week, may look easy, I teach basics.
+
+
+---
+
+class: inverse center middle
+
+# Project-oriented workflow
+
+---
+
+class: middle
+
+&lt;img src="https://rstudio.com/wp-content/uploads/2018/10/RStudio-Logo-flat.svg" width="20%"&gt;
+
+&gt; If R were an airplane, RStudio would be the airport, providing many, many supporting services that make it easier for you, the pilot, to take off and go to awesome places. Sure, you can fly an airplane without an airport, but having those runways and supporting infrastructure is a game-changer. &lt;br&gt; -- [Julie Lowndes](http://jules32.github.io/resources/RStudio_intro/)
+
+???
+
+Hope you've downloaded r and rstudio
+
+---
+
+## RStudio interface
+
+.center[&lt;img src="img/rstudio-interface.png" width="80%"&gt;]
+
+.footnote[image credit: Stuart Lee]
+
+???
+
+live
+
+---
+
+## Setting up RStudio (do this once)
+
+.pull-left[
+Go to **Tools** &gt; **Global Options**:
+.center[&lt;img src="img/rstudio-setup.png" width="100%"&gt;]
+]
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+Uncheck `Workspace` and `History`, which helps to keep R working environment fresh and clean every time you switch between projects.
+]
+
+---
+
+## Your turn
+
+Change the RStudio appearance up to your taste
+
+.center[&lt;img src="img/rstudio-appearance.png" width = "80%"&gt;]
+
+<div class="countdown" id="timer_611591e8" style="top:0;right:0;font-size:48px;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">01</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+???
+
+1 minutes to choose your favourite theme
+
+---
+
+## What is a project?
+
+* Each university course is a project, and get your work organised.
+* A self-contained project is a folder that contains all relevant files, for example my `r_crash_course/` 📁 includes:
+   + `r_crash_course.Rproj`
+   + `data/`
+     + `*.csv`, `*.xlsx`
+   + `lectures/`
+     + `01-intro.Rmd`, `02-import-export.Rmd`
+   + `labs/`
+     + `lab01.R`, `lab02.R`
+* All working files are .red[relative] to the **project root** (i.e. `r_crash_course/`).
+* The project should just work on a different computer.
+
+---
+
+## 🛑 STOP DOING THIS!
+
+[Jenny Bryan](https://jennybryan.org) will [set your computer on fire 🔥](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/)
+1. if the first line of your R script is
+  ```r
+    setwd("C:\Users\some\path\that\only\I\have")
+  ```
+2. if the first line of your R script is
+  ```r
+    rm(list = ls())
+  ```
+
+---
+
+background-image: url(https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/cracked_setwd.png) 
+background-size: cover
+
+---
+
+## Create an RStudio project `.Rproj`
+
+.pull-left[
+1. Click the **Project** icon on the top right corner 
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+2. **New Directory**/**Existing Directory** &gt; **New Project** &gt; **Create Project**
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+3. Open the project
+]
+.pull-right[
+.center[&lt;img src="img/rstudio-proj.png" width = "45%"&gt;]
+.center[&lt;img src="img/rstudio-proj2.png" width = "45%"&gt;]
+.center[&lt;img src="img/rstudio-proj3.png" width = "45%"&gt;]
+]
+
+---
+
+class: inverse middle
+
+## &lt;i class='fab fa-r-project'&gt;&lt;/i&gt; 101: syntax and semantics
+
+---
+
+.left-column[
+## Get started
+### - assignment
+]
+.right-column[
+
+```r
+akl_lon &lt;- 174.76
+akl_lat &lt;- -36.85
+```
+⬆️ read as "assign the value of `174.76` to an object called `akl_lon`".
+
+An .red[assignment] consists of:
+* left-hand side: .red[variable names] or .red[symbols] (`akl_lon`)
+* assignment operator: .red[`&lt;-`] (RStudio shortcut: `Alt` + `-`)
+* right-hand side: .red[values] (`174.76`)
+]
+
+---
+
+.left-column[
+## Get started
+### - assignment
+### - retrieval
+]
+.right-column[
+
+```r
+akl_lon
+```
+
+```
+#&gt; [1] 174.76
+```
+
+```r
+akl_lat
+```
+
+```
+#&gt; [1] -36.85
+```
+
+* Names are case sensitive.
+
+```r
+akl_Lon
+```
+
+```
+#&gt; Error in eval(expr, envir, enclos): object 'akl_Lon' not found
+```
+]
+
+---
+
+.left-column[
+## Get started
+### - assignment
+### - retrieval
+### - operation
+]
+.right-column[
+### Perform calculations and comparisons
+
+* Infix operators:
+  * `+`, `-`, `*`, `/`, `^`, `%%` (modulo), `%/%` (integer division)
+  * `==`, `!=`, `&gt;`, `&lt;`, `&gt;=`, `&lt;=`, `%in%`
+
+
+```r
+akl_lon_region &lt;- akl_lon + c(-1, 1)
+akl_lat_region &lt;- akl_lat + c(-.5, .5)
+
+akl_lon_region
+```
+
+```
+#&gt; [1] 173.76 175.76
+```
+
+```r
+akl_lat_region
+```
+
+```
+#&gt; [1] -37.35 -36.35
+```
+]
+
+---
+
+## Coding style
+
+&gt; Good coding style is like correct punctuation: you can manage without it, butitsuremakesthingseasiertoread.
+&gt; &lt;br&gt; -- [The tidyverse style guide](https://style.tidyverse.org)
+
+### R style guide
+
+.pull-left[
+.checked[
+* `snake_case`
+]
+]
+.pull-right[
+.x[
+* `camelCase` (Javascript)
+* `PascalCase` (Python)
+]
+]
+
+---
+
+class: inverse middle
+
+## &lt;i class='fab fa-r-project'&gt;&lt;/i&gt; 101: data structures
+
+---
+
+## Atomic vectors
+
+.pull-left[
+.center[&lt;img src="https://d33wubrfki0l68.cloudfront.net/eb6730b841e32292d9ff36b33a590e24b6221f43/57192/diagrams/vectors/summary-tree-atomic.png" width="95%"&gt;]
+
+.footnote[image credit: [Hadley Wickham's **Advanced R**](https://adv-r.hadley.nz/vectors-chap.html#atomic-vectors)]
+]
+.pull-right[
+### Scalars: .small[*length of 1*]
+
+* Logicals: `TRUE` or `FALSE`
+* Doubles: `174.76`, `1.7476e2`, `Inf`, `-Inf`, `NaN` (Not a Number)
+* Integers: `174L`
+* Strings: `"hello"`, `'world'`
+
+### Vectors: .small[*values must all be the same type*]
+
+
+```r
+lgl_vec &lt;- c(TRUE, FALSE)
+int_vec &lt;- c(174L, -36L)
+dbl_vec &lt;- c(174.76, -36.85)
+chr_vec &lt;- c("long", "lat")
+```
+
+]
+
+---
+
+## Special values
+
+.pull-left[
+### Missing values
+
+
+```r
+NA # Not Applicable
+```
+
+```
+#&gt; [1] NA
+```
+
+```r
+c(174.76, NA, -36.85)
+```
+
+```
+#&gt; [1] 174.76     NA -36.85
+```
+
+```r
+length(NA)
+```
+
+```
+#&gt; [1] 1
+```
+
+]
+.pull-right[
+### The `NULL` object
+
+
+```r
+NULL
+```
+
+```
+#&gt; NULL
+```
+
+```r
+c(174.76, NULL, -36.85)
+```
+
+```
+#&gt; [1] 174.76 -36.85
+```
+
+```r
+length(NULL)
+```
+
+```
+#&gt; [1] 0
+```
+]
+
+---
+
+## Atomic vectors
+
+.center[&lt;img src="https://d33wubrfki0l68.cloudfront.net/baa19d0ebf9b97949a7ad259b29a1c4ae031c8e2/8e9b8/diagrams/vectors/summary-tree-s3-1.png" width="45%"&gt;]
+
+---
+
+## Subsetting vectors with `[]`
+
+```r
+x &lt;- c(akl_lon_region, akl_lat_region)
+x
+```
+
+```
+#&gt; [1] 173.76 175.76 -37.35 -36.35
+```
+
+.pull-left[
+### Positive indices
+
+```r
+x[c(1, 3)]
+```
+
+```
+#&gt; [1] 173.76 -37.35
+```
+]
+.pull-right[
+### Negative indices
+
+```r
+x[-c(3, 1)]
+```
+
+```
+#&gt; [1] 175.76 -36.35
+```
+]
+
+---
+
+## Subsetting vectors with `[]`
+
+.pull-left[
+### Logical indices
+
+```r
+x[c(TRUE, FALSE, TRUE, FALSE)]
+```
+
+```
+#&gt; [1] 173.76 -37.35
+```
+
+```r
+x[lgl_vec] # recycling
+```
+
+```
+#&gt; [1] 173.76 -37.35
+```
+
+```r
+x[x &gt; 0]
+```
+
+```
+#&gt; [1] 173.76 175.76
+```
+]
+.pull-right[
+### Special subsetting
+
+```r
+x[0]
+```
+
+```
+#&gt; numeric(0)
+```
+
+```r
+x[]
+```
+
+```
+#&gt; [1] 173.76 175.76 -37.35 -36.35
+```
+]
+
+---
+
+## Modifying vectors with `[]` on the LHS
+
+
+```r
+y &lt;- x
+y
+```
+
+```
+#&gt; [1] 173.76 175.76 -37.35 -36.35
+```
+
+```r
+y[1:3] &lt;- y[1:3] %/% 2
+y
+```
+
+```
+#&gt; [1]  86.00  87.00 -19.00 -36.35
+```
+
+* RHS `[]` subsets vector `y`
+* LHS `[]` modifies vector `y`
+
+---
+
+class: inverse middle
+
+## &lt;i class='fab fa-r-project'&gt;&lt;/i&gt; 101: functions
+
+---
+
+## Function
+
+A function call consists of the .red[function name] followed by one or more .red[argument] within parentheses.
+
+
+```r
+mean(x = x)
+```
+
+```
+#&gt; [1] 68.955
+```
+
+
+* function name: `mean()`, a built-in R function to compute mean of a vector
+* argument: the first argument (LHS `x`) to specify the data (RHS `x`)
+
+???
+
+* A function is a tool to do what you ask for. `+`
+* a pipe that takes some input and send back some output
+
+---
+
+## Function help page
+
+Check the function's help page with `?mean`
+
+```r
+mean(x, trim = 0, na.rm = FALSE, ...)
+```
+
+* Read **Usage** section
+  + What arguments have default values?
+* Read **Arguments** section
+  + What does `trim` do?
+* Run **Example** code
+
+<div class="countdown" id="timer_61158ef2" style="top:0;right:0;font-size:48px;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">01</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+## Function arguments
+
+.pull-left[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+.center[Match by **positions**]
+
+```r
+mean(x, 0.1, TRUE)
+```
+
+```
+#&gt; [1] 68.955
+```
+]
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+.center[Match by **names**]
+
+```r
+mean(x, na.rm = TRUE, trim = 0.1)
+```
+
+```
+#&gt; [1] 68.955
+```
+]
+
+???
+
+* body implements the algorithm
+
+---
+
+## Use functions from packages
+
+.pull-left[
+
+```r
+# install.packages("dplyr")
+library(dplyr)
+cummean(x)
+```
+
+```
+#&gt; [1] 173.7600 174.7600 104.0567  68.9550
+```
+
+```r
+first(x)
+```
+
+```
+#&gt; [1] 173.76
+```
+
+```r
+last(x)
+```
+
+```
+#&gt; [1] -36.35
+```
+]
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+.center[
+&lt;img src="img/install-library.JPG" height="250px"&gt;
+]
+]
+
+---
+
+## Write your own functions
+
+
+```r
+# function_name &lt;- function(arguments) {
+#   function_body
+# }
+
+my_mean &lt;- function(x, na.rm = FALSE) {
+  summation &lt;- sum(x, na.rm = na.rm)
+  summation / length(x)
+}
+
+my_mean(x)
+```
+
+```
+#&gt; [1] 68.955
+```
+
+---
+
+## Follow the `#rstats` community
+
+.center[&lt;img src="https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-blanks/rtwitter_blank.png" width="50%"&gt;]
+
+???
+
+* keep up to date on twitter
+* rladies 
+* follow hadley and jenny
+
+---
+
+## Reading
+
+.pull-left[
+.center[[&lt;img src="https://d33wubrfki0l68.cloudfront.net/b88ef926a004b0fce72b2526b0b5c4413666a4cb/24a30/cover.png" height="320px"&gt;](https://r4ds.had.co.nz)]
+* [Workflow: basics](https://r4ds.had.co.nz/workflow-basics.html)
+* [Workflow: scripts](https://r4ds.had.co.nz/workflow-scripts.html)
+* [Workflow: project](https://r4ds.had.co.nz/workflow-projects.html)
+]
+.pull-right[
+.center[[&lt;img src="https://d33wubrfki0l68.cloudfront.net/565916198b0be51bf88b36f94b80c7ea67cafe7c/7f70b/cover.png" height="320px"&gt;](https://adv-r.hadley.nz)]
+* [Names and values](https://adv-r.hadley.nz/names-values.html)
+* [Vectors](https://adv-r.hadley.nz/vectors-chap.html)
+* [Subsetting](https://adv-r.hadley.nz/subsetting.html)
+]
+
+???
+
+* resources: r4ds
+* r evolves rapidly in the past 5 yrs, out-of-date resources
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,2389 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>STATS 220</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link rel="stylesheet" href="assets/remark.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# STATS 220
+## Web scraping🌐
+
+---
+
+
+class: inverse middle
+
+
+
+
+
+
+
+## Web technology &lt;i class="fab fa-html5 orange"&gt;&lt;/i&gt; &lt;i class="fab fa-css3-alt blue"&gt;&lt;/i&gt; &lt;i class='fab fa-js-square yellow'&gt;&lt;/i&gt;
+
+.footnote[I thank [Dr Emi Tanaka](https://emitanaka.org/about.html) for this part, adapted from her "Communicating with Data" course.]
+
+---
+
+class: middle
+
+## World Wide Web (WWW) 
+
+WWW (or the **Web**) is the information system where documents (web pages) are identified by Uniform Resource Locators (**URL**s)
+
+A web page consists of:
+* &lt;i class="fab fa-html5 orange"&gt;&lt;/i&gt; **HTML** provides the basic structure of the web page
+* &lt;i class="fab fa-css3-alt blue"&gt;&lt;/i&gt; **CSS** controls the look of the web page (optional)
+* &lt;i class='fab fa-js-square yellow'&gt;&lt;/i&gt;&lt;/span&gt; **JS** is a programming language that can modify the behaviour of elements of the web page (optional) 
+
+---
+
+## &lt;i class="fab fa-html5 orange"&gt;&lt;/i&gt;&lt;/span&gt; Hypertext Markup Language (HTML)
+
+* with the extension `.html`.
+* rendered using a web browser via an URL.
+* text files that follows a special syntax that alerts web browsers how to render it.
+.pull-left[
+.center[**via a web browser**
+&lt;img src = "img/browser-220.png", width = "100%"&gt;&lt;/img&gt;
+]
+]
+.pull-right[
+.center[**via a text editor**
+&lt;img src = "img/code-220.png", width = "100%"&gt;&lt;/img&gt;
+]
+]
+
+---
+
+## &lt;i class="fab fa-html5 orange"&gt;&lt;/i&gt; HTML structure
+
+```html
+&lt;!DOCTYPE html&gt;
+
+&lt;html&gt;
+  &lt;!--This is a comment and ignored by web client.--&gt;
+  &lt;head&gt;
+    &lt;!--This section contains web page metadata.--&gt;
+    &lt;title&gt;STATS 220 Data Technology&lt;/title&gt;
+    &lt;meta name="author" content="Earo Wang"&gt;
+    &lt;link rel="stylesheet" href="css/styles.css"&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;!--This section contains what you want to display on your web page.--&gt;
+    &lt;h1&gt;I'm a first level header&lt;/h1&gt;
+    &lt;p&gt;This is a &lt;b&gt;paragraph&lt;/b&gt;.&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+```
+
+???
+
+* servr::httd() to serve
+* HTML: hier str: elements (`&lt;tags&gt;`) and optional attributes, and contents
+* &gt; 100 elements: each html page must have `&lt;head&gt;` and `&lt;body&gt;`. (rich format -&gt; md)
+* block tags: h1, p
+* inline tags: bold a
+
+---
+
+## &lt;i class="fab fa-html5 orange"&gt;&lt;/i&gt; HTML syntax
+
+.center[`&lt;span style="color:blue;"&gt;Author content&lt;/span&gt;` &lt;i class="fas fa-arrow-right"&gt;&lt;/i&gt; &lt;span style="color:blue;"&gt;Author content&lt;/span&gt;]
+
+&lt;table style="width:100%"&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;start tag:&lt;/td&gt;&lt;td&gt;&lt;span class="remark-code" style="font-size:16pt"&gt;&lt;span class="red"&gt;&amp;lt;span style="color:blue;"&amp;gt;&lt;/span&gt;&lt;span class="gray"&gt;Author content&amp;lt;/span&amp;gt;&lt;/span&gt;&lt;/span&gt; &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;end tag: &lt;/td&gt;&lt;td&gt; &lt;span class="remark-code" style="font-size:16pt"&gt;&lt;span class="gray"&gt;&amp;lt;span style="color:blue;"&amp;gt;Author content&lt;span class="red"&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;&lt;/span&gt; &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;content: &lt;/td&gt;&lt;td&gt; &lt;span class="remark-code" style="font-size:16pt"&gt;&lt;span class="gray"&gt;&amp;lt;span style="color:blue;"&amp;gt;&lt;/span&gt;&lt;span class="red"&gt;Author content&lt;/span&gt;&lt;span class="gray"&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;&lt;/span&gt; &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;element name: &lt;/td&gt;&lt;td&gt; &lt;span class="remark-code" style="font-size:16pt"&gt;&lt;span class="gray"&gt;&amp;lt;&lt;/span&gt;&lt;span class="red"&gt;span&lt;/span&gt;&lt;span class="gray"&gt; style="color:blue;"&amp;gt;Author content&amp;lt;/span&amp;gt;&lt;/span&gt;&lt;/span&gt; &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;attribute: &lt;/td&gt;&lt;td&gt; &lt;span class="remark-code" style="font-size:16pt"&gt;&lt;span class="gray"&gt;&amp;lt;span &lt;span class="red"&gt;style="color:blue;"&lt;/span&gt;&lt;span class="gray"&gt;&amp;gt;Author content&amp;lt;/span&amp;gt;&lt;/span&gt; &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;attribute name: &lt;/td&gt;&lt;td&gt; &lt;span class="remark-code" style="font-size:16pt"&gt;&lt;span class="gray"&gt;&amp;lt;span &lt;span class="red"&gt;style&lt;/span&gt;&lt;span class="gray"&gt;="color:blue;"&amp;gt;Author content&amp;lt;/span&amp;gt;&lt;/span&gt; &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;attribute value: &lt;/td&gt;&lt;td&gt; &lt;span class="remark-code" style="font-size:16pt"&gt;&lt;span class="gray"&gt;&amp;lt;span style=&lt;/span&gt;&lt;span class="red"&gt;"color:blue;"&lt;/span&gt;&lt;span class="gray"&gt;&amp;gt;Author content&amp;lt;/span&amp;gt;&lt;/span&gt; &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;hr&gt;
+
+.center[Not all HTML tags have an end tag:]
+
+.center[
+&lt;span style="font-size:18pt;"&gt;`&lt;img height="40px" src="https://tinyurl.com/rlogo-svg"&gt;`&lt;/span&gt; &lt;i class="fas fa-arrow-right"&gt;&lt;/i&gt; &lt;img height="40px" src="https://tinyurl.com/rlogo-svg"&gt;
+]
+
+---
+
+## &lt;i class="fab fa-html5 orange"&gt;&lt;/i&gt; HTML elements
+
+&lt;table style="width:100%"&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;block element:&lt;/td&gt;&lt;td&gt;&lt;span class="remark-code red" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;span class="gray"&gt;content&lt;/span&gt;&amp;lt;/div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;inline element:&lt;/td&gt;&lt;td&gt;&lt;span class="remark-code red" style="font-size:16pt"&gt;&amp;lt;span&gt;&lt;span class="gray"&gt;content&lt;/span&gt;&amp;lt;/span&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;paragraph:&lt;/td&gt;&lt;td&gt;&lt;span class="remark-code red" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;span class="gray"&gt;content&lt;/span&gt;&amp;lt;/p&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;header level 1:&lt;/td&gt;&lt;td&gt;&lt;span class="remark-code red" style="font-size:16pt"&gt;&amp;lt;h1&gt;&lt;span class="gray"&gt;content&lt;/span&gt;&amp;lt;/h1&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;header level 2:&lt;/td&gt;&lt;td&gt;&lt;span class="remark-code red" style="font-size:16pt"&gt;&amp;lt;h2&gt;&lt;span class="gray"&gt;content&lt;/span&gt;&amp;lt;/h2&gt;&lt;/span&gt;&lt;/td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;italic:&lt;/td&gt;&lt;td&gt;&lt;span class="remark-code red" style="font-size:16pt"&gt;&amp;lt;i&gt;&lt;span class="gray"&gt;content&lt;/span&gt;&amp;lt;/i&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;emphasised text:&lt;/td&gt;&lt;td&gt;&lt;span class="remark-code red" style="font-size:16pt"&gt;&amp;lt;em&gt;&lt;span class="gray"&gt;content&lt;/span&gt;&amp;lt;/em&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;strong importance:&lt;/td&gt;&lt;td&gt;&lt;span class="remark-code red" style="font-size:16pt"&gt;&amp;lt;strong&gt;&lt;span class="gray"&gt;content&lt;/span&gt;&amp;lt;/strong&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;link:&lt;/td&gt;&lt;td&gt;&lt;span class="remark-code red" style="font-size:16pt"&gt;&amp;lt;a href="https://stats220.earo.me/"&gt;&lt;span class="gray"&gt;content&lt;/span&gt;&amp;lt;/a&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td valign="top" style="text-align:right;padding-right:30px;"&gt;unordered list:&lt;/td&gt;&lt;td&gt;&lt;span class="remark-code red" style="font-size:16pt"&gt;&amp;lt;ul&gt;&lt;br&gt;&amp;lt;li&gt;&lt;span class="gray"&gt;item 1&lt;/span&gt;&amp;lt;/li&gt;&lt;Br&gt;&amp;lt;li&gt;&lt;span class="gray"&gt;item 2&lt;/span&gt;&amp;lt;/li&gt;&lt;Br&gt;&amp;lt;/ul&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+???
+
+How these are rendered to the browser depends on the browser default style values, style attribute or CSS...
+
+---
+
+## &lt;i class="fab fa-css3-alt blue"&gt;&lt;/i&gt; Cascading Style Sheet (CSS)
+
+* with the extension `.css`
+* 3 ways to style elements in HTML:
+  * **inline** by using the `style` attribute inside HTML start tag:
+  &lt;center&gt;
+  &lt;span class="remark-code gray" style="font-size:14pt;"&gt;&amp;lt;h1 &lt;span class="red"&gt;style="color:blue;"&lt;/span&gt;&gt;Blue Header&amp;lt;/h1&gt;&lt;/span&gt;
+  &lt;/center&gt;
+  + **externally** by using the `&lt;link&gt;` element:
+  &lt;center&gt;
+  &lt;span class="remark-code red" style="font-size:14pt;"&gt;&amp;lt;link rel="stylesheet" href="styles.css"&gt;&lt;/span&gt;
+  &lt;/center&gt;
+  + **internally** by defining within `&lt;style&gt;` element:
+
+&lt;div style="margin-left:35%; width:350px;"&gt;
+```html
+&lt;style type="text/css"&gt;
+h1 { color: blue; }
+&lt;/style&gt;
+```
+&lt;/div&gt;
+By convention, the `&lt;style&gt;` and `&lt;link&gt;` elements tend to go into the `&lt;head&gt;` section of the HTML document.
+
+---
+
+## &lt;i class="fab fa-css3-alt blue"&gt;&lt;/i&gt; CSS syntax
+
+.pull-left[
+```html
+&lt;style type="text/css"&gt;
+h1 { color: blue; }
+&lt;/style&gt;
+&lt;h1&gt;This is a header&lt;/h1&gt;
+```
+]
+
+&lt;div style="margin-left:55%; width:350px;"&gt;
+&lt;br&gt;
+&lt;h2 style="color:blue"&gt;This is a header&lt;/h2&gt;
+&lt;/div&gt;
+
+&lt;table style="width:100%"&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;selector:&lt;/td&gt;&lt;td&gt;&lt;span class="remark-code" style="font-size:16pt"&gt;&lt;span class="red"&gt;h1&lt;/span&gt;&lt;span class="gray"&gt; { color: blue; }&lt;/span&gt;&lt;/span&gt; &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;property:&lt;/td&gt;&lt;td&gt;&lt;span class="remark-code gray" style="font-size:16pt;"&gt;h1 { &lt;span class="red"&gt;color: blue;&lt;/span&gt; }&lt;/span&gt; &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;property name:&lt;/td&gt;&lt;td&gt;&lt;span class="remark-code gray" style="font-size:16pt;"&gt;h1 { &lt;span class="red"&gt;color&lt;/span&gt;: blue; } &lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;property value:&lt;/td&gt;&lt;td&gt;&lt;span class="remark-code gray" style="font-size:16pt;"&gt;h1 { color: &lt;span class="red"&gt;blue&lt;/span&gt;; } &lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+.pull-left[
+You may have multiple properties for a single selector.➡️
+]
+.pull-right[
+```css
+h1 {
+  color: blue;
+  font-size: 16pt;
+}
+```
+]
+
+---
+
+## &lt;i class="fab fa-css3-alt blue"&gt;&lt;/i&gt; CSS properties
+
+.center[
+```html
+&lt;div&gt;Sample text&lt;/div&gt;
+```
+]
+
+&lt;table style="width:100%"&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;background color:&lt;/td&gt;
+&lt;td&gt;&lt;span class="remark-code gray" style="font-size:16pt"&gt;div { &lt;span class="red"&gt;background-color: yellow;&lt;/span&gt; }&lt;/span&gt; &lt;/td&gt;
+&lt;td&gt;
+&lt;div style="background-color: yellow;"&gt;Sample text&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;text color:&lt;/td&gt;
+&lt;td&gt;&lt;span class="remark-code gray" style="font-size:16pt"&gt;div { &lt;span class="red"&gt;color: purple;&lt;/span&gt; }&lt;/span&gt; &lt;/td&gt;
+&lt;td&gt;
+&lt;div style="color: purple;"&gt;Sample text&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;border:&lt;/td&gt;
+&lt;td&gt;&lt;span class="remark-code gray" style="font-size:16pt"&gt;div { &lt;span class="red"&gt;border: 1px dashed brown;&lt;/span&gt; }&lt;/span&gt; &lt;/td&gt;
+&lt;td&gt;
+&lt;div style="border: 1px dashed brown;"&gt;Sample text&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;left border only:&lt;/td&gt;
+&lt;td&gt;&lt;span class="remark-code gray" style="font-size:16pt"&gt;div { &lt;span class="red"&gt;border-left: 10px solid pink;&lt;/span&gt; }&lt;/span&gt; &lt;/td&gt;
+&lt;td&gt;
+&lt;div style="border-left: 10px solid pink;"&gt;Sample text&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align:right;padding-right:30px;"&gt;text size:&lt;/td&gt;
+&lt;td&gt;&lt;span class="remark-code gray" style="font-size:16pt"&gt;div { &lt;span class="red"&gt;font-size: 10pt;&lt;/span&gt; }&lt;/span&gt; &lt;/td&gt;
+&lt;td&gt;
+&lt;div style="font-size:10pt;"&gt;Sample text&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td valign="top" style="text-align:right;padding-right:30px;"&gt;padding:&lt;/td&gt;
+&lt;td  valign="top"&gt;&lt;span class="remark-code gray" style="font-size:16pt"&gt;div { background-color: yellow; &lt;br&gt;
+&amp;emsp;&amp;emsp;&amp;emsp;&amp;nbsp;&lt;span class="red"&gt;padding: 10px;&lt;/span&gt; }&lt;/span&gt; &lt;/td&gt;
+&lt;td&gt;
+&lt;div style="background-color: yellow;padding:10px;"&gt;Sample text&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td valign="top" style="text-align:right;padding-right:30px;"&gt;margin:&lt;/td&gt;
+&lt;td  valign="top"&gt;&lt;span class="remark-code gray" style="font-size:16pt"&gt;div { background-color: yellow; &lt;br&gt;
+&amp;emsp;&amp;emsp;&amp;emsp;&amp;nbsp;&lt;span class="red"&gt;margin: 10px;&lt;/span&gt; }&lt;/span&gt; &lt;/td&gt;
+&lt;td&gt;
+&lt;div style="background-color: yellow;margin:10px;"&gt;Sample text&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+---
+
+## &lt;i class="fab fa-css3-alt blue"&gt;&lt;/i&gt; CSS properties
+
+.center[
+```html
+&lt;div&gt;Sample text&lt;/div&gt;
+```
+]
+
+&lt;table style="width:100%"&gt;
+&lt;tr&gt;
+&lt;td valign="top" style="text-align:right;padding-right:30px;"&gt;center align text:&lt;/td&gt;
+&lt;td  valign="top"&gt;&lt;span class="remark-code gray" style="font-size:16pt"&gt;div { background-color: yellow; &lt;br&gt;
+&amp;emsp;&amp;emsp;&amp;emsp;&amp;nbsp;padding-top: 20px;&lt;br&gt;
+&amp;emsp;&amp;emsp;&amp;emsp;&amp;nbsp;&lt;span class="red"&gt;text-align: center;&lt;/span&gt; }&lt;/span&gt; &lt;/td&gt;
+&lt;td&gt;
+&lt;div style="background-color: yellow;text-align: center;padding-top: 20px;"&gt;Sample text&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td valign="top" style="text-align:right;padding-right:30px;"&gt;font family:&lt;/td&gt;
+&lt;td  valign="top"&gt;&lt;span class="remark-code gray" style="font-size:16pt"&gt;div { &lt;span class="red"&gt;font-family: Marker Felt, times;&lt;/span&gt; }&lt;/span&gt; &lt;/td&gt;
+&lt;td&gt;
+&lt;div style="font-family: Marker Felt, times;"&gt;Sample text&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td valign="top" style="text-align:right;padding-right:30px;"&gt;strike:&lt;/td&gt;
+&lt;td  valign="top"&gt;&lt;span class="remark-code gray" style="font-size:16pt"&gt;div { &lt;span class="red"&gt;text-decoration: line-through;&lt;/span&gt; }&lt;/span&gt; &lt;/td&gt;
+&lt;td&gt;
+&lt;div style="text-decoration: line-through;"&gt;Sample text&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td valign="top" style="text-align:right;padding-right:30px;"&gt;underline:&lt;/td&gt;
+&lt;td  valign="top"&gt;&lt;span class="remark-code gray" style="font-size:16pt"&gt;div { &lt;span class="red"&gt;text-decoration: underline;&lt;/span&gt; }&lt;/span&gt; &lt;/td&gt;
+&lt;td&gt;
+&lt;div style="text-decoration: underline;"&gt;Sample text&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td valign="top" style="text-align:right;padding-right:30px;"&gt;opacity:&lt;/td&gt;
+&lt;td  valign="top"&gt;&lt;span class="remark-code gray" style="font-size:16pt"&gt;div { &lt;span class="red"&gt;opacity: 0.3&lt;/span&gt; }&lt;/span&gt; &lt;/td&gt;
+&lt;td&gt;
+&lt;div style="opacity: 0.3;"&gt;Sample text&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+---
+
+count: false
+
+.pull-left[
+## &lt;i class="fab fa-css3-alt blue"&gt;&lt;/i&gt; CSS selector
+
+&lt;table class="gray" style="width:98%;margin-left:10px;margin-right:10px;"&gt;
+&lt;tr class="red"&gt;
+&lt;td class="remark-code"&gt;* &lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt; elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div, p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt; and &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; within &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div &gt; p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; one level deep in &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr valign="top"&gt;
+&lt;td class="remark-code"&gt;div + p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; immediately after a &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div ~ p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; preceded by a &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+]
+.pull-right[
+&lt;pre style="font-size: 13pt;" class="red"&gt;
+&amp;lt;h1&gt;This is a sample html&amp;lt;/h1&gt;
+
+&amp;lt;blockquote&gt;
+&amp;lt;p&gt;Maybe stories are just data with a soul.&amp;lt;/p&gt;
+&amp;lt;footer&gt;—Brene Brown&amp;lt;/footer&gt;
+&amp;lt;/blockquote&gt;
+
+&amp;lt;div id="p1" class="parent"&gt;
+Hmm
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+How are you? 
+&amp;lt;div class="child nice"&gt;
+  &amp;lt;p&gt;Hello!&amp;lt;/p&gt;
+&amp;lt;/div&gt;
+&amp;lt;/div&gt;
+
+&amp;lt;p&gt;Household 1&amp;lt;/p&gt;
+
+&amp;lt;div class="parent"&gt;
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+&amp;lt;blockquote class="child rebel"&gt;
+  &amp;lt;p&gt;Don't talk to me!&amp;lt;/p&gt;
+&amp;lt;/blockquote&gt;
+&amp;lt;/div&gt;
+
+&amp;lt;span class="child"&gt;
+&amp;lt;span class="parent child rebel"&gt;
+  &amp;lt;p&gt;Clean your room!&amp;lt;/p&gt;
+&amp;lt;/span&gt;
+&amp;lt;/span&gt;
+
+&amp;lt;p&gt;End of households&amp;lt;/p&gt;
+
+&lt;/pre&gt;
+]
+
+---
+
+count: false
+
+.pull-left[
+## &lt;i class="fab fa-css3-alt blue"&gt;&lt;/i&gt; CSS selector
+
+&lt;table class="gray" style="width:98%;margin-left:10px;margin-right:10px;"&gt;
+&lt;tr &gt;
+&lt;td class="remark-code"&gt;* &lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="red"&gt;
+&lt;td class="remark-code"&gt;div&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt; elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div, p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt; and &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; within &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div &gt; p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; one level deep in &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr valign="top"&gt;
+&lt;td class="remark-code"&gt;div + p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; immediately after a &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div ~ p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; preceded by a &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+]
+.pull-right[
+&lt;pre style="font-size: 13pt"&gt;
+&amp;lt;h1&gt;This is a sample html&amp;lt;/h1&gt;
+
+&amp;lt;blockquote&gt;
+&amp;lt;p&gt;Maybe stories are just data with a soul.&amp;lt;/p&gt;
+&amp;lt;footer&gt;—Brene Brown&amp;lt;/footer&gt;
+&amp;lt;/blockquote&gt;
+
+&lt;span class="red"&gt;&amp;lt;div id="p1" class="parent"&gt;
+Hmm
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+How are you? 
+&amp;lt;div class="child nice"&gt;
+  &amp;lt;p&gt;Hello!&amp;lt;/p&gt;
+&amp;lt;/div&gt;
+&amp;lt;/div&gt;&lt;/span&gt;
+
+&amp;lt;p&gt;Household 1&amp;lt;/p&gt;
+
+&lt;span class="red"&gt;&amp;lt;div class="parent"&gt;
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+&amp;lt;blockquote class="child rebel"&gt;
+  &amp;lt;p&gt;Don't talk to me!&amp;lt;/p&gt;
+&amp;lt;/blockquote&gt;
+&amp;lt;/div&gt;&lt;/span&gt;
+
+&amp;lt;span class="child"&gt;
+&amp;lt;span class="parent child rebel"&gt;
+  &amp;lt;p&gt;Clean your room!&amp;lt;/p&gt;
+&amp;lt;/span&gt;
+&amp;lt;/span&gt;
+
+&amp;lt;p&gt;End of households&amp;lt;/p&gt;
+
+&lt;/pre&gt;
+]
+
+---
+
+count: false
+
+.pull-left[
+## &lt;i class="fab fa-css3-alt blue"&gt;&lt;/i&gt; CSS selector
+
+&lt;table class="gray" style="width:98%;margin-left:10px;margin-right:10px;"&gt;
+&lt;tr &gt;
+&lt;td class="remark-code"&gt;* &lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="red"&gt;
+&lt;td class="remark-code"&gt;blockquote&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;blockquote&gt;&lt;/span&gt; elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div, p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt; and &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; within &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div &gt; p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; one level deep in &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr valign="top"&gt;
+&lt;td class="remark-code"&gt;div + p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; immediately after a &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div ~ p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; preceded by a &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+]
+.pull-right[
+&lt;pre style="font-size: 13pt"&gt;
+&amp;lt;h1&gt;This is a sample html&amp;lt;/h1&gt;
+
+&lt;span class="red"&gt;&amp;lt;blockquote&gt;
+&amp;lt;p&gt;Maybe stories are just data with a soul.&amp;lt;/p&gt;
+&amp;lt;footer&gt;—Brene Brown&amp;lt;/footer&gt;
+&amp;lt;/blockquote&gt;&lt;/span&gt;
+
+&amp;lt;div id="p1" class="parent"&gt;
+Hmm
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+How are you? 
+&amp;lt;div class="child nice"&gt;
+  &amp;lt;p&gt;Hello!&amp;lt;/p&gt;
+&amp;lt;/div&gt;
+&amp;lt;/div&gt;
+
+&amp;lt;p&gt;Household 1&amp;lt;/p&gt;
+
+&amp;lt;div class="parent"&gt;
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+&amp;lt;blockquote class="child rebel"&gt;
+  &amp;lt;p&gt;Don't talk to me!&amp;lt;/p&gt;
+&amp;lt;/blockquote&gt;
+&amp;lt;/div&gt;
+
+&amp;lt;span class="child"&gt;
+&amp;lt;span class="parent child rebel"&gt;
+  &amp;lt;p&gt;Clean your room!&amp;lt;/p&gt;
+&amp;lt;/span&gt;
+&amp;lt;/span&gt;
+
+&amp;lt;p&gt;End of households&amp;lt;/p&gt;
+
+&lt;/pre&gt;
+]
+
+---
+
+count: false
+
+.pull-left[
+## &lt;i class="fab fa-css3-alt blue"&gt;&lt;/i&gt; CSS selector
+
+&lt;table class="gray" style="width:98%;margin-left:10px;margin-right:10px;"&gt;
+&lt;tr &gt;
+&lt;td class="remark-code"&gt;* &lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt; elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="red"&gt;
+&lt;td class="remark-code"&gt;div, p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt; and &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; within &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div &gt; p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; one level deep in &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr valign="top"&gt;
+&lt;td class="remark-code"&gt;div + p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; immediately after a &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div ~ p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; preceded by a &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;/table&gt;
+]
+.pull-right[
+&lt;pre style="font-size: 13pt"&gt;
+&amp;lt;h1&gt;This is a sample html&amp;lt;/h1&gt;
+
+&amp;lt;blockquote&gt;
+&lt;span class="red"&gt;&amp;lt;p&gt;Maybe stories are just data with a soul.&amp;lt;/p&gt;&lt;/span&gt;
+&amp;lt;footer&gt;—Brene Brown&amp;lt;/footer&gt;
+&amp;lt;/blockquote&gt;
+
+&lt;span class="red"&gt;&amp;lt;div id="p1" class="parent"&gt;
+Hmm
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+How are you? 
+&amp;lt;div class="child nice"&gt;
+  &amp;lt;p&gt;Hello!&amp;lt;/p&gt;
+&amp;lt;/div&gt;
+&amp;lt;/div&gt;&lt;/span&gt;
+
+&lt;span class="red"&gt;&amp;lt;p&gt;Household 1&amp;lt;/p&gt;&lt;/span&gt;
+
+&lt;span class="red"&gt;&amp;lt;div class="parent"&gt;
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+&amp;lt;blockquote class="child rebel"&gt;
+  &amp;lt;p&gt;Don't talk to me!&amp;lt;/p&gt;
+&amp;lt;/span&gt;
+&amp;lt;/div&gt;&lt;/span&gt;
+
+&amp;lt;span class="child"&gt;
+&amp;lt;span class="parent child rebel"&gt;
+  &lt;span class="red"&gt;&amp;lt;p&gt;Clean your room!&amp;lt;/p&gt;&lt;/span&gt;
+&amp;lt;/span&gt;
+&amp;lt;/span&gt;
+
+&lt;span class="red"&gt;&amp;lt;p&gt;End of households&amp;lt;/p&gt;&lt;/span&gt;
+
+&lt;/pre&gt;
+]
+
+---
+
+count: false
+
+.pull-left[
+## &lt;i class="fab fa-css3-alt blue"&gt;&lt;/i&gt; CSS selector
+
+&lt;table class="gray" style="width:98%;margin-left:10px;margin-right:10px;"&gt;
+&lt;tr &gt;
+&lt;td class="remark-code"&gt;* &lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt; elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div, p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt; and &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="red"&gt;
+&lt;td class="remark-code"&gt;div p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; within &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div &gt; p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; one level deep in &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr valign="top"&gt;
+&lt;td class="remark-code"&gt;div + p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; immediately after a &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div ~ p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; preceded by a &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;/table&gt;
+]
+.pull-right[
+&lt;pre style="font-size: 13pt"&gt;
+&amp;lt;h1&gt;This is a sample html&amp;lt;/h1&gt;
+
+&amp;lt;blockquote&gt;
+&amp;lt;p&gt;Maybe stories are just data with a soul.&amp;lt;/p&gt;
+&amp;lt;footer&gt;—Brene Brown&amp;lt;/footer&gt;
+&amp;lt;/blockquote&gt;
+
+&amp;lt;div id="p1" class="parent"&gt;
+Hmm
+&lt;span class="red"&gt;&amp;lt;p&gt;Hi!&amp;lt;/p&gt;&lt;/span&gt;
+How are you? 
+&amp;lt;div class="child nice"&gt;
+  &lt;span class="red"&gt;&amp;lt;p&gt;Hello!&amp;lt;/p&gt;&lt;/span&gt;
+&amp;lt;/div&gt;
+&amp;lt;/div&gt;
+
+&amp;lt;p&gt;Household 1&amp;lt;/p&gt;
+
+&amp;lt;div class="parent"&gt;
+&lt;span class="red"&gt;&amp;lt;p&gt;Hi!&amp;lt;/p&gt;&lt;/span&gt;
+&amp;lt;blockquote class="child rebel"&gt;
+  &lt;span class="red"&gt;&amp;lt;p&gt;Don't talk to me!&amp;lt;/p&gt;&lt;/span&gt;
+&amp;lt;/blockquote&gt;
+&amp;lt;/div&gt;
+
+&amp;lt;span class="child"&gt;
+&amp;lt;span class="parent child rebel"&gt;
+  &amp;lt;p&gt;Clean your room!&amp;lt;/p&gt;
+&amp;lt;/span&gt;
+&amp;lt;/span&gt;
+
+&amp;lt;p&gt;End of households&amp;lt;/p&gt;
+
+&lt;/pre&gt;
+]
+
+---
+
+count: false
+
+.pull-left[
+## &lt;i class="fab fa-css3-alt blue"&gt;&lt;/i&gt; CSS selector
+
+&lt;table class="gray" style="width:98%;margin-left:10px;margin-right:10px;"&gt;
+&lt;tr &gt;
+&lt;td class="remark-code"&gt;* &lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt; elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div, p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt; and &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="red"&gt;
+&lt;td class="remark-code"&gt;p div&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt; within &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div &gt; p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; one level deep in &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr valign="top"&gt;
+&lt;td class="remark-code"&gt;div + p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; immediately after a &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div ~ p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; preceded by a &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;/table&gt;
+]
+.pull-right[
+&lt;pre style="font-size: 13pt"&gt;
+&amp;lt;h1&gt;This is a sample html&amp;lt;/h1&gt;
+
+&amp;lt;blockquote&gt;
+&amp;lt;p&gt;Maybe stories are just data with a soul.&amp;lt;/p&gt;
+&amp;lt;footer&gt;—Brene Brown&amp;lt;/footer&gt;
+&amp;lt;/blockquote&gt;
+
+&amp;lt;div id="p1" class="parent"&gt;
+Hmm
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+How are you? 
+&amp;lt;div class="child nice"&gt;
+  &amp;lt;p&gt;Hello!&amp;lt;/p&gt;
+&amp;lt;/div&gt;
+&amp;lt;/div&gt;
+
+&amp;lt;p&gt;Household 1&amp;lt;/p&gt;
+
+&amp;lt;div class="parent"&gt;
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+&amp;lt;blockquote class="child rebel"&gt;
+  &amp;lt;p&gt;Don't talk to me!&amp;lt;/p&gt;
+&amp;lt;/blockquote&gt;
+&amp;lt;/div&gt;
+
+&amp;lt;span class="child"&gt;
+&amp;lt;span class="parent child rebel"&gt;
+  &amp;lt;p&gt;Clean your room!&amp;lt;/p&gt;
+&amp;lt;/span&gt;
+&amp;lt;/span&gt;
+
+&amp;lt;p&gt;End of households&amp;lt;/p&gt;
+
+&lt;/pre&gt;
+]
+
+---
+
+count: false
+
+.pull-left[
+## &lt;i class="fab fa-css3-alt blue"&gt;&lt;/i&gt; CSS selector
+
+&lt;table class="gray" style="width:98%;margin-left:10px;margin-right:10px;"&gt;
+&lt;tr &gt;
+&lt;td class="remark-code"&gt;* &lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt; elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div, p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt; and &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr &gt;
+&lt;td class="remark-code"&gt;div p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; within &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="red"&gt;
+&lt;td class="remark-code"&gt;div &gt; p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; one level deep in &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr valign="top"&gt;
+&lt;td class="remark-code"&gt;div + p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; immediately after a &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div ~ p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; preceded by a &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;/table&gt;
+]
+.pull-right[
+&lt;pre style="font-size: 13pt"&gt;
+&amp;lt;h1&gt;This is a sample html&amp;lt;/h1&gt;
+
+&amp;lt;blockquote&gt;
+&amp;lt;p&gt;Maybe stories are just data with a soul.&amp;lt;/p&gt;
+&amp;lt;footer&gt;—Brene Brown&amp;lt;/footer&gt;
+&amp;lt;/blockquote&gt;
+
+&amp;lt;div id="p1" class="parent"&gt;
+Hmm
+&lt;span class="red"&gt;&amp;lt;p&gt;Hi!&amp;lt;/p&gt;&lt;/span&gt;
+How are you? 
+&amp;lt;div class="child nice"&gt;
+  &lt;span class="red"&gt;&amp;lt;p&gt;Hello!&amp;lt;/p&gt;&lt;/span&gt;
+&amp;lt;/div&gt;
+&amp;lt;/div&gt;
+
+&amp;lt;p&gt;Household 1&amp;lt;/p&gt;
+
+&amp;lt;div class="parent"&gt;
+&lt;span class="red"&gt;&amp;lt;p&gt;Hi!&amp;lt;/p&gt;&lt;/span&gt;
+&amp;lt;blockquote class="child rebel"&gt;
+  &amp;lt;p&gt;Don't talk to me!&amp;lt;/p&gt;
+&amp;lt;/blockquote&gt;
+&amp;lt;/div&gt;
+
+&amp;lt;span class="child"&gt;
+&amp;lt;span class="parent child rebel"&gt;
+  &amp;lt;p&gt;Clean your room!&amp;lt;/p&gt;
+&amp;lt;/span&gt;
+&amp;lt;/span&gt;
+
+&amp;lt;p&gt;End of households&amp;lt;/p&gt;
+
+&lt;/pre&gt;
+]
+
+&lt;div style="position:absolute;top:10px;left:900px;width:300px;background-color:white;border:1px solid black;font-size:16pt;padding:2px;"&gt;
+&lt;i class="fas fa-exclamation-triangle"&gt;&lt;/i&gt; Ignores inline elements like &lt;code&gt;span&lt;/code&gt;, &lt;code&gt;i&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;,...
+&lt;/div&gt;
+
+
+---
+
+count: false
+
+.pull-left[
+## &lt;i class="fab fa-css3-alt blue"&gt;&lt;/i&gt; CSS selector
+
+&lt;table class="gray" style="width:98%;margin-left:10px;margin-right:10px;"&gt;
+&lt;tr &gt;
+&lt;td class="remark-code"&gt;* &lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt; elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div, p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt; and &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr &gt;
+&lt;td class="remark-code"&gt;div p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; within &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div &gt; p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; one level deep in &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr  valign="top" class="red"&gt;
+&lt;td class="remark-code"&gt;div + p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; immediately after a &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div ~ p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; preceded by a &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;/table&gt;
+]
+.pull-right[
+&lt;pre style="font-size: 13pt"&gt;
+&amp;lt;h1&gt;This is a sample html&amp;lt;/h1&gt;
+
+&amp;lt;blockquote&gt;
+&amp;lt;p&gt;Maybe stories are just data with a soul.&amp;lt;/p&gt;
+&amp;lt;footer&gt;—Brene Brown&amp;lt;/footer&gt;
+&amp;lt;/blockquote&gt;
+
+&amp;lt;div id="p1" class="parent"&gt;
+Hmm
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+How are you? 
+&amp;lt;div class="child nice"&gt;
+  &amp;lt;p&gt;Hello!&amp;lt;/p&gt;
+&amp;lt;/div&gt;
+&amp;lt;/div&gt;
+
+&lt;span class="red"&gt;&amp;lt;p&gt;Household 1&amp;lt;/p&gt;&lt;/span&gt;
+
+&amp;lt;div class="parent"&gt;
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+&amp;lt;blockquote class="child rebel"&gt;
+  &amp;lt;p&gt;Don't talk to me!&amp;lt;/p&gt;
+&amp;lt;/blockquote&gt;
+&amp;lt;/div&gt;
+
+&amp;lt;span class="child"&gt;
+&amp;lt;span class="parent child rebel"&gt;
+  &lt;span class="red"&gt;&amp;lt;p&gt;Clean your room!&amp;lt;/p&gt;&lt;/span&gt;
+&amp;lt;/span&gt;
+&amp;lt;/span&gt;
+
+&amp;lt;p&gt;End of households&amp;lt;/p&gt;
+
+&lt;/pre&gt;
+]
+
+&lt;div style="position:absolute;top:10px;left:900px;width:300px;background-color:white;border:1px solid black;font-size:16pt;padding:2px;"&gt;
+&lt;i class="fas fa-exclamation-triangle"&gt;&lt;/i&gt; Ignores inline elements like &lt;code&gt;span&lt;/code&gt;, &lt;code&gt;i&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt;,...
+&lt;/div&gt;
+
+---
+
+count: false
+
+.pull-left[
+## &lt;i class="fab fa-css3-alt blue"&gt;&lt;/i&gt; CSS selector
+
+&lt;table class="gray" style="width:98%;margin-left:10px;margin-right:10px;"&gt;
+&lt;tr &gt;
+&lt;td class="remark-code"&gt;* &lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt; elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div, p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt; and &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; elements&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr &gt;
+&lt;td class="remark-code"&gt;div p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; within &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div &gt; p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; one level deep in &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code"&gt;div + p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; immediately after a &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="red"&gt;
+&lt;td class="remark-code"&gt;div ~ p&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;p&gt;&lt;/span&gt; preceded by a &lt;span class="remark-code" style="font-size:16pt"&gt;&amp;lt;div&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+]
+.pull-right[
+&lt;pre style="font-size: 13pt"&gt;
+&amp;lt;h1&gt;This is a sample html&amp;lt;/h1&gt;
+
+&amp;lt;blockquote&gt;
+&amp;lt;p&gt;Maybe stories are just data with a soul.&amp;lt;/p&gt;
+&amp;lt;footer&gt;—Brene Brown&amp;lt;/footer&gt;
+&amp;lt;/blockquote&gt;
+
+&amp;lt;div id="p1" class="parent"&gt;
+Hmm
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+How are you? 
+&amp;lt;div class="child nice"&gt;
+  &amp;lt;p&gt;Hello!&amp;lt;/p&gt;
+&amp;lt;/div&gt;
+&amp;lt;/div&gt;
+
+&lt;span class="red"&gt;&amp;lt;p&gt;Household 1&amp;lt;/p&gt;&lt;/span&gt;
+
+&amp;lt;div class="parent"&gt;
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+&amp;lt;blockquote class="child rebel"&gt;
+  &amp;lt;p&gt;Don't talk to me!&amp;lt;/p&gt;
+&amp;lt;/blockquote&gt;
+&amp;lt;/div&gt;
+
+&amp;lt;span class="child"&gt;
+&amp;lt;span class="parent child rebel"&gt;
+  &lt;span class="red"&gt;&amp;lt;p&gt;Clean your room!&amp;lt;/p&gt;&lt;/span&gt;
+&amp;lt;/span&gt;
+&amp;lt;/span&gt;
+
+&lt;span class="red"&gt;&amp;lt;p&gt;End of households&amp;lt;/p&gt;&lt;/span&gt;
+
+&lt;/pre&gt;
+]
+
+---
+
+count: false
+
+.pull-left[
+## &lt;i class="fab fa-css3-alt blue"&gt;&lt;/i&gt; CSS selector
+
+&lt;table class="gray" style="width:98%;margin-left:10px;margin-right:10px;"&gt;
+&lt;tr&gt;
+&lt;td class="remark-code" valign="top"&gt;.classname&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements with the attribute &lt;span class="remark-code" style="font-size:16pt"&gt;class="classname"&lt;/span&gt;. &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code" valign="top"&gt;.c1.c2&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements with &lt;em&gt;both&lt;/em&gt; &lt;span class="remark-code" style="font-size:16pt"&gt;c1&lt;/span&gt; and &lt;span class="remark-code" style="font-size:16pt"&gt;c2&lt;/span&gt; within its class attribute. &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code" valign="top"&gt;.c1 .c2&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements with  class &lt;span class="remark-code" style="font-size:16pt"&gt;c2&lt;/span&gt; that is a descendant of an element with class &lt;span class="remark-code" style="font-size:16pt"&gt;c1&lt;/span&gt;. &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code" valign="top"&gt;#idname&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements with the attribute &lt;span class="remark-code" style="font-size:16pt"&gt;id="idname"&lt;/span&gt;. &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+]
+.pull-right[
+&lt;pre style="font-size: 13pt"&gt;
+&amp;lt;h1&gt;This is a sample html&amp;lt;/h1&gt;
+
+&amp;lt;blockquote&gt;
+&amp;lt;p&gt;Maybe stories are just data with a soul.&amp;lt;/p&gt;
+&amp;lt;footer&gt;—Brene Brown&amp;lt;/footer&gt;
+&amp;lt;/blockquote&gt;
+
+&amp;lt;div id="p1" class="parent"&gt;
+Hmm
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+How are you? 
+&amp;lt;div class="child nice"&gt;
+  &amp;lt;p&gt;Hello!&amp;lt;/p&gt;
+&amp;lt;/div&gt;
+&amp;lt;/div&gt;
+
+&amp;lt;p&gt;Household 1&amp;lt;/p&gt;
+
+&amp;lt;div class="parent"&gt;
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+&amp;lt;blockquote class="child rebel"&gt;
+  &amp;lt;p&gt;Don't talk to me!&amp;lt;/p&gt;
+&amp;lt;/blockquote&gt;
+&amp;lt;/div&gt;
+
+&amp;lt;span class="child"&gt;
+&amp;lt;span class="parent child rebel"&gt;&lt;/span&gt;
+  &amp;lt;p&gt;Clean your room!&amp;lt;/p&gt;
+&amp;lt;/span&gt;&lt;/span&gt;
+&amp;lt;/span&gt;
+
+&amp;lt;p&gt;End of households&amp;lt;/p&gt;
+
+&lt;/pre&gt;
+]
+
+---
+
+count: false
+
+.pull-left[
+## &lt;i class="fab fa-css3-alt blue"&gt;&lt;/i&gt; CSS selector
+
+&lt;table class="gray" style="width:98%;margin-left:10px;margin-right:10px;"&gt;
+&lt;tr class="red"&gt;
+&lt;td class="remark-code" valign="top"&gt;.parent&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements with the attribute &lt;span class="remark-code" style="font-size:16pt"&gt;class="parent"&lt;/span&gt;. &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code" valign="top"&gt;.c1.c2&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements with &lt;em&gt;both&lt;/em&gt; &lt;span class="remark-code" style="font-size:16pt"&gt;c1&lt;/span&gt; and &lt;span class="remark-code" style="font-size:16pt"&gt;c2&lt;/span&gt; within its class attribute. &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code" valign="top"&gt;.c1 .c2&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements with  class &lt;span class="remark-code" style="font-size:16pt"&gt;c2&lt;/span&gt; that is a descendant of an element with class &lt;span class="remark-code" style="font-size:16pt"&gt;c1&lt;/span&gt;. &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code" valign="top"&gt;#idname&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements with the attribute &lt;span class="remark-code" style="font-size:16pt"&gt;id="idname"&lt;/span&gt;. &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;div style="position:absolute;top:10px;left:900px;width:300px;background-color:white;border:1px solid black;font-size:16pt;padding:2px;"&gt;
+&lt;i class="fas fa-exclamation-triangle"&gt;&lt;/i&gt; Note some offspring do not inherit class from their parents.
+&lt;/div&gt;
+]
+.pull-right[
+&lt;pre style="font-size: 13pt"&gt;
+&amp;lt;h1&gt;This is a sample html&amp;lt;/h1&gt;
+
+&amp;lt;blockquote&gt;
+&amp;lt;p&gt;Maybe stories are just data with a soul.&amp;lt;/p&gt;
+&amp;lt;footer&gt;—Brene Brown&amp;lt;/footer&gt;
+&amp;lt;/blockquote&gt;
+
+&lt;span class="red"&gt;&amp;lt;div id="p1" class="parent"&gt;
+Hmm
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+How are you? 
+&amp;lt;div class="child nice"&gt;
+  &amp;lt;p&gt;Hello!&amp;lt;/p&gt;
+&amp;lt;/div&gt;
+&amp;lt;/div&gt;&lt;/span&gt;
+
+&amp;lt;p&gt;Household 1&amp;lt;/p&gt;
+
+&lt;span class="red"&gt;&amp;lt;div class="parent"&gt;
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+&amp;lt;blockquote class="child rebel"&gt;
+  &amp;lt;p&gt;Don't talk to me!&amp;lt;/p&gt;
+&amp;lt;/blockquote&gt;
+&amp;lt;/div&gt;&lt;/span&gt;
+
+&amp;lt;span class="child"&gt;
+&lt;span class="red"&gt;&amp;lt;span class="parent child rebel"&gt;&lt;/span&gt;
+  &amp;lt;p&gt;Clean your room!&amp;lt;/p&gt;
+&lt;span class="red"&gt;&amp;lt;/span&gt;&lt;/span&gt;
+&amp;lt;/span&gt;
+
+&amp;lt;p&gt;End of households&amp;lt;/p&gt;
+
+&lt;/pre&gt;
+]
+
+---
+
+count: false
+
+.pull-left[
+## &lt;i class="fab fa-css3-alt blue"&gt;&lt;/i&gt; CSS selector
+
+&lt;table class="gray" style="width:98%;margin-left:10px;margin-right:10px;"&gt;
+&lt;td class="remark-code" valign="top"&gt;.classname&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements with the attribute &lt;span class="remark-code" style="font-size:16pt"&gt;class="classname"&lt;/span&gt;. &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="red"&gt;
+&lt;td class="remark-code" valign="top"&gt;.child.rebel&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements with &lt;em&gt;both&lt;/em&gt; &lt;span class="remark-code" style="font-size:16pt"&gt;child&lt;/span&gt; and &lt;span class="remark-code" style="font-size:16pt"&gt;rebel&lt;/span&gt; within its class attribute. &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code" valign="top"&gt;.c1 .c2&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements with  class &lt;span class="remark-code" style="font-size:16pt"&gt;c2&lt;/span&gt; that is a descendant of an element with class &lt;span class="remark-code" style="font-size:16pt"&gt;c1&lt;/span&gt;. &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code" valign="top"&gt;#idname&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements with the attribute &lt;span class="remark-code" style="font-size:16pt"&gt;id="idname"&lt;/span&gt;. &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+]
+.pull-right[
+&lt;pre style="font-size: 13pt"&gt;
+&amp;lt;h1&gt;This is a sample html&amp;lt;/h1&gt;
+
+&amp;lt;blockquote&gt;
+&amp;lt;p&gt;Maybe stories are just data with a soul.&amp;lt;/p&gt;
+&amp;lt;footer&gt;—Brene Brown&amp;lt;/footer&gt;
+&amp;lt;/blockquote&gt;
+
+&amp;lt;div id="p1" class="parent"&gt;
+Hmm
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+How are you?
+&amp;lt;div class="child nice"&gt;
+  &amp;lt;p&gt;Hello!&amp;lt;/p&gt;
+&amp;lt;/div&gt;
+&amp;lt;/div&gt;
+
+&amp;lt;p&gt;Household 1&amp;lt;/p&gt;
+
+&amp;lt;div class="parent"&gt;
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+&lt;span class="red"&gt;&amp;lt;blockquote class="child rebel"&gt;
+  &amp;lt;p&gt;Don't talk to me!&amp;lt;/p&gt;
+&amp;lt;/blockquote&gt;&lt;/span&gt;
+&amp;lt;/div&gt;
+
+&amp;lt;span class="child"&gt;
+&lt;span class="red"&gt;&amp;lt;span class="parent child rebel"&gt;&lt;/span&gt;
+  &amp;lt;p&gt;Clean your room!&amp;lt;/p&gt;
+&lt;span class="red"&gt;&amp;lt;/span&gt;&lt;/span&gt;
+&amp;lt;/span&gt;
+
+&amp;lt;p&gt;End of households&amp;lt;/p&gt;
+
+&lt;/pre&gt;
+]
+
+---
+
+count: false
+
+.pull-left[
+## &lt;i class="fab fa-css3-alt blue"&gt;&lt;/i&gt; CSS selector
+
+&lt;table class="gray" style="width:98%;margin-left:10px;margin-right:10px;"&gt;
+&lt;tr&gt;
+&lt;td class="remark-code" valign="top"&gt;.classname&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements with the attribute &lt;span class="remark-code" style="font-size:16pt"&gt;class="classname"&lt;/span&gt;. &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code" valign="top"&gt;.c1.c2&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements with &lt;em&gt;both&lt;/em&gt; &lt;span class="remark-code" style="font-size:16pt"&gt;c1&lt;/span&gt; and &lt;span class="remark-code" style="font-size:16pt"&gt;c2&lt;/span&gt; within its class attribute. &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="red"&gt;
+&lt;td class="remark-code" valign="top"&gt;.parent .rebel&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements with  class &lt;span class="remark-code" style="font-size:16pt"&gt;rebel&lt;/span&gt; that is a descendant of an element with class &lt;span class="remark-code" style="font-size:16pt"&gt;parent&lt;/span&gt;. &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code" valign="top"&gt;#idname&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements with the attribute &lt;span class="remark-code" style="font-size:16pt"&gt;id="idname"&lt;/span&gt;. &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+]
+.pull-right[
+&lt;pre style="font-size: 13pt"&gt;
+&amp;lt;h1&gt;This is a sample html&amp;lt;/h1&gt;
+
+&amp;lt;blockquote&gt;
+&amp;lt;p&gt;Maybe stories are just data with a soul.&amp;lt;/p&gt;
+&amp;lt;footer&gt;—Brene Brown&amp;lt;/footer&gt;
+&amp;lt;/blockquote&gt;
+
+&amp;lt;div id="p1" class="parent"&gt;
+Hmm
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+How are you?
+&amp;lt;div class="child nice"&gt;
+  &amp;lt;p&gt;Hello!&amp;lt;/p&gt;
+&amp;lt;/div&gt;
+&amp;lt;/div&gt;
+
+&amp;lt;p&gt;Household 1&amp;lt;/p&gt;
+
+&amp;lt;div class="parent"&gt;
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+&lt;span class="red"&gt;&amp;lt;blockquote class="child rebel"&gt;
+  &amp;lt;p&gt;Don't talk to me!&amp;lt;/p&gt;
+&amp;lt;/blockquote&gt;&lt;/span&gt;
+&amp;lt;/div&gt;
+
+&amp;lt;span class="child"&gt;
+&amp;lt;span class="parent child rebel"&gt;
+  &amp;lt;p&gt;Clean your room!&amp;lt;/p&gt;
+&amp;lt;/span&gt;
+&amp;lt;/span&gt;
+
+&amp;lt;p&gt;End of households&amp;lt;/p&gt;
+
+&lt;/pre&gt;
+]
+
+---
+
+count: false
+
+.pull-left[
+## &lt;i class="fab fa-css3-alt blue"&gt;&lt;/i&gt; CSS selector
+
+&lt;table class="gray" style="width:98%;margin-left:10px;margin-right:10px;"&gt;
+&lt;td class="remark-code" valign="top"&gt;.classname&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements with the attribute &lt;span class="remark-code" style="font-size:16pt"&gt;class="classname"&lt;/span&gt;. &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code" valign="top"&gt;.c1.c2&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements with &lt;em&gt;both&lt;/em&gt; &lt;span class="remark-code" style="font-size:16pt"&gt;c1&lt;/span&gt; and &lt;span class="remark-code" style="font-size:16pt"&gt;c2&lt;/span&gt; within its class attribute. &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="remark-code" valign="top"&gt;.c1 .c2&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements with  class &lt;span class="remark-code" style="font-size:16pt"&gt;c2&lt;/span&gt; that is a descendant of an element with class &lt;span class="remark-code" style="font-size:16pt"&gt;c1&lt;/span&gt;. &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="red"&gt;
+&lt;td class="remark-code" valign="top"&gt;#p1&lt;/td&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&lt;/td&gt;&lt;td&gt;selects all elements with the attribute &lt;span class="remark-code" style="font-size:16pt"&gt;id="p1"&lt;/span&gt;. &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+]
+.pull-right[
+&lt;pre style="font-size: 13pt"&gt;
+&amp;lt;h1&gt;This is a sample html&amp;lt;/h1&gt;
+
+&amp;lt;blockquote&gt;
+&amp;lt;p&gt;Maybe stories are just data with a soul.&amp;lt;/p&gt;
+&amp;lt;footer&gt;—Brene Brown&amp;lt;/footer&gt;
+&amp;lt;/blockquote&gt;
+
+&lt;span class="red"&gt;&amp;lt;div id="p1" class="parent"&gt;
+Hmm
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+How are you?
+&amp;lt;div class="child nice"&gt;
+  &amp;lt;p&gt;Hello!&amp;lt;/p&gt;
+&amp;lt;/div&gt;
+&amp;lt;/div&gt;&lt;/span&gt;
+
+&amp;lt;p&gt;Household 1&amp;lt;/p&gt;
+
+&amp;lt;div class="parent"&gt;
+&amp;lt;p&gt;Hi!&amp;lt;/p&gt;
+&amp;lt;blockquote class="child rebel"&gt;
+  &amp;lt;p&gt;Don't talk to me!&amp;lt;/p&gt;
+&amp;lt;/blockquote&gt;
+&amp;lt;/div&gt;
+
+&amp;lt;span class="child"&gt;
+&amp;lt;span class="parent child rebel"&gt;
+  &amp;lt;p&gt;Clean your room!&amp;lt;/p&gt;
+&amp;lt;/span&gt;
+&amp;lt;/span&gt;
+
+&amp;lt;p&gt;End of households&amp;lt;/p&gt;
+
+&lt;/pre&gt;
+]
+
+&lt;div style="position:absolute;top:10px;left:900px;width:300px;background-color:white;border:1px solid black;font-size:16pt;padding:2px;"&gt;
+&lt;i class="fas fa-exclamation-triangle"&gt;&lt;/i&gt; Unlike &lt;code style="font-size:16pt"&gt;class&lt;/code&gt;, you can only have one &lt;code style="font-size:16pt"&gt;id&lt;/code&gt; value and must be unique in the whole HTML document.
+&lt;/div&gt;
+
+---
+
+## &lt;i class='fab fa-js-square yellow'&gt;&lt;/i&gt; JavaScript (JS)*
+
+* JS is a programming language and enable interactive components in HTML documents.
+* 2 ways to insert JS into a HTML document:
+  + **internally** by defining within `&lt;script&gt;` element:
+  ```html
+  &lt;script&gt;
+  document.getElementById("p1").innerHTML = "content";
+  &lt;/script&gt;
+  ```
+  + **externally** by using the `src` attribute to refer to the external file:
+  ```html
+  &lt;script src="js/myjs.js"&gt;&lt;/script&gt;
+  ```
+
+---
+
+class: inverse middle
+
+## Web scraping 🕸
+
+---
+
+
+
+.pull-left[
+.center[&lt;img src = "img/browser-220.png", width = "90%", style = "box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;]
+]
+.pull-right[
+Use {rvest} `&gt;= v1.0.0` (if not, update)
+
+&lt;img src="img/rvest.png" width="100%"&gt;
+
+```r
+library(rvest)
+course &lt;- "https://stats220.earo.me"
+stats220 &lt;- read_html(course)
+stats220
+```
+
+```
+#&gt; {html_document}
+#&gt; &lt;html&gt;
+#&gt; [1] &lt;head&gt;\n&lt;meta http-equiv="Content ...
+#&gt; [2] &lt;body&gt;\n\n    &lt;header class="site ...
+```
+]
+
+---
+
+.pull-left[
+## &lt;i class="fas fa-search-plus"&gt;&lt;/i&gt; Inspect elements
+&lt;br&gt;
+&lt;br&gt;
+.center[&lt;img src = "img/rvest/developer-tool.png", width = "90%", style = "box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;]
+]
+.pull-right[
+## &lt;i class="fas fa-puzzle-piece"&gt;&lt;/i&gt; [CSS selectors](https://selectorgadget.com/)
+&lt;br&gt;
+&lt;br&gt;
+.center[&lt;img src = "img/rvest/css-selector.png", width = "90%", style = "box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;]
+]
+
+---
+
+.pull-left[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+.center[&lt;img src = "img/rvest/navbar-right.png", width = "90%", style = "box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;]
+]
+.pull-right[
+`html_element()` select element
+
+```r
+navbar &lt;- stats220 %&gt;% 
+  html_element(".navbar-right")
+navbar
+```
+
+```
+#&gt; {html_node}
+#&gt; &lt;ul class="nav navbar-nav navbar-right"&gt;
+#&gt; [1] &lt;li&gt;&lt;a href="/pages/info/"&gt;&lt;i cla ...
+#&gt; [2] &lt;li&gt;&lt;a href="/pages/data/"&gt;&lt;i cla ...
+#&gt; [3] &lt;li class="dropdown"&gt;\n           ...
+```
+`html_name()` get element name
+
+```r
+navbar %&gt;% 
+  html_name()
+```
+
+```
+#&gt; [1] "ul"
+```
+]
+
+---
+
+.pull-left[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+.center[&lt;img src = "img/rvest/navbar-right.png", width = "90%", style = "box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;]
+]
+.pull-right[
+`html_children()` get element children
+
+```r
+navbar %&gt;% 
+  html_children()
+```
+
+```
+#&gt; {xml_nodeset (3)}
+#&gt; [1] &lt;li&gt;&lt;a href="/pages/info/"&gt;&lt;i cla ...
+#&gt; [2] &lt;li&gt;&lt;a href="/pages/data/"&gt;&lt;i cla ...
+#&gt; [3] &lt;li class="dropdown"&gt;\n           ...
+```
+`html_name()` get element name
+
+```r
+navbar %&gt;% 
+  html_children() %&gt;%
+  html_name()
+```
+
+```
+#&gt; [1] "li" "li" "li"
+```
+]
+
+---
+
+.pull-left[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+.center[&lt;img src = "img/rvest/navbar-right.png", width = "90%", style = "box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;]
+]
+.pull-right[
+`html_text2()` get element text
+
+```r
+navbar %&gt;% 
+  html_children() %&gt;%
+  html_text2()
+```
+
+```
+#&gt; [1] "Info"                                                                            
+#&gt; [2] "Data"                                                                            
+#&gt; [3] "Assignment\nAssignment 1\nAssignment 2\nAssignment 3\nAssignment 1\nAssignment 2"
+```
+`html_attr()` get element attributes
+
+```r
+navbar %&gt;% 
+  html_elements("a") %&gt;% 
+  html_attr("href")
+```
+
+```
+#&gt; [1] "/pages/info/"                 
+#&gt; [2] "/pages/data/"                 
+#&gt; [3] "#"                            
+#&gt; [4] "/assignments/assignment1/"    
+#&gt; [5] "/assignments/assignment2/"    
+#&gt; [6] "/assignments/assignment3/"    
+#&gt; [7] "/assignments/assignment1-sol/"
+#&gt; [8] "/assignments/assignment2-sol/"
+```
+]
+
+---
+
+## `url_absolute()`: turn relative urls to absolute urls
+
+
+```r
+navbar %&gt;% 
+  html_elements("a") %&gt;% 
+  html_attr("href") %&gt;% 
+  url_absolute(course)
+```
+
+```
+#&gt; [1] "https://stats220.earo.me/pages/info/"                 
+#&gt; [2] "https://stats220.earo.me/pages/data/"                 
+#&gt; [3] "https://stats220.earo.me#"                            
+#&gt; [4] "https://stats220.earo.me/assignments/assignment1/"    
+#&gt; [5] "https://stats220.earo.me/assignments/assignment2/"    
+#&gt; [6] "https://stats220.earo.me/assignments/assignment3/"    
+#&gt; [7] "https://stats220.earo.me/assignments/assignment1-sol/"
+#&gt; [8] "https://stats220.earo.me/assignments/assignment2-sol/"
+```
+
+---
+
+.pull-left[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+.center[&lt;img src = "img/rvest/navbar-right.png", width = "90%", style = "box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;]
+]
+.pull-right[
+`html_elements()` select elements
+
+```r
+navbar %&gt;% 
+  html_elements("i")
+```
+
+```
+#&gt; {xml_nodeset (8)}
+#&gt; [1] &lt;i class="fas fa-info-circle"&gt;&lt;/i&gt;
+#&gt; [2] &lt;i class="fas fa-database"&gt;&lt;/i&gt;
+#&gt; [3] &lt;i class="fas fa-laptop-code"&gt;&lt;/i&gt;
+#&gt; [4] &lt;i class="fas fa-laptop-code"&gt;&lt;/i&gt;
+#&gt; [5] &lt;i class="fas fa-laptop-code"&gt;&lt;/i&gt;
+#&gt; [6] &lt;i class="fas fa-laptop-code"&gt;&lt;/i&gt;
+#&gt; [7] &lt;i class="fas fa-key"&gt;&lt;/i&gt;
+#&gt; [8] &lt;i class="fas fa-key"&gt;&lt;/i&gt;
+```
+⬆️ [fontawesome](http://fontawesome.com) icons
+
+]
+
+---
+
+.pull-left[
+&lt;br&gt;
+
+
+```r
+stats220_info &lt;- read_html(
+  "https://stats220.earo.me/pages/info/")
+```
+.center[&lt;img src = "img/rvest/info-h3.png", width = "90%", style = "box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;]
+]
+.pull-right[
+select all `&lt;h3&gt;` elements
+
+```r
+stats220_info %&gt;% 
+  html_elements("h3") %&gt;% 
+  html_text()
+```
+
+```
+#&gt; [1] "Timetable" "Software"  "Textbook" 
+#&gt; [4] "Reading"   "Credits"
+```
+select `#timetable` id
+
+```r
+stats220_info %&gt;% 
+  html_elements("#timetable") %&gt;% 
+  html_text()
+```
+
+```
+#&gt; [1] "Timetable"
+```
+]
+
+---
+
+.pull-left[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+.center[&lt;img src = "img/rvest/info-table.png", width = "90%", style = "box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;]
+]
+.pull-right[
+select the first `&lt;table&gt;` element
+
+```r
+stats220_info %&gt;% 
+  html_element("table") %&gt;% 
+  html_table()
+```
+
+```
+#&gt; # A tibble: 8 x 4
+#&gt;   ``            Day   Time  Venue   
+#&gt;   &lt;chr&gt;         &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   
+#&gt; 1 "Lecture"     Wed   16-17 Eng1.439
+#&gt; 2 ""            Fri   10-11 Eng1.439
+#&gt; 3 "Lab"         Wed   09-10 303S.175
+#&gt; 4 ""            Wed   12-13 302.G40 
+#&gt; 5 ""            Wed   13-14 302.G40 
+#&gt; 6 ""            Fri   11-12 302.G40 
+#&gt; 7 ""            Thu   16-17 offshore
+#&gt; 8 "Office hour" Thu   14-15 303.323
+```
+]
+
+???
+
+* table on the web primarily for presentation purpose, not data storage
+* isn't clean from web scraping
+
+---
+
+## Download pdf slides at once
+
+
+```r
+stats220_urls &lt;- stats220 %&gt;% 
+  html_elements(".panel-body .btn") %&gt;% 
+  html_attr("href")
+stats220_urls
+```
+
+```
+#&gt;  [1] "/objs/obj01"          
+#&gt;  [2] "/R/01-intro.R"        
+#&gt;  [3] "/01-intro.Rmd"        
+#&gt;  [4] "/01-intro.pdf"        
+#&gt;  [5] "/labs/lab01"          
+#&gt;  [6] "/labs/lab01-sol"      
+#&gt;  [7] "/objs/obj02"          
+#&gt;  [8] "/R/02-import-export.R"
+#&gt;  [9] "/02-import-export.Rmd"
+#&gt; [10] "/02-import-export.pdf"
+#&gt; [11] "/labs/lab02"          
+#&gt; [12] "/labs/lab02-sol"      
+#&gt; [13] "/objs/obj03"          
+#&gt; [14] "/R/03-data-vis.R"     
+#&gt; [15] "/03-data-vis.Rmd"     
+#&gt; [16] "/03-data-vis.pdf"     
+#&gt; [17] "/labs/lab03"          
+#&gt; [18] "/labs/lab03-sol"      
+#&gt; [19] "/objs/obj04"          
+#&gt; [20] "/R/04-data-wrangle.R" 
+#&gt; [21] "/04-data-wrangle.Rmd" 
+#&gt; [22] "/04-data-wrangle.pdf" 
+#&gt; [23] "/labs/lab04"          
+#&gt; [24] "/labs/lab04-sol"      
+#&gt; [25] "/objs/obj05"          
+#&gt; [26] "/R/05-fcts-dates.R"   
+#&gt; [27] "/05-fcts-dates.Rmd"   
+#&gt; [28] "/05-fcts-dates.pdf"   
+#&gt; [29] "/labs/lab05"          
+#&gt; [30] "/labs/lab05-sol"      
+#&gt; [31] "/objs/obj06"          
+#&gt; [32] "/R/06-tidy-data.R"    
+#&gt; [33] "/06-tidy-data.Rmd"    
+#&gt; [34] "/06-tidy-data.pdf"    
+#&gt; [35] "/labs/lab06"          
+#&gt; [36] "/labs/lab06-sol"      
+#&gt; [37] "/objs/obj07"          
+#&gt; [38] "/R/07-data-vis2.R"    
+#&gt; [39] "/07-data-vis2.Rmd"    
+#&gt; [40] "/07-data-vis2.pdf"    
+#&gt; [41] "/labs/lab07"          
+#&gt; [42] "/objs/obj08"          
+#&gt; [43] "/R/08-rmd.R"          
+#&gt; [44] "/08-rmd.Rmd"          
+#&gt; [45] "/08-rmd.pdf"          
+#&gt; [46] "/labs/lab08"          
+#&gt; [47] "/objs/obj09"          
+#&gt; [48] "/R/09-web-scrape.R"   
+#&gt; [49] "/09-web-scrape.Rmd"   
+#&gt; [50] "/09-web-scrape.pdf"   
+#&gt; [51] "/"                    
+#&gt; [52] "/R/"                  
+#&gt; [53] "/"                    
+#&gt; [54] "/"                    
+#&gt; [55] "/R/"                  
+#&gt; [56] "/"                    
+#&gt; [57] "/"                    
+#&gt; [58] "/R/"                  
+#&gt; [59] "/"
+```
+
+---
+
+## Download pdf slides at once
+
+
+```r
+library(stringr) # manipulate strings in week 10
+(pdf_urls &lt;- stats220_urls[str_detect(stats220_urls, "pdf")])
+```
+
+```
+#&gt; [1] "/01-intro.pdf"        
+#&gt; [2] "/02-import-export.pdf"
+#&gt; [3] "/03-data-vis.pdf"     
+#&gt; [4] "/04-data-wrangle.pdf" 
+#&gt; [5] "/05-fcts-dates.pdf"   
+#&gt; [6] "/06-tidy-data.pdf"    
+#&gt; [7] "/07-data-vis2.pdf"    
+#&gt; [8] "/08-rmd.pdf"          
+#&gt; [9] "/09-web-scrape.pdf"
+```
+
+
+```r
+pdf_files &lt;- str_remove(pdf_urls, "/")
+purrr::walk2( # below for week 11
+  url_absolute(pdf_urls, course), pdf_files,
+  ~ download.file(url = .x, destfile = .y))
+```
+
+---
+
+class: inverse middle
+
+## REST API
+
+---
+
+## &lt;i class="fab fa-github"&gt;&lt;/i&gt; [Github REST API](https://docs.github.com/en/rest)
+
+.pull-left[
+* Each URL is called a **request**.
+* The data sent back to you is called an HTTP **response** that consists of headers and a body.
+
+The root-endpoint of Github's API is &lt;https://api.github.com&gt;.
+
+```r
+library(httr)
+endpoint &lt;- "https://api.github.com"
+GET(endpoint)
+```
+]
+.pull-right[
+
+```
+#&gt; Response [https://api.github.com]
+*#&gt;   Date: 2021-05-12 00:20
+*#&gt;   Status: 200
+*#&gt;   Content-Type: application/json; charset=utf-8
+*#&gt;   Size: 2.31 kB
+#&gt; {
+#&gt;   "current_user_url": "https://api.gi...
+#&gt;   "current_user_authorizations_html_u...
+#&gt;   "authorizations_url": "https://api....
+#&gt;   "code_search_url": "https://api.git...
+#&gt;   "commit_search_url": "https://api.g...
+#&gt;   "emails_url": "https://api.github.c...
+#&gt;   "emojis_url": "https://api.github.c...
+#&gt;   "events_url": "https://api.github.c...
+#&gt;   "feeds_url": "https://api.github.co...
+#&gt; ...
+```
+]
+
+---
+
+## HTTP methods
+
+&lt;br&gt;
+* .brown[`GET`] to **retrieve** resource data/information only, and NO change in state of the resource
+* .brown[`POST`] to **create** new subordinate resources, e.g. upload a file
+* .brown[`PUT`] to **update/replace** an existing resource in its entirety
+* .brown[`DELETE`] to **delete** resources
+* .brown[`PATCH`] to make **partial update** on a resource (not all browsers support `PATCH`)
+
+---
+
+## Path
+
+.pull-left[
+The **path** determines the resource you’re requesting for.
+
+[`GET /repos/{owner}/{repo}`](https://docs.github.com/en/rest/reference/repos#get-a-repository
+)
+
+```r
+path &lt;- "/repos/STATS-UOA/stats220"
+resp &lt;- GET(modify_url(endpoint, 
+  path = path))
+resp
+```
+]
+.pull-right[
+
+```
+#&gt; Response [https://api.github.com/repos/STATS-UOA/stats220]
+#&gt;   Date: 2021-05-12 00:20
+#&gt;   Status: 200
+#&gt;   Content-Type: application/json; charset=utf-8
+#&gt;   Size: 6.41 kB
+#&gt; {
+#&gt;   "id": 242031925,
+#&gt;   "node_id": "MDEwOlJlcG9zaXRvcnkyNDI...
+#&gt;   "name": "stats220",
+#&gt;   "full_name": "STATS-UOA/stats220",
+#&gt;   "private": false,
+#&gt;   "owner": {
+#&gt;     "login": "STATS-UOA",
+#&gt;     "id": 62915494,
+#&gt;     "node_id": "MDEyOk9yZ2FuaXphdGlvb...
+#&gt; ...
+```
+]
+
+---
+
+## Parse the response
+
+.pull-left[
+
+```r
+http_type(resp)
+```
+
+```
+#&gt; [1] "application/json"
+```
+
+Content type of a response
+* `"image/png"`
+* `"application/text"`
+* `"application/csv"`
+* `...`
+]
+.pull-right[
+
+```r
+content(resp)
+```
+
+```
+#&gt; $id
+#&gt; [1] 242031925
+#&gt; 
+#&gt; $node_id
+#&gt; [1] "MDEwOlJlcG9zaXRvcnkyNDIwMzE5MjU="
+#&gt; 
+#&gt; $name
+#&gt; [1] "stats220"
+#&gt; 
+#&gt; $full_name
+#&gt; [1] "STATS-UOA/stats220"
+#&gt; 
+#&gt; $private
+#&gt; [1] FALSE
+#&gt; 
+#&gt; $owner
+#&gt; $owner$login
+#&gt; [1] "STATS-UOA"
+#&gt; 
+#&gt; $owner$id
+#&gt; [1] 62915494
+#&gt; 
+#&gt; $owner$node_id
+#&gt; [1] "MDEyOk9yZ2FuaXphdGlvbjYyOTE1NDk0"
+#&gt; 
+#&gt; $owner$avatar_url
+#&gt; [1] "https://avatars.githubusercontent.com/u/62915494?v=4"
+#&gt; 
+#&gt; $owner$gravatar_id
+#&gt; [1] ""
+#&gt; 
+#&gt; $owner$url
+#&gt; [1] "https://api.github.com/users/STATS-UOA"
+#&gt; 
+#&gt; $owner$html_url
+#&gt; [1] "https://github.com/STATS-UOA"
+#&gt; 
+#&gt; $owner$followers_url
+#&gt; [1] "https://api.github.com/users/STATS-UOA/followers"
+#&gt; 
+#&gt; $owner$following_url
+#&gt; [1] "https://api.github.com/users/STATS-UOA/following{/other_user}"
+#&gt; 
+#&gt; $owner$gists_url
+#&gt; [1] "https://api.github.com/users/STATS-UOA/gists{/gist_id}"
+#&gt; 
+#&gt; $owner$starred_url
+#&gt; [1] "https://api.github.com/users/STATS-UOA/starred{/owner}{/repo}"
+#&gt; 
+#&gt; $owner$subscriptions_url
+#&gt; [1] "https://api.github.com/users/STATS-UOA/subscriptions"
+#&gt; 
+#&gt; $owner$organizations_url
+#&gt; [1] "https://api.github.com/users/STATS-UOA/orgs"
+#&gt; 
+#&gt; $owner$repos_url
+#&gt; [1] "https://api.github.com/users/STATS-UOA/repos"
+#&gt; 
+#&gt; $owner$events_url
+#&gt; [1] "https://api.github.com/users/STATS-UOA/events{/privacy}"
+#&gt; 
+#&gt; $owner$received_events_url
+#&gt; [1] "https://api.github.com/users/STATS-UOA/received_events"
+#&gt; 
+#&gt; $owner$type
+#&gt; [1] "Organization"
+#&gt; 
+#&gt; $owner$site_admin
+#&gt; [1] FALSE
+#&gt; 
+#&gt; 
+#&gt; $html_url
+#&gt; [1] "https://github.com/STATS-UOA/stats220"
+#&gt; 
+#&gt; $description
+#&gt; [1] "STATS 220 Data Technology @ the University of Auckland"
+#&gt; 
+#&gt; $fork
+#&gt; [1] FALSE
+#&gt; 
+#&gt; $url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220"
+#&gt; 
+#&gt; $forks_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/forks"
+#&gt; 
+#&gt; $keys_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/keys{/key_id}"
+#&gt; 
+#&gt; $collaborators_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/collaborators{/collaborator}"
+#&gt; 
+#&gt; $teams_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/teams"
+#&gt; 
+#&gt; $hooks_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/hooks"
+#&gt; 
+#&gt; $issue_events_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/issues/events{/number}"
+#&gt; 
+#&gt; $events_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/events"
+#&gt; 
+#&gt; $assignees_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/assignees{/user}"
+#&gt; 
+#&gt; $branches_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/branches{/branch}"
+#&gt; 
+#&gt; $tags_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/tags"
+#&gt; 
+#&gt; $blobs_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/git/blobs{/sha}"
+#&gt; 
+#&gt; $git_tags_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/git/tags{/sha}"
+#&gt; 
+#&gt; $git_refs_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/git/refs{/sha}"
+#&gt; 
+#&gt; $trees_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/git/trees{/sha}"
+#&gt; 
+#&gt; $statuses_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/statuses/{sha}"
+#&gt; 
+#&gt; $languages_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/languages"
+#&gt; 
+#&gt; $stargazers_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/stargazers"
+#&gt; 
+#&gt; $contributors_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/contributors"
+#&gt; 
+#&gt; $subscribers_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/subscribers"
+#&gt; 
+#&gt; $subscription_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/subscription"
+#&gt; 
+#&gt; $commits_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/commits{/sha}"
+#&gt; 
+#&gt; $git_commits_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/git/commits{/sha}"
+#&gt; 
+#&gt; $comments_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/comments{/number}"
+#&gt; 
+#&gt; $issue_comment_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/issues/comments{/number}"
+#&gt; 
+#&gt; $contents_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/contents/{+path}"
+#&gt; 
+#&gt; $compare_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/compare/{base}...{head}"
+#&gt; 
+#&gt; $merges_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/merges"
+#&gt; 
+#&gt; $archive_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/{archive_format}{/ref}"
+#&gt; 
+#&gt; $downloads_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/downloads"
+#&gt; 
+#&gt; $issues_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/issues{/number}"
+#&gt; 
+#&gt; $pulls_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/pulls{/number}"
+#&gt; 
+#&gt; $milestones_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/milestones{/number}"
+#&gt; 
+#&gt; $notifications_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/notifications{?since,all,participating}"
+#&gt; 
+#&gt; $labels_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/labels{/name}"
+#&gt; 
+#&gt; $releases_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/releases{/id}"
+#&gt; 
+#&gt; $deployments_url
+#&gt; [1] "https://api.github.com/repos/STATS-UOA/stats220/deployments"
+#&gt; 
+#&gt; $created_at
+#&gt; [1] "2020-02-21T01:53:12Z"
+#&gt; 
+#&gt; $updated_at
+#&gt; [1] "2021-05-11T23:22:45Z"
+#&gt; 
+#&gt; $pushed_at
+#&gt; [1] "2021-05-11T23:22:42Z"
+#&gt; 
+#&gt; $git_url
+#&gt; [1] "git://github.com/STATS-UOA/stats220.git"
+#&gt; 
+#&gt; $ssh_url
+#&gt; [1] "git@github.com:STATS-UOA/stats220.git"
+#&gt; 
+#&gt; $clone_url
+#&gt; [1] "https://github.com/STATS-UOA/stats220.git"
+#&gt; 
+#&gt; $svn_url
+#&gt; [1] "https://github.com/STATS-UOA/stats220"
+#&gt; 
+#&gt; $homepage
+#&gt; [1] "https://stats220.earo.me"
+#&gt; 
+#&gt; $size
+#&gt; [1] 164407
+#&gt; 
+#&gt; $stargazers_count
+#&gt; [1] 4
+#&gt; 
+#&gt; $watchers_count
+#&gt; [1] 4
+#&gt; 
+#&gt; $language
+#&gt; [1] "HTML"
+#&gt; 
+#&gt; $has_issues
+#&gt; [1] TRUE
+#&gt; 
+#&gt; $has_projects
+#&gt; [1] TRUE
+#&gt; 
+#&gt; $has_downloads
+#&gt; [1] TRUE
+#&gt; 
+#&gt; $has_wiki
+#&gt; [1] TRUE
+#&gt; 
+#&gt; $has_pages
+#&gt; [1] FALSE
+#&gt; 
+#&gt; $forks_count
+#&gt; [1] 0
+#&gt; 
+#&gt; $mirror_url
+#&gt; NULL
+#&gt; 
+#&gt; $archived
+#&gt; [1] FALSE
+#&gt; 
+#&gt; $disabled
+#&gt; [1] FALSE
+#&gt; 
+#&gt; $open_issues_count
+#&gt; [1] 5
+#&gt; 
+#&gt; $license
+#&gt; NULL
+#&gt; 
+#&gt; $forks
+#&gt; [1] 0
+#&gt; 
+#&gt; $open_issues
+#&gt; [1] 5
+#&gt; 
+#&gt; $watchers
+#&gt; [1] 4
+#&gt; 
+#&gt; $default_branch
+#&gt; [1] "master"
+#&gt; 
+#&gt; $temp_clone_token
+#&gt; NULL
+#&gt; 
+#&gt; $organization
+#&gt; $organization$login
+#&gt; [1] "STATS-UOA"
+#&gt; 
+#&gt; $organization$id
+#&gt; [1] 62915494
+#&gt; 
+#&gt; $organization$node_id
+#&gt; [1] "MDEyOk9yZ2FuaXphdGlvbjYyOTE1NDk0"
+#&gt; 
+#&gt; $organization$avatar_url
+#&gt; [1] "https://avatars.githubusercontent.com/u/62915494?v=4"
+#&gt; 
+#&gt; $organization$gravatar_id
+#&gt; [1] ""
+#&gt; 
+#&gt; $organization$url
+#&gt; [1] "https://api.github.com/users/STATS-UOA"
+#&gt; 
+#&gt; $organization$html_url
+#&gt; [1] "https://github.com/STATS-UOA"
+#&gt; 
+#&gt; $organization$followers_url
+#&gt; [1] "https://api.github.com/users/STATS-UOA/followers"
+#&gt; 
+#&gt; $organization$following_url
+#&gt; [1] "https://api.github.com/users/STATS-UOA/following{/other_user}"
+#&gt; 
+#&gt; $organization$gists_url
+#&gt; [1] "https://api.github.com/users/STATS-UOA/gists{/gist_id}"
+#&gt; 
+#&gt; $organization$starred_url
+#&gt; [1] "https://api.github.com/users/STATS-UOA/starred{/owner}{/repo}"
+#&gt; 
+#&gt; $organization$subscriptions_url
+#&gt; [1] "https://api.github.com/users/STATS-UOA/subscriptions"
+#&gt; 
+#&gt; $organization$organizations_url
+#&gt; [1] "https://api.github.com/users/STATS-UOA/orgs"
+#&gt; 
+#&gt; $organization$repos_url
+#&gt; [1] "https://api.github.com/users/STATS-UOA/repos"
+#&gt; 
+#&gt; $organization$events_url
+#&gt; [1] "https://api.github.com/users/STATS-UOA/events{/privacy}"
+#&gt; 
+#&gt; $organization$received_events_url
+#&gt; [1] "https://api.github.com/users/STATS-UOA/received_events"
+#&gt; 
+#&gt; $organization$type
+#&gt; [1] "Organization"
+#&gt; 
+#&gt; $organization$site_admin
+#&gt; [1] FALSE
+#&gt; 
+#&gt; 
+#&gt; $network_count
+#&gt; [1] 0
+#&gt; 
+#&gt; $subscribers_count
+#&gt; [1] 1
+```
+]
+
+---
+
+## Status code
+
+
+```r
+status_code(resp)
+```
+
+```
+#&gt; [1] 200
+```
+
+&lt;br&gt;
+
+.pull-left[
+
+```r
+http_status(200) # OK
+http_status(201) # Created
+http_status(204) # NO CONTENT
+```
+]
+.pull-right[
+
+```r
+http_status(400) # BAD REQUEST
+http_status(403) # Forbidden
+http_status(404) # NOT FOUND
+```
+]
+
+.footnote[&lt;https://en.wikipedia.org/wiki/List_of_HTTP_status_codes&gt;]
+
+---
+
+## Auckland Transport Open GIS Data: [bus stop](https://data-atgis.opendata.arcgis.com/datasets/bus-stop?geometry=173.281%2C-37.229%2C176.247%2C-36.459)
+
+
+```r
+endpoint &lt;- "https://services2.arcgis.com"
+path &lt;- "/JkPEgZJGxhSjYOo0/arcgis/rest/services/BusService/FeatureServer/0/"
+query &lt;- "query?where=1%3D1&amp;outFields=*&amp;outSR=4326&amp;f=geojson"
+bus_url &lt;- parse_url(paste0(endpoint, path, query))
+resp &lt;- GET(bus_url)
+cnt &lt;- geojson::as.geojson(content(resp))
+cnt
+```
+
+```
+#&gt; &lt;geojson&gt; 
+#&gt;   type:  FeatureCollection 
+#&gt;   features (n): 1000 
+#&gt;   features (geometry / length) [first 5]:
+#&gt;     Point / 2
+#&gt;     Point / 2
+#&gt;     Point / 2
+#&gt;     Point / 2
+#&gt;     Point / 2
+```
+
+---
+
+class: middle
+
+.pull-left[
+
+```r
+library(tidyverse)
+library(sf)
+bus_sf &lt;- geojsonsf::geojson_sf(cnt)
+ggplot() +
+  geom_sf(data = bus_sf, pch = 1, 
+    colour = "#3182bd")
+```
+
+]
+.pull-right[
+&lt;img src="figure/bus-stop-plot2-1.png" width="540" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Reading
+
+.pull-left[
+&lt;br&gt;
+&lt;br&gt;
+.center[
+&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/rvest.png" width="240px"&gt;
+]]
+.pull-right[
+* [Get started with {rvest}](https://rvest.tidyverse.org/articles/rvest.html)
+* [{httr} quickstart guide](https://httr.r-lib.org/articles/quickstart.html)
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

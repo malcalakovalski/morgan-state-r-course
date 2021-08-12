@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>STATS 220</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <link rel="stylesheet" href="assets/remark.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# STATS 220
+## Tidy data🧹
+
+---
+
+
+background-image: url("https://images.unsplash.com/photo-1587654780291-39c9404d746b?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1950&amp;q=80")
+background-size: 100% 100%
+
+--
+
+&lt;img src = "https://images.unsplash.com/photo-1615465502839-71d5974f5087?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1350&amp;q=80", width = 45%, style = "position:absolute; top: 22.5%; left: 5.5%; box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
+
+--
+
+&lt;img src = "https://images.unsplash.com/photo-1615750198206-6e632e147ef9?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1350&amp;q=80", width = 45%, style = "position:absolute; top: 22.5%; left: 52.5%; box-shadow: 3px 5px 3px 1px #00000080;"&gt;&lt;/img&gt;
+
+.green[.footnote[image sources: Upsplash]]
+
+???
+
+* each piece is a scalar, a vector, a tibble, a list
+* each piece is vector functions or table functions
+* bc they are standard and consistent blocks,
+* ensemble them to a simple mario, or complex nintendo
+* so far you worked with several datasets now,
+* hopefully you find a pattern is using these dplyr verbs in different ways to solve various problems.
+
+---
+
+background-image: url("img/what-you-think-about-ds.png")
+background-size: contain
+
+
+
+
+
+
+
+## .yellow[What you think about data science] 🤩
+
+.footnote[image credit: Hilary Parker]
+
+???
+
+* 80% on modelling
+
+---
+
+background-image: url("img/what-ds-in-reality.png")
+background-size: contain
+
+## .yellow[What data science is in reality] 😭
+
+.footnote[image credit: Hilary Parker]
+
+???
+
+* 80% on cleaning
+* it's invaluable to know the data pipeline: how data collected and organised
+* covid19, different def for each country in the early stage
+
+---
+
+## .center[tidy data &lt;i class="fas fa-not-equal"&gt;&lt;/i&gt; clean data]
+
+.brown[.center[The `movies` data is tidy but not clean.]]
+
+
+```
+#&gt; # A tibble: 5 x 16
+#&gt;   Release_Date US_DVD_Sales Title      US_Gross Worldwide_Gross Production_Budg…
+#&gt;   &lt;chr&gt;               &lt;int&gt; &lt;chr&gt;         &lt;int&gt;           &lt;dbl&gt;            &lt;int&gt;
+#&gt; 1 9-Mar-94               NA Four Wedd… 52700832       242895809          4500000
+#&gt; 2 18-Oct-06              NA 51 Birch …    84689           84689           350000
+*#&gt; 3 1963-01-01             NA 55 Days a… 10000000        10000000         17000000
+*#&gt; 4 &lt;NA&gt;                   NA Drei              0               0          7200000
+#&gt; 5 16-Jan-98              NA The Dress     16556           16556          2650000
+#&gt; # … with 10 more variables: MPAA_Rating &lt;chr&gt;, Running_Time_min &lt;int&gt;,
+#&gt; #   Distributor &lt;chr&gt;, Source &lt;chr&gt;, Major_Genre &lt;chr&gt;, Creative_Type &lt;chr&gt;,
+#&gt; #   Director &lt;chr&gt;, Rotten_Tomatoes_Rating &lt;int&gt;, IMDB_Rating &lt;dbl&gt;,
+#&gt; #   IMDB_Votes &lt;int&gt;
+```
+
+???
+
+* all data you've seen so far are tidy, but tidy doesn't mean clean.
+* how I would clean this data: 
+* either google Drei release year, and corresponding GDP
+* or replace GDP with NA
+* Gross are suspicious
+
+---
+
+## .center[tidy data &lt;i class="fas fa-not-equal"&gt;&lt;/i&gt; clean data]
+
+.brown[.center[They are tidy and clean in their own way.]]
+
+.pull-left[
+* `time_use`
+
+```
+#&gt; # A tibble: 28 x 3
+#&gt;   country    category            minutes
+#&gt;   &lt;chr&gt;      &lt;chr&gt;                 &lt;dbl&gt;
+#&gt; 1 New Zeala… Paid work             241  
+#&gt; 2 USA        Paid work             251. 
+#&gt; 3 New Zeala… Education              29  
+#&gt; 4 USA        Education              31.4
+#&gt; 5 New Zeala… Care for household…    30  
+#&gt; 6 USA        Care for household…    30.6
+#&gt; # … with 22 more rows
+```
+]
+.pull-right[
+* `countrycode`
+
+```
+#&gt; # A tibble: 2 x 2
+#&gt;   country country_name 
+#&gt;   &lt;chr&gt;   &lt;chr&gt;        
+#&gt; 1 NZL     New Zealand  
+#&gt; 2 USA     United States
+```
+]
+
+???
+
+* week 4, when we try to join them, we see how country names are encoded differently.
+* Data cleaning is laborious, and highly dependent on the data itself.
+* No golden standards or principles to guide how to clean data.
+* reason about the cleaning steps (intuition, common sense, business context)
+* principles to get tidy data.
+
+---
+
+class: middle inverse
+
+# Tidy data describes a standard way of storing data in .blue[a consistent format].
+
+???
+
+* tidy data is about data format, instead of caring the data values.
+
+---
+
+## Your turn
+
+Tuberculosis data from WHO (`data/tb.csv`):
+1. Is `tb` tidy data?
+2. What are the data observations? What are the data variables?
+
+```r
+tb
+```
+
+
+```
+#&gt; # A tibble: 5,769 x 22
+#&gt;   iso2   year  m_04 m_514 m_014 m_1524 m_2534 m_3544 m_4554 m_5564  m_65   m_u
+#&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1 AD     1989    NA    NA    NA     NA     NA     NA     NA     NA    NA    NA
+#&gt; 2 AD     1990    NA    NA    NA     NA     NA     NA     NA     NA    NA    NA
+#&gt; 3 AD     1991    NA    NA    NA     NA     NA     NA     NA     NA    NA    NA
+#&gt; 4 AD     1992    NA    NA    NA     NA     NA     NA     NA     NA    NA    NA
+#&gt; 5 AD     1993    NA    NA    NA     NA     NA     NA     NA     NA    NA    NA
+#&gt; 6 AD     1994    NA    NA    NA     NA     NA     NA     NA     NA    NA    NA
+#&gt; # … with 5,763 more rows, and 10 more variables: f_04 &lt;dbl&gt;, f_514 &lt;dbl&gt;,
+#&gt; #   f_014 &lt;dbl&gt;, f_1524 &lt;dbl&gt;, f_2534 &lt;dbl&gt;, f_3544 &lt;dbl&gt;, f_4554 &lt;dbl&gt;,
+#&gt; #   f_5564 &lt;dbl&gt;, f_65 &lt;dbl&gt;, f_u &lt;dbl&gt;
+```
+
+<div class="countdown" id="timer_6086432d" style="top:0;right:0;font-size:48px;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">01</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+???
+
+* Can you easily plot a dataset like this using ggplot2? by sex and age
+* come back later
+
+---
+
+class: center
+
+## one data, many representations
+
+&lt;img src="https://github.com/gadenbuie/tidyexplain/raw/master/images/static/png/original-dfs-tidy.png" height="520px"&gt;
+
+.left[.footnote[image credit: Garrick Aden-Buie]]
+
+???
+
+* which rep does `tb` resemble?
+* which rep is easier to work with? depends on the question, wide -&gt; suitable for summary table
+
+---
+
+background-image: url(https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/tidydata_1.jpg)
+background-size: contain
+
+???
+
+* In database, this is schema.
+* Tidy data principles are a rephrase of third norm in a database schema design.
+&lt;https://en.wikipedia.org/wiki/Third_normal_form&gt;, to data scientists.
+* tidy data is for human consumption.
+* Tabular data is column-oriented format
+
+---
+
+background-image: url(https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/tidydata_2.jpg)
+background-size: contain
+
+---
+
+background-image: url(https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/tidydata_5.jpg)
+background-size: contain
+
+## Making friends with tidy data
+
+* one set of consistent tools for different datasets
+* easier for automation and iteration
+
+.footnote[reference: Illustrations from the Openscapes blog [Tidy Data for reproducibility, efficiency, and collaboration](https://www.openscapes.org/blog/2020/10/12/tidy-data/) by Julia Lowndes and Allison Horst]
+
+???
+
+* To work with messy data, every time you need to switch to different gears
+* learn new tools that just works for that specific dataset
+* It's much more pleasant to work with tidy data, help you to build a good taste of data analysis
+* spent less flighting with different tools, focus more on data analysis bc one set of consistent tools
+* the {tidyverse} philosophy to work with the tidy data structures
+* build automatic workflow for analysis, feed different data sets.
+
+---
+
+## .center[Get data into tidy format]
+
+&lt;br&gt;
+.pull-right[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyr.png" width="240px"&gt;](http://tidyr.tidyverse.org)]
+]
+.pull-left[
+<table style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif; display: table; border-collapse: collapse; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;">
+  
+  <thead style="border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3;">
+    <tr>
+      <th style="color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: left;" rowspan="1" colspan="1">type</th>
+      <th style="color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: left;" rowspan="1" colspan="1"><code>function()</code></th>
+      <th style="color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: left;" rowspan="1" colspan="1"><code>function()</code></th>
+    </tr>
+  </thead>
+  <tbody style="border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3;">
+    <tr>
+      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;"><div class='gt_from_md'><p><strong>pivoting</strong></p>
+</div></td>
+      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;"><div class='gt_from_md'><p><code>pivot_longer()</code></p>
+</div></td>
+      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;"><div class='gt_from_md'><p><code>pivot_wider()</code></p>
+</div></td>
+    </tr>
+    <tr>
+      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;"><div class='gt_from_md'><p><strong>splitting/combining</strong></p>
+</div></td>
+      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;"><div class='gt_from_md'><p><code>seperate()</code></p>
+</div></td>
+      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;"><div class='gt_from_md'><p><code>unite()</code></p>
+</div></td>
+    </tr>
+    <tr>
+      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;"><div class='gt_from_md'><p><strong>nesting/unnesting</strong></p>
+</div></td>
+      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;"><div class='gt_from_md'><p><code>nest()</code></p>
+</div></td>
+      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;"><div class='gt_from_md'><p><code>unnest()</code></p>
+</div></td>
+    </tr>
+    <tr>
+      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;"><div class='gt_from_md'><p><strong>missing</strong></p>
+</div></td>
+      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;"><div class='gt_from_md'><p><code>complete()</code></p>
+</div></td>
+      <td style="padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;"><div class='gt_from_md'><p><code>fill()</code></p>
+</div></td>
+    </tr>
+  </tbody>
+  
+  
+</table>
+]
+
+???
+
+* missing verbs not exactly a pair
+
+---
+
+.pull-left[
+.x[
+* Messy
+]
+&lt;hr&gt;
+
+```
+#&gt; # A tibble: 5,769 x 22
+*#&gt;   iso2   year  m_04 m_514 m_014
+#&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1 AD     1989    NA    NA    NA
+#&gt; 2 AD     1990    NA    NA    NA
+#&gt; 3 AD     1991    NA    NA    NA
+#&gt; 4 AD     1992    NA    NA    NA
+#&gt; 5 AD     1993    NA    NA    NA
+#&gt; 6 AD     1994    NA    NA    NA
+#&gt; # … with 5,763 more rows, and 17
+#&gt; #   more variables: m_1524 &lt;dbl&gt;,
+#&gt; #   m_2534 &lt;dbl&gt;, m_3544 &lt;dbl&gt;,
+#&gt; #   m_4554 &lt;dbl&gt;, m_5564 &lt;dbl&gt;,
+#&gt; #   m_65 &lt;dbl&gt;, m_u &lt;dbl&gt;,
+#&gt; #   f_04 &lt;dbl&gt;, f_514 &lt;dbl&gt;,
+#&gt; #   f_014 &lt;dbl&gt;, f_1524 &lt;dbl&gt;,
+#&gt; #   f_2534 &lt;dbl&gt;, f_3544 &lt;dbl&gt;,
+#&gt; #   f_4554 &lt;dbl&gt;, f_5564 &lt;dbl&gt;,
+#&gt; #   f_65 &lt;dbl&gt;, f_u &lt;dbl&gt;
+```
+]
+
+.pull-right[
+.checked[
+* Tidy
+]
+&lt;hr&gt;
+
+```
+#&gt; # A tibble: 115,380 x 5
+*#&gt;   iso2   year sex   age   cases
+#&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;
+#&gt; 1 AD     1989 m     04        0
+#&gt; 2 AD     1989 m     514       0
+#&gt; 3 AD     1989 m     014       0
+#&gt; 4 AD     1989 m     1524      0
+#&gt; 5 AD     1989 m     2534      0
+#&gt; 6 AD     1989 m     3544      0
+#&gt; # … with 115,374 more rows
+```
+]
+
+???
+
+* the `tb` data is messy data, rows and columns
+* obs and variables
+* working with tidy data, we know obs: the number of cases by sex and age groups over years at country level
+* messy in a way that column names should be values, stored in cells.
+* what steps needed to get to this tidy format.
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyr.png" width="60%"&gt;](http://tidyr.tidyverse.org)]
+### - pivot
+]
+.right-column[
+* `pivot_longer()` a wider-format data
+
+```r
+library(tidyverse) # library(tidyr)
+tb %&gt;% 
+  pivot_longer(
+*   cols = m_04:f_u, # cols in the data for pivoting
+*   names_to = "sex_age", # new col contains old headers
+*   values_to = "cases") # new col contains old values
+```
+
+```
+*#&gt; # A tibble: 115,380 x 4
+*#&gt;   iso2   year sex_age cases
+#&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;
+#&gt; 1 AD     1989 m_04       NA
+#&gt; 2 AD     1989 m_514      NA
+#&gt; 3 AD     1989 m_014      NA
+#&gt; 4 AD     1989 m_1524     NA
+#&gt; 5 AD     1989 m_2534     NA
+#&gt; 6 AD     1989 m_3544     NA
+#&gt; # … with 115,374 more rows
+```
+]
+
+???
+
+* messy: store two variables into one column 
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyr.png" width="60%"&gt;](http://tidyr.tidyverse.org)]
+### - pivot
+]
+.right-column[
+&lt;br&gt;
+.center[![](img/tidyr-longer-wider.gif)]
+]
+
+.footnote[image credit: Garrick Aden-Buie &amp; Mara Averick]
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyr.png" width="60%"&gt;](http://tidyr.tidyverse.org)]
+### - pivot
+### - split
+]
+.right-column[
+* `seperate()` a character column into multiple columns
+
+```r
+tb %&gt;% 
+  pivot_longer(cols = m_04:f_u, 
+    names_to = "sex_age", values_to = "cases") %&gt;% 
+* separate(sex_age, into = c("sex", "age"), sep = "_")
+```
+
+```
+#&gt; # A tibble: 115,380 x 5
+#&gt;   iso2   year sex   age   cases
+#&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;
+#&gt; 1 AD     1989 m     04       NA
+#&gt; 2 AD     1989 m     514      NA
+#&gt; 3 AD     1989 m     014      NA
+#&gt; 4 AD     1989 m     1524     NA
+#&gt; 5 AD     1989 m     2534     NA
+#&gt; 6 AD     1989 m     3544     NA
+#&gt; # … with 115,374 more rows
+```
+]
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyr.png" width="60%"&gt;](http://tidyr.tidyverse.org)]
+### - pivot
+### - split
+### - fill
+]
+.right-column[
+* `fill()` in `NA` with previous (.brown[`"down"`]) or next (.brown[`"up"`]) value
+
+```r
+tb_tidy &lt;- tb %&gt;% 
+  pivot_longer(cols = m_04:f_u, 
+    names_to = "sex_age", values_to = "cases") %&gt;% 
+  separate(sex_age, into = c("sex", "age"), sep = "_") %&gt;% 
+  group_by(iso2) %&gt;% 
+* fill(cases, .direction = "updown") %&gt;%
+  ungroup()
+```
+
+```
+#&gt; # A tibble: 115,380 x 5
+#&gt;   iso2   year sex   age   cases
+#&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;
+#&gt; 1 AD     1989 m     04        0
+#&gt; 2 AD     1989 m     514       0
+#&gt; 3 AD     1989 m     014       0
+#&gt; 4 AD     1989 m     1524      0
+#&gt; 5 AD     1989 m     2534      0
+#&gt; 6 AD     1989 m     3544      0
+#&gt; # … with 115,374 more rows
+```
+]
+
+???
+
+* how to impute missing data is dependent on data context. For cross-sectional, average and build a regression model to predict
+* fill by direction
+* demo on `direction`
+
+---
+
+background-image:url(img/lst-col.png)
+background-position: 85% 50%
+background-size: 10%
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyr.png" width="60%"&gt;](http://tidyr.tidyverse.org)]
+### - pivot
+### - split
+### - fill
+### - nest
+]
+.right-column[
+* `nest()` multiple columns into a .brown[list-column]
+
+```r
+tb_tidy %&gt;% 
+  nest(data = -iso2)
+```
+
+```
+#&gt; # A tibble: 213 x 2
+#&gt;   iso2  data                  
+#&gt;   &lt;chr&gt; &lt;list&gt;                
+#&gt; 1 AD    &lt;tibble[,4] [380 × 4]&gt;
+#&gt; 2 AE    &lt;tibble[,4] [520 × 4]&gt;
+#&gt; 3 AF    &lt;tibble[,4] [480 × 4]&gt;
+#&gt; 4 AG    &lt;tibble[,4] [540 × 4]&gt;
+#&gt; 5 AI    &lt;tibble[,4] [440 × 4]&gt;
+#&gt; 6 AL    &lt;tibble[,4] [540 × 4]&gt;
+#&gt; # … with 207 more rows
+```
+]
+
+???
+
+* tibble is a list, recursive structure
+* we can put a list into a tibble
+* complex objs in tibble
+
+---
+
+## Building many models*
+
+
+```r
+tb_fit &lt;- tb_tidy %&gt;% 
+  nest(data = -iso2) %&gt;% 
+  mutate( # map() for week 11
+    model = map(data, ~ lm(cases ~ year + sex + age, data = .)),
+    r2 = map_dbl(model, ~ broom::glance(.)$r.squared)
+  )
+```
+
+```
+#&gt; # A tibble: 213 x 4
+#&gt;   iso2  data                   model     r2
+#&gt;   &lt;chr&gt; &lt;list&gt;                 &lt;list&gt; &lt;dbl&gt;
+#&gt; 1 AD    &lt;tibble[,4] [380 × 4]&gt; &lt;lm&gt;   0.165
+#&gt; 2 AE    &lt;tibble[,4] [520 × 4]&gt; &lt;lm&gt;   0.133
+#&gt; 3 AF    &lt;tibble[,4] [480 × 4]&gt; &lt;lm&gt;   0.487
+#&gt; 4 AG    &lt;tibble[,4] [540 × 4]&gt; &lt;lm&gt;   0.220
+#&gt; 5 AI    &lt;tibble[,4] [440 × 4]&gt; &lt;lm&gt;   0.515
+#&gt; 6 AL    &lt;tibble[,4] [540 × 4]&gt; &lt;lm&gt;   0.478
+#&gt; # … with 207 more rows
+```
+
+???
+
+* r2 for each country
+
+---
+
+.panelset[
+
+.panel[.panel-name[Plot]
+
+
+&lt;img src="figure/tb-mod-plot-1.png" width="1080" style="display: block; margin: auto;" /&gt;
+
+.panel[.panel-name[Code]
+
+
+```r
+set.seed(220)
+tb_fit_pre &lt;- tb_fit %&gt;% 
+  arrange(-r2) %&gt;% 
+* mutate(iso2 = fct_inorder(iso2), index = row_number())
+hl_tb &lt;- tb_fit_pre %&gt;% 
+  slice_sample(n = 20)
+tb_fit_pre %&gt;% 
+  ggplot(aes(x = index, y = r2)) +
+  geom_hline(yintercept = 0.5, size = 0.8, colour = "grey") +
+* geom_point(aes(colour = r2 &lt; 0.5), size = 0.8) +
+* ggrepel::geom_label_repel(aes(label = iso2), data = hl_tb, box.padding = 1) +
+  theme_bw() +
+  theme(
+*   axis.text.x = element_blank(),
+*   axis.ticks.x = element_blank(),
+*   panel.grid.major.x = element_blank(),
+*   legend.position = "top"
+  )
+```
+]
+]
+]
+
+???
+
+* direct labeling instead of &gt; 200 country labels underneath
+
+---
+
+## Your turn
+
+Auckland weather data from GHCND (`data/ghcnd/ghcnd-akl.csv`):
+
+1. Is `aklweather` tidy data?
+2. What are the data observations? What are the data variables?
+
+
+```r
+aklweather
+```
+
+```
+#&gt; # A tibble: 2,974 x 3
+#&gt;   date       datatype value
+#&gt;   &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt;
+#&gt; 1 2019-01-01 PRCP         0
+#&gt; 2 2019-01-01 TAVG       206
+#&gt; 3 2019-01-01 TMAX       232
+#&gt; 4 2019-01-01 TMIN       188
+#&gt; 5 2019-01-02 PRCP         5
+#&gt; 6 2019-01-02 TAVG       207
+#&gt; # … with 2,968 more rows
+```
+
+<div class="countdown" id="timer_60864332" style="top:0;right:0;font-size:48px;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">01</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+???
+
+* The `value` column contains multiple types of measurements.
+
+---
+
+.pull-left[
+.x[
+* Messy
+]
+&lt;hr&gt;
+
+```
+#&gt; # A tibble: 2,974 x 3
+*#&gt;   date       datatype value
+#&gt;   &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt;
+#&gt; 1 2019-01-01 PRCP         0
+#&gt; 2 2019-01-01 TAVG       206
+#&gt; 3 2019-01-01 TMAX       232
+#&gt; 4 2019-01-01 TMIN       188
+#&gt; 5 2019-01-02 PRCP         5
+#&gt; 6 2019-01-02 TAVG       207
+#&gt; # … with 2,968 more rows
+```
+
+```r
+aklweather &lt;- read_csv2(
+  "data/ghcnd/ghcnd-akl.csv",
+  col_types = cols_only(
+    date = "D", datatype = "c", 
+    value = "d"))
+aklweather
+```
+]
+
+.pull-right[
+.checked[
+* Tidy
+]
+&lt;hr&gt;
+
+```
+#&gt; # A tibble: 816 x 5
+*#&gt;   date        PRCP  TAVG  TMAX  TMIN
+#&gt;   &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1 2019-01-01     0   206   232   188
+#&gt; 2 2019-01-02     5   207   230   183
+#&gt; 3 2019-01-03     0   211   241   184
+#&gt; 4 2019-01-04     0   192   229    NA
+#&gt; 5 2019-01-05     0   200   233   150
+#&gt; 6 2019-01-06     0   213   237   169
+#&gt; # … with 810 more rows
+```
+]
+
+???
+
+* demo on `read_csv2()`
+* daily weather information in Auckland
+* temp values unbelievably large?
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyr.png" width="60%"&gt;](http://tidyr.tidyverse.org)]
+### - calibrate
+]
+.right-column[
+* calibrate the measurements
+
+```r
+aklweather %&gt;%
+  mutate(value = value / 10)
+```
+
+```
+#&gt; # A tibble: 2,974 x 3
+#&gt;   date       datatype value
+#&gt;   &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt;
+#&gt; 1 2019-01-01 PRCP       0  
+#&gt; 2 2019-01-01 TAVG      20.6
+#&gt; 3 2019-01-01 TMAX      23.2
+#&gt; 4 2019-01-01 TMIN      18.8
+#&gt; 5 2019-01-02 PRCP       0.5
+#&gt; 6 2019-01-02 TAVG      20.7
+#&gt; # … with 2,968 more rows
+```
+]
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyr.png" width="60%"&gt;](http://tidyr.tidyverse.org)]
+### - calibrate
+### - pivot
+]
+.right-column[
+* `pivot_wider()` a longer-format data
+
+```r
+aklweather %&gt;%
+  mutate(value = value / 10) %&gt;% 
+  pivot_wider(
+*   names_from = datatype, # new headers from old `datatype` val
+*   values_from = value)  # new col contains old `value`
+```
+
+```
+*#&gt; # A tibble: 816 x 5
+*#&gt;   date        PRCP  TAVG  TMAX  TMIN
+#&gt;   &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1 2019-01-01   0    20.6  23.2  18.8
+#&gt; 2 2019-01-02   0.5  20.7  23    18.3
+#&gt; 3 2019-01-03   0    21.1  24.1  18.4
+#&gt; 4 2019-01-04   0    19.2  22.9  NA  
+#&gt; 5 2019-01-05   0    20    23.3  15  
+#&gt; 6 2019-01-06   0    21.3  23.7  16.9
+#&gt; # … with 810 more rows
+```
+]
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyr.png" width="60%"&gt;](http://tidyr.tidyverse.org)]
+### - calibrate
+### - pivot
+]
+.right-column[
+&lt;br&gt;
+.center[![](img/tidyr-longer-wider.gif)]
+]
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyr.png" width="60%"&gt;](http://tidyr.tidyverse.org)]
+### - calibrate
+### - pivot
+### - rename
+]
+.right-column[
+* `rename_with()` renames columns using a function
+
+```r
+aklweather_tidy &lt;- aklweather %&gt;%
+  mutate(value = value / 10) %&gt;% 
+  pivot_wider(
+    names_from = datatype,
+    values_from = value) %&gt;%
+* rename_with(tolower)
+aklweather_tidy
+```
+
+```
+#&gt; # A tibble: 816 x 5
+#&gt;   date        prcp  tavg  tmax  tmin
+#&gt;   &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1 2019-01-01   0    20.6  23.2  18.8
+#&gt; 2 2019-01-02   0.5  20.7  23    18.3
+#&gt; 3 2019-01-03   0    21.1  24.1  18.4
+#&gt; 4 2019-01-04   0    19.2  22.9  NA  
+#&gt; 5 2019-01-05   0    20    23.3  15  
+#&gt; 6 2019-01-06   0    21.3  23.7  16.9
+#&gt; # … with 810 more rows
+```
+]
+
+???
+
+tedious to type
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyr.png" width="60%"&gt;](http://tidyr.tidyverse.org)]
+### - calibrate
+### - pivot
+### - rename
+### - complete
+]
+.right-column[
+* `complete()` data with missing combinations of data
+
+```r
+library(lubridate)
+aklweather_tidy %&gt;% 
+  complete(date = full_seq(
+    ymd(c("2019-01-01", "2021-04-01")), 1))
+```
+
+```
+*#&gt; # A tibble: 822 x 5
+#&gt;   date        prcp  tavg  tmax  tmin
+#&gt;   &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1 2019-01-01   0    20.6  23.2  18.8
+#&gt; 2 2019-01-02   0.5  20.7  23    18.3
+#&gt; 3 2019-01-03   0    21.1  24.1  18.4
+#&gt; 4 2019-01-04   0    19.2  22.9  NA  
+#&gt; 5 2019-01-05   0    20    23.3  15  
+#&gt; 6 2019-01-06   0    21.3  23.7  16.9
+#&gt; # … with 816 more rows
+```
+]
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyr.png" width="60%"&gt;](http://tidyr.tidyverse.org)]
+### - calibrate
+### - pivot
+### - rename
+### - complete
+]
+.right-column[
+* implicit missing records before
+
+```r
+aklweather_tidy %&gt;% 
+  complete(date = full_seq(
+    ymd(c("2019-01-01", "2021-04-01")), 1)) %&gt;% 
+* anti_join(aklweather_tidy)
+```
+
+```
+#&gt; # A tibble: 6 x 5
+#&gt;   date        prcp  tavg  tmax  tmin
+#&gt;   &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1 2019-02-16    NA    NA    NA    NA
+#&gt; 2 2019-02-17    NA    NA    NA    NA
+#&gt; 3 2019-02-18    NA    NA    NA    NA
+#&gt; 4 2021-02-11    NA    NA    NA    NA
+#&gt; 5 2021-02-12    NA    NA    NA    NA
+#&gt; 6 2021-02-20    NA    NA    NA    NA
+```
+]
+
+???
+
+implicit bf, explicit after `complete()`
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyr.png" width="60%"&gt;](http://tidyr.tidyverse.org)]
+### - calibrate
+### - pivot
+### - rename
+### - complete
+### - wrangle
+]
+.right-column[
+
+```r
+akl_prcp &lt;- aklweather_tidy %&gt;% 
+  complete(
+    date = full_seq(ymd(c("2019-01-01", "2021-04-01")), 1),
+*   fill = list(prcp = 0)
+  ) %&gt;% 
+  group_by(yearmonth = floor_date(date, "1 month")) %&gt;% 
+  mutate(cum_prcp = cumsum(prcp)) %&gt;% 
+  ungroup()
+akl_prcp
+```
+
+```
+#&gt; # A tibble: 822 x 7
+#&gt;   date        prcp  tavg  tmax  tmin yearmonth  cum_prcp
+#&gt;   &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;date&gt;        &lt;dbl&gt;
+#&gt; 1 2019-01-01   0    20.6  23.2  18.8 2019-01-01      0  
+#&gt; 2 2019-01-02   0.5  20.7  23    18.3 2019-01-01      0.5
+#&gt; 3 2019-01-03   0    21.1  24.1  18.4 2019-01-01      0.5
+#&gt; 4 2019-01-04   0    19.2  22.9  NA   2019-01-01      0.5
+#&gt; 5 2019-01-05   0    20    23.3  15   2019-01-01      0.5
+#&gt; 6 2019-01-06   0    21.3  23.7  16.9 2019-01-01      0.5
+#&gt; # … with 816 more rows
+```
+]
+
+---
+
+<div class="countdown" id="timer_6086422f" style="bottom:0;left:0;font-size:48px;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">00</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">30</span></code>
+</div>
+
+.pull-left[
+## Your turn
+
+&gt; 1. Why do I fill `0` to missing `prcp`, instead of leaving `NA` as is?
+&gt; 2. Why do I calculate monthly cumulative precipitations?
+]
+
+.pull-right[
+
+```r
+aklweather_tidy %&gt;% 
+  complete(date = full_seq(
+    ymd(c("2019-01-01", "2021-04-01")), 
+    1)) %&gt;% 
+  filter(is.na(prcp))
+```
+
+```
+#&gt; # A tibble: 13 x 5
+#&gt;    date        prcp  tavg  tmax  tmin
+#&gt;    &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt;  1 2019-02-16    NA  NA    NA    NA  
+#&gt;  2 2019-02-17    NA  NA    NA    NA  
+#&gt;  3 2019-02-18    NA  NA    NA    NA  
+#&gt;  4 2019-07-01    NA  13.4  18.2  NA  
+#&gt;  5 2019-07-02    NA  15.4  17    11.6
+#&gt;  6 2019-07-03    NA  16.8  18.2  13.6
+#&gt;  7 2019-11-01    NA  14.4  17    12.8
+#&gt;  8 2019-11-29    NA  19.7  25.1  NA  
+#&gt;  9 2020-04-07    NA  16.9  22.3  NA  
+#&gt; 10 2020-10-20    NA  17    NA    NA  
+#&gt; 11 2021-02-11    NA  NA    NA    NA  
+#&gt; 12 2021-02-12    NA  NA    NA    NA  
+#&gt; 13 2021-02-20    NA  NA    NA    NA
+```
+]
+
+???
+
+Now you need to think why I make this decision not that decision?
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyr.png" width="60%"&gt;](http://tidyr.tidyverse.org)]
+### - calibrate
+### - pivot
+### - rename
+### - complete
+### - wrangle
+### - visualise
+]
+.right-column[
+## Area plot for monthly cumulative rainfall
+.panelset[
+
+.panel[.panel-name[Plot]
+
+
+&lt;img src="figure/akl-rainfall-plot-1.png" width="840" style="display: block; margin: auto;" /&gt;
+
+.panel[.panel-name[Code]
+
+
+```r
+akl_prcp %&gt;% 
+  ggplot(aes(date, cum_prcp)) +
+  geom_area(fill = "#3182bd", alpha = 0.8) +
+  geom_text(
+    aes(label = cum_prcp),
+*   data = akl_prcp %&gt;% filter(date %in% rollforward(date)),
+    nudge_y = 3
+  )
+```
+]
+]
+]
+]
+
+???
+
+* felt super try in 2020 summer
+* Rainfall in last summer lower than the year before
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyr.png" width="60%"&gt;](http://tidyr.tidyverse.org)]
+### - calibrate
+### - pivot
+### - rename
+### - complete
+### - wrangle
+]
+.right-column[
+
+```r
+akl_monthly_temp &lt;- aklweather_tidy %&gt;% 
+  group_by(yearmonth = floor_date(date, "1 month")) %&gt;% 
+  summarise(
+    tavg = mean(tavg, na.rm = TRUE),
+    tmax = mean(tmax, na.rm = TRUE),
+    tmin = mean(tmin, na.rm = TRUE)
+  )
+akl_monthly_temp
+```
+
+```
+#&gt; # A tibble: 28 x 4
+#&gt;   yearmonth   tavg  tmax  tmin
+#&gt;   &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1 2019-01-01  20.6  24.4 17.3 
+#&gt; 2 2019-02-01  20.4  25.2 16.1 
+#&gt; 3 2019-03-01  19.7  24.5 15.6 
+#&gt; 4 2019-04-01  15.6  20.0 10.5 
+#&gt; 5 2019-05-01  14.8  18.9 10.2 
+#&gt; 6 2019-06-01  11.7  15.4  7.62
+#&gt; # … with 22 more rows
+```
+]
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyr.png" width="60%"&gt;](http://tidyr.tidyverse.org)]
+### - calibrate
+### - pivot
+### - rename
+### - complete
+### - wrangle
+### - visualise
+]
+.right-column[
+## Ribbon plot for monthly temperatures
+.panelset[
+
+.panel[.panel-name[Plot]
+
+
+&lt;img src="figure/akl-monthly-plot-1.png" width="840" style="display: block; margin: auto;" /&gt;
+
+.panel[.panel-name[Code]
+
+
+```r
+akl_monthly_temp %&gt;% 
+  ggplot(aes(yearmonth, tavg, ymin = tmin, ymax = tmax)) +
+  geom_line() +
+  geom_ribbon(fill = "#e6550d", alpha = 0.8) +
+* scale_x_date(date_labels = "%Y %b")
+```
+]
+]
+]
+]
+
+???
+
+Why ribbon is missing in the end?
+
+---
+
+.left-column[
+.center[[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/tidyr.png" width="60%"&gt;](http://tidyr.tidyverse.org)]
+### - calibrate
+### - pivot
+### - rename
+### - complete
+### - wrangle
+### - visualise
+]
+.right-column[
+## Heatmap for monthly average temperatures
+.panelset[
+
+.panel[.panel-name[Plot]
+
+
+&lt;img src="figure/akl-heatmap-1.png" width="840" style="display: block; margin: auto;" /&gt;
+
+.panel[.panel-name[Code]
+
+
+```r
+akl_monthly_temp %&gt;% 
+  mutate(
+    year = year(yearmonth),
+    month = month(yearmonth, label = TRUE)) %&gt;% 
+  ggplot(aes(month, y = year, fill = tavg)) +
+* geom_tile(width = 0.95, height = 0.95) +
+* scale_fill_viridis_c(option = "B") +
+* coord_fixed() +
+  theme_classic()
+```
+]
+]
+]
+]
+
+---
+
+## Reading
+
+.pull-left[
+.center[[&lt;img src="https://d33wubrfki0l68.cloudfront.net/b88ef926a004b0fce72b2526b0b5c4413666a4cb/24a30/cover.png" height="520px"&gt;](https://r4ds.had.co.nz)]
+]
+.pull-right[
+* [Tidy data](https://r4ds.had.co.nz/tidy-data.html)
+* [{tidyr} cheatsheet](https://github.com/rstudio/cheatsheets/blob/master/data-import.pdf)
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

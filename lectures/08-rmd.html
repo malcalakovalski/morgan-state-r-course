@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>STATS 220</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link rel="stylesheet" href="assets/remark.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# STATS 220
+## R Markdown🧶
+
+---
+
+
+class: middle
+
+
+
+
+
+.pull-left[
+.center[
+[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/rmarkdown.png" width="26%"&gt;](https://rmarkdown.rstudio.com)
+[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/blogdown.png" width="26%"&gt;](https://bookdown.org/yihui/blogdown/)
+
+[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/bookdown.png" width="26%"&gt;](http://bookdown.org)
+[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/xaringan.png" width="26%"&gt;](http://slides.yihui.org/xaringan/)
+]
+]
+.pull-right[
+## .center[Dynamic documents]
+
+* Combine code, rendered output (such as figures), and prose
+* Reproduce your analyses
+* Collaborate and share code with others
+* Communicate your results with others
+]
+
+???
+
+* graphics for communication
+* keep learning communication
+* Rmd: a tool for integrating prose, code, and results
+* one md file for multiple documents
+
+---
+
+class: inverse middle center
+
+# .large[.large[.large[&lt;i class="fab fa-r-project"&gt;&lt;/i&gt;]]] + .large[.large[.large[.blue[&lt;i class="fab fa-markdown"&gt;&lt;/i&gt;]]]]
+
+???
+
+Rmd: glue 2 things together
+
+---
+
+## Markdown .blue[&lt;i class="fab fa-markdown"&gt;&lt;/i&gt;] `.md`
+
+* Created by [John Gruber](https://daringfireball.net/projects/markdown/) &amp; [Aaron Swartz](http://www.aaronsw.com) in 2004
+* A lightweight .brown[markup language] to add formatting elements to plain-text documents, contrasting to WYSIWYG
+* Portable, platform independent, everywhere (e.g. Piazza, but not Canvas 😠)
+
+&lt;img src="img/piazza-md.png" width="100%"&gt;
+
+???
+
+* md originated back to 2004, but emerged around 2010
+* aaron, reddit, a loss
+* The course website: write in md, and render in html by hugo
+* commonmark: it's one of markdown flavours, richer features. e.g. github
+* learned it in 5 mins, unlike R
+
+---
+
+class: center middle
+
+## .blue[&lt;i class="fab fa-markdown"&gt;&lt;/i&gt;] Basic syntax
+
+&lt;img src="img/md-syntax.png"&gt;
+
+More on [Markdown syntax](https://www.markdownguide.org/basic-syntax/)
+
+
+
+---
+
+class: inverse
+
+background-image: url(https://raw.githubusercontent.com/allisonhorst/stats-illustrations/master/rstats-blanks/rmarkdown_wizards_blank.png)
+background-size: 100% 100%
+
+---
+
+.pull-left[
+## Create R Markdown `.Rmd`
+&lt;br&gt;
+.center[
+&lt;img src="img/click-rmd.png" width="20%"&gt;
+&lt;img src="img/new-rmd.png" width="60%"&gt;]
+]
+.pull-right[
+````markdown
+---
+title: "STATS220 R Markdown demo"
+author: "Earo Wang"
+date: "`r lubridate::today()`"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+library(knitr)
+opts_knit$set(root.dir = here::here())
+opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+You can embed an R code chunk like this:
+
+```{r gapminder, message = FALSE}
+library(tidyverse)
+gp &lt;- read_rds("data/gapminder.rds")
+gp
+```
+
+See &lt;http://rmarkdown.rstudio.com&gt;.
+````
+]
+
+---
+
+.pull-left[
+## YAML header
+YAML is commonly used for configuration files, and starts and ends with
+`---`
+
+````markdown
+`r lubridate::today()`
+````
+⬆️ inline executable R code
+* one markdown file, many formats
+  + `pdf_document`
+  + `xaringan::moon_reader`
+
+.small[
+To compile to PDF, 
+```r
+install.packages('tinytex')
+tinytex::install_tinytex()
+```
+]
+]
+.pull-right[
+````markdown
+*---
+*title: "STATS220 R Markdown demo"
+*author: "Earo Wang"
+*date: "`r lubridate::today()`"
+*output: html_document
+*---
+
+```{r setup, include = FALSE}
+library(knitr)
+opts_knit$set(root.dir = here::here())
+opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+You can embed an R code chunk like this:
+
+```{r gapminder, message = FALSE}
+library(tidyverse)
+gp &lt;- read_rds("data/gapminder.rds")
+gp
+```
+
+See &lt;http://rmarkdown.rstudio.com&gt;.
+````
+]
+
+---
+
+.pull-left[
+## R chunk for global settings
+````markdown
+```{r setup, include = FALSE}
+library(knitr)
+opts_knit$set(root.dir = here::here())
+opts_chunk$set(echo = TRUE)
+```
+````
+⬆️ executable R chunk
+* `r`: language engine
+* `setup`: unique chunk name
+* `include`: include chunk output or not
+* `echo`: display source code or not
+]
+.pull-right[
+````markdown
+---
+title: "STATS220 R Markdown demo"
+author: "Earo Wang"
+date: "`r lubridate::today()`"
+output: html_document
+---
+
+*```{r setup, include = FALSE}
+*library(knitr)
+*opts_knit$set(root.dir = here::here())
+*opts_chunk$set(echo = TRUE)
+*```
+
+## R Markdown
+
+You can embed an R code chunk like this:
+
+```{r gapminder, message = FALSE}
+library(tidyverse)
+gp &lt;- read_rds("data/gapminder.rds")
+gp
+```
+
+See &lt;http://rmarkdown.rstudio.com&gt;.
+````
+]
+
+---
+
+.pull-left[
+## Write in markdown
+&lt;br&gt;
+.center[Weave together narrative text and code]
+&lt;br&gt;
+&lt;br&gt;
+.center[&lt;img src="https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/knitr.png" width="240px"&gt;]
+]
+.pull-right[
+````markdown
+---
+title: "STATS220 R Markdown demo"
+author: "Earo Wang"
+date: "`r lubridate::today()`"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+library(knitr)
+opts_knit$set(root.dir = here::here())
+opts_chunk$set(echo = TRUE)
+```
+
+*## R Markdown
+
+*You can embed an R code chunk like this:
+
+```{r gapminder, message = FALSE}
+library(tidyverse)
+gp &lt;- read_rds("data/gapminder.rds")
+gp
+```
+
+*See &lt;http://rmarkdown.rstudio.com&gt;.
+````
+]
+
+---
+
+.pull-left[
+## R chunk
+* `mpg`: unique chunk name
+* `message`: suppress message or not
+
+```r
+library(tidyverse)
+```
+
+```
+#&gt; ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
+```
+
+```
+#&gt; ✔ ggplot2 3.3.3     ✔ purrr   0.3.4
+#&gt; ✔ tibble  3.1.1     ✔ dplyr   1.0.5
+#&gt; ✔ tidyr   1.1.3     ✔ stringr 1.4.0
+#&gt; ✔ readr   1.4.0     ✔ forcats 0.5.1
+```
+
+```
+#&gt; ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+#&gt; ✖ dplyr::filter() masks stats::filter()
+#&gt; ✖ dplyr::lag()    masks stats::lag()
+```
+]
+.pull-right[
+````markdown
+---
+title: "STATS220 R Markdown demo"
+author: "Earo Wang"
+date: "`r lubridate::today()`"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+library(knitr)
+opts_knit$set(root.dir = here::here())
+opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+You can embed an R code chunk like this:
+
+*```{r gapminder, message = FALSE}
+*library(tidyverse)
+*gp &lt;- read_rds("data/gapminder.rds")
+*gp
+*```
+
+See &lt;http://rmarkdown.rstudio.com&gt;.
+````
+]
+
+---
+
+.pull-left[
+## Render
+&lt;br&gt;
+&lt;br&gt;
+3 ways to render an `.Rmd`
+
+1. click &lt;img src="img/knit.png" width="20%"&gt;
+2. shortcut: Ctrl/Cmd + Shift + K
+3. `rmarkdown::render("demo.Rmd")`
+]
+.pull-right[
+&lt;img src="img/demo-rmd-render.png", style = "box-shadow: 3px 5px 3px 1px #00000080;", width="100%"&gt;
+]
+
+---
+
+````r
+```{r scatterplot, fig.align = "center", fig.width = 4.5, fig.height = 4}
+ggplot(gp, aes(gdpPercap, lifeExp)) +
+  geom_point() + scale_x_log10()
+```
+````
+
+
+
+&lt;img src="figure/rmd-scatterplot-1.png" width="540" style="display: block; margin: auto;" /&gt;
+
+---
+
+````r
+```{r scatterplot, fig.align = "center", fig.width = 4.5, fig.height = 4}
+ggplot(gp, aes(gdpPercap, lifeExp)) +
+  geom_point() + scale_x_log10()
+```
+````
+
+.pull-left[
+## Chunk options
+
+* `scatterplot` gives the chunk a name.
+* `fig.align`: alignment of figures
+* `fig.width`/`fig.height`
+* [other figure options](https://yihui.org/knitr/options/#plots)
+
+**Good practice**: naming every single chunk!
+]
+.pull-right[
+&lt;img src="https://itsalocke.com/blog/img/namer-oh-no.png" width="100%"&gt;
+&lt;img src="https://itsalocke.com/blog/img/namer-yaaasss.png" width="100%"&gt;
+
+.footnote[image credit: Maelle Salmon]
+]
+
+---
+
+````r
+```{r show-code, ref.label = "scatterplot", eval = FALSE}
+```
+````
+
+.pull-left[
+## Reuse chunks by reference
+
+* `ref.label`: labels of the chunks from which the code of the current chunk is inherited
+* `eval`: evaluate the code chunk
+
+**Good practice**: naming every single chunk!
+]
+.pull-right[
+&lt;img src="figure/right-plot-1.png" width="480" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+&lt;style type="text/css"&gt;
+table {
+  margin: auto;
+  border-top: 1px solid #666;
+  border-bottom: 1px solid #666;
+  font-size: 22px;
+}
+table thead th { border-bottom: 1px solid #ddd; }
+th, td { padding: 5px; }
+thead, tfoot, tr:nth-child(even) { background: #eee; }
+&lt;/style&gt;
+
+
+````r
+```{r lm, echo = FALSE, cache = TRUE}
+fit &lt;- lm(lifeExp ~ log10(gdpPercap), data = gp)
+kable(coef(summary(fit)))
+```
+````
+
+.pull-left[
+## Chunk options
+
+* `echo`: overwrites the global setting
+* `cache`: evaluate once and skip for the future
+
+`kable()` generates a very simple HTML table. ➡️
+]
+.pull-right[
+
+&lt;br&gt;
+&lt;br&gt;
+
+|                 |  Estimate| Std. Error|   t value| Pr(&gt;&amp;#124;t&amp;#124;)|
+|:----------------|---------:|----------:|---------:|------------------:|
+|(Intercept)      | -9.100889|  1.2276738| -7.413117|                  0|
+|log10(gdpPercap) | 19.353423|  0.3425372| 56.500206|                  0|
+]
+
+---
+
+## Beyond &lt;i class="fab fa-r-project"&gt;&lt;/i&gt;: language engines
+
+````py
+*```{python hello}
+# remotes::install_github("rstudio/reticulate")
+x = "hello, python world!"
+print(x.split(" "))
+```
+````
+
+
+```
+#&gt; ['hello,', 'python', 'world!']
+```
+
+&lt;hr&gt;
+
+````sh
+*```{sh head}
+head -4 data/pisa/pisa-student.csv
+```
+````
+
+
+```
+#&gt; year,country,school_id,student_id,mother_educ,father_educ,gender,computer,internet,math,read,science,stu_wgt,desk,room,dishwasher,television,computer_n,car,book,wealth,escs
+#&gt; 2000,ALB,1001,1,NA,NA,female,NA,no,324.35,397.87,345.66,2.16,yes,no,no,1,3+,1,11-50,-0.6,0.10575582991490981
+#&gt; 2000,ALB,1001,3,NA,NA,female,NA,no,NA,368.41,385.83,2.16,yes,yes,no,2,0,0,1-10,-1.84,-1.424044581128788
+#&gt; 2000,ALB,1001,6,NA,NA,male,NA,no,NA,294.17,327.94,2.16,yes,yes,no,2,0,0,1-10,-1.46,-1.306683855365612
+```
+
+---
+
+## Beyond &lt;i class="fab fa-r-project"&gt;&lt;/i&gt;: language engines
+
+````r
+```{r db}
+library(RSQLite)
+db &lt;- dbConnect(SQLite(), dbname = "data/pisa/pisa-student.db")
+```
+
+*```{sql query, connection = db, output.var = "pisa18"}
+SELECT * FROM pisa WHERE year = 2018
+```
+````
+
+
+
+
+
+
+
+```
+#&gt; # A tibble: 612,004 x 22
+#&gt;    year country school_id student_id mother_educ father_educ
+#&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;       &lt;chr&gt;      
+#&gt; 1  2018 ALB     800002    800251     ISCED 3A    ISCED 3A   
+#&gt; 2  2018 ALB     800002    800402     ISCED 2     ISCED 2    
+#&gt; 3  2018 ALB     800002    801902     ISCED 2     ISCED 2    
+#&gt; 4  2018 ALB     800002    803546     ISCED 2     ISCED 2    
+#&gt; 5  2018 ALB     800002    804776     ISCED 2     ISCED 3A   
+#&gt; 6  2018 ALB     800002    804825     ISCED 2     ISCED 2    
+#&gt; # … with 611,998 more rows, and 16 more variables:
+#&gt; #   gender &lt;chr&gt;, computer &lt;chr&gt;, internet &lt;chr&gt;,
+#&gt; #   math &lt;dbl&gt;, read &lt;dbl&gt;, science &lt;dbl&gt;, stu_wgt &lt;dbl&gt;,
+#&gt; #   desk &lt;chr&gt;, room &lt;chr&gt;, dishwasher &lt;chr&gt;,
+#&gt; #   television &lt;chr&gt;, computer_n &lt;chr&gt;, car &lt;chr&gt;,
+#&gt; #   book &lt;chr&gt;, wealth &lt;dbl&gt;, escs &lt;dbl&gt;
+```
+
+---
+
+## Beyond &lt;i class="fab fa-r-project"&gt;&lt;/i&gt;: language engines
+
+
+```r
+names(knitr::knit_engines$get())
+```
+
+```
+#&gt;  [1] "awk"       "bash"      "coffee"    "gawk"      "groovy"    "haskell"  
+#&gt;  [7] "lein"      "mysql"     "node"      "octave"    "perl"      "psql"     
+#&gt; [13] "Rscript"   "ruby"      "sas"       "scala"     "sed"       "sh"       
+#&gt; [19] "stata"     "zsh"       "highlight" "Rcpp"      "tikz"      "dot"      
+#&gt; [25] "c"         "cc"        "fortran"   "fortran95" "asy"       "cat"      
+#&gt; [31] "asis"      "stan"      "block"     "block2"    "js"        "css"      
+#&gt; [37] "sql"       "go"        "python"    "julia"     "sass"      "scss"     
+#&gt; [43] "R"         "bslib"
+```
+
+---
+
+## Reading
+
+.pull-left[
+.center[[&lt;img src="https://d33wubrfki0l68.cloudfront.net/b88ef926a004b0fce72b2526b0b5c4413666a4cb/24a30/cover.png" height="520px"&gt;](https://r4ds.had.co.nz)]
+]
+.pull-right[
+* [R Markdown](https://r4ds.had.co.nz/r-markdown.html)
+* [R Markdown formats](https://r4ds.had.co.nz/r-markdown-formats.html)
+* [R Markdown cheat sheet](https://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf?_ga=2.253787336.159731575.1620189500-118347454.1620189500)
+* [R Markdown reference guide](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf?_ga=2.253787336.159731575.1620189500-118347454.1620189500)
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
